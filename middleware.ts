@@ -4,7 +4,8 @@ import { apiURL } from "./app/components/apiURL";
 export async function middleware(request: NextRequest) {
   if (
     request.nextUrl.pathname === "/dashboard" ||
-    request.nextUrl.pathname === "/login"
+    request.nextUrl.pathname === "/login" ||
+    request.nextUrl.pathname === "/portfolio"
   ) {
     let currentUser = false;
     let results;
@@ -31,6 +32,10 @@ export async function middleware(request: NextRequest) {
     }
     if (currentUser && request.nextUrl.pathname.startsWith("/login")) {
       return Response.redirect(new URL("/dashboard", request.url));
+    }
+
+    if (!currentUser && !request.nextUrl.pathname.startsWith("/login")) {
+      return Response.redirect(new URL("/login", request.url));
     }
   } else if (request.nextUrl.pathname === "/") {
     let token = request.cookies.get("token")?.value;
