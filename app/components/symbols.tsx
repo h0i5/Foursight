@@ -419,6 +419,11 @@ export const symbols = [
     Scrip: "MCDOWELL-N",
     "Company Name": "United Spirits Limited",
   },
+
+  {
+    Scrip: "UNITDSPR",
+    "Company Name": "United Spirits Limited",
+  },
   {
     Scrip: "HDFCAMC",
     "Company Name": "HDFC Asset Management Company Limited",
