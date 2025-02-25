@@ -91,15 +91,15 @@ export default function Networth(props: any) {
   return (
     <div>
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-x-5 gap-y-5">
-        <div className="rounded-md border-2 px-4 py-2">
-          <h1 className="text-[#696969] font-semibold mb-4 text-2xl">
+        <div className="rounded-md border-2 px-4 py-2 overflow-y-scroll">
+          <h1 className="text-[#696969] font-semibold mb-4 text-2xl ">
             {" "}
             Your Portfolio Value
           </h1>
           <div className="flex flex-row items-end">
             <h1 className="green-text font-extrabold text-3xl">
               {" "}
-              ₹ {(data.spentCash + profitDetails?.overallProfit).toFixed(2)}
+              ₹{(data.spentCash + profitDetails?.overallProfit).toFixed(2)}
             </h1>
 
             <div className="ml-2 font-extrabold text-base">
