@@ -2,7 +2,7 @@
 
 ### Your very own Paper Trading & Stock Analysis for the Indian Stock Market
 
-> Website deployed globally at https://foursight.harshiyer.me
+> Website deployed globally at https://foursight.harshiyer.in
 
 Foursight is a powerful web application designed to empower Indian stock market enthusiasts with a comprehensive paper trading and analysis platform. Practice your trading strategies in a risk-free environment with access to live data for over 2000+ stocks listed on the National Stock Exchange.
 
