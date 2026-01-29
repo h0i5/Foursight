@@ -7,6 +7,7 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useState } from "react";
 import { useToast } from "@/app/hooks/use-toast";
+import React from "react";
 
 export default function BuySellWatch(props: any) {
   let symbol = props.symbol || "";
@@ -63,6 +64,7 @@ export default function BuySellWatch(props: any) {
         closeOnDocumentClick
         lockScroll
       >
+        {/* @ts-ignore - reactjs-popup supports function children for modal */}
         {(close: () => void) => (
           <BuyPopup
             companyName={props.companyName}
@@ -95,6 +97,7 @@ export default function BuySellWatch(props: any) {
         closeOnDocumentClick
         lockScroll
       >
+        {/* @ts-ignore - reactjs-popup supports function children for modal */}
         {(close: () => void) => (
           <SellPopup
             companyName={props.companyName}
