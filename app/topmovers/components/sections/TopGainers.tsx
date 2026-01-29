@@ -1,30 +1,11 @@
-import Link from "next/link";
 import Scrip from "../Scrip";
 
 export default function TopGainers(props: { type: string; apiData: any }) {
   let topGainers = props.apiData;
 
   return (
-    <div className=" mb-12 my-4">
-      <Link href="/topmovers">
-        <h1 className="text-2xl md:text-3xl font-bold">
-          Top{" "}
-          <span
-            className={
-              props.type === "Gainers"
-                ? "green-text"
-                : props.type === "Losers"
-                ? "red-text"
-                : "text-black"
-            }
-          >
-            {props.type}
-          </span>{" "}
-          this week
-        </h1>
-      </Link>
-
-      <div className="grid gap-x-4 gap-y-4 grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2">
+    <div>
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {topGainers?.map((scrip: any, index: number) => (
           <Scrip
             key={index}

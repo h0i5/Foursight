@@ -1,26 +1,27 @@
 import TopLosers from "./TopLosers";
 import TopGainers from "./TopGainers";
-import Link from "next/link";
 import { NavTransition } from "@/app/components/navbar/NavTransition";
 
 export default function TopMoversSection(props: any) {
   const { data } = props;
+  
   return (
-    <div className="my-8">
-      <div className="flex flex-col mb-4">
-        <div className="flex flex-row justify-between items-end">
-          <p className="font-semibold text-xl mb-2 green-text">Top Gainers</p>
-          <NavTransition className="" href="/topmovers">
-            <p className="font-semibold text-sm mb-2 green-text">View More</p>
+    <div className="space-y-12">
+      <div>
+        <div className="flex flex-row justify-between items-center mb-4">
+          <h2 className="text-xl font-bold text-[#037a68]">Top Gainers</h2>
+          <NavTransition href="/topmovers" className="text-sm font-mono text-[#037a68] hover:underline">
+            VIEW MORE
           </NavTransition>
         </div>
         <TopGainers data={data.TOP_GAINERS} />
       </div>
-      <div className="flex flex-col mb-4">
-        <div className="flex flex-row justify-between items-end">
-          <p className="font-semibold text-xl mb-4 red-text mt-8">Top Losers</p>
-          <NavTransition className="" href="/topmovers">
-            <p className="font-semibold text-sm mb-2 green-text">View More</p>
+      
+      <div>
+        <div className="flex flex-row justify-between items-center mb-4">
+          <h2 className="text-xl font-bold text-[#ce0000]">Top Losers</h2>
+          <NavTransition href="/topmovers" className="text-sm font-mono text-[#037a68] hover:underline">
+            VIEW MORE
           </NavTransition>
         </div>
         <TopLosers data={data.TOP_LOSERS} />

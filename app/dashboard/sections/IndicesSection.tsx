@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import IndicesComponent from "../components/IndicesComponent";
+import ScrollableContainer from "../components/ScrollableContainer";
 
 export default function IndicesSection(props: any) {
   const data = props;
@@ -30,17 +31,18 @@ export default function IndicesSection(props: any) {
       },
     },
   ];
-  const indicesList = indicesData[0]; // Access the first (and only) element in the array
+  const indicesList = indicesData[0];
+  
   return (
-    <div className="mt-4 ">
-      <h1 className="font-semibold text-xl mb-4">Indices</h1>
-      <div className="flex flex-row overflow-x-scroll mt-4">
+    <div className="w-full">
+      <h2 className="text-xl font-bold mb-4 text-black">Indices</h2>
+      <ScrollableContainer>
         <IndicesComponent data={indicesList.SENSEX} />
         <IndicesComponent data={indicesList.NIFTY} />
         <IndicesComponent data={indicesList.BANKNIFTY} />
         <IndicesComponent data={indicesList.NIFTYMIDSELECT} />
         <IndicesComponent data={indicesList.FINNIFTY} />
-      </div>
+      </ScrollableContainer>
     </div>
   );
 }

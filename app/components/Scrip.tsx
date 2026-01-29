@@ -20,49 +20,56 @@ export default function Scrip(props: {
         <div className="text-2xl font-extrabold text-black">Loading...</div>
       }
     >
-      <div className="min-w-[450px] md:min-w-[500px] mr-4 my-2 flex flex-col border-2 p-4 rounded-lg border-[#858585]]">
+      <div className="min-w-[450px] md:min-w-[500px] flex flex-col border border-[#374151] p-6 bg-white hover:border-black transition-colors">
         <Link href={`/stocks/${encodeURIComponent(props.symbol)}`}>
-          <h1
-            className={
-              props.change > 0
-                ? "green-text text-xl font-bold"
-                : "red-text text-xl font-bold"
-            }
-          >
-            {props.title}
-          </h1>
-          <div className="flex flex-row my-1">
-            <p className="text-lg text-black font-bold">₹{props.ltp}</p>
+          <h1 className="text-xl font-bold mb-4 text-black">{props.title}</h1>
+          <div className="flex flex-row items-baseline gap-4 mb-6">
+            <p className="text-2xl font-mono font-semibold text-black">
+              ₹{props.ltp}
+            </p>
             <p
-              className={`ml-2 flex mt-auto items-end justify-end text-md font-semibold  ${
-                props.change >= 0 ? "green-text" : "red-text"
+              className={`font-mono text-lg ${
+                props.change >= 0 ? "text-[#037a68]" : "text-[#ce0000]"
               }`}
             >
               {props.change >= 0 ? "+" : ""}
-              {props.change} ({props.changePercent}
-              %)
+              {props.change} ({props.changePercent}%)
             </p>
           </div>
           <div>
-            <table className="scrip-table text-md">
+            <table className="w-full text-sm">
               <tbody>
                 <tr>
-                  <td className="font-semibold">Opening</td>
-                  <td className="pr-4 grey-text">₹{props.opening}</td>
-                  <td className="font-semibold">52 Wk High</td>
-                  <td className=" grey-text">₹{props.yearlyHigh}</td>
+                  <td className="py-2 font-semibold text-black">Opening</td>
+                  <td className="py-2 pr-4 text-right font-mono text-black/70">
+                    ₹{props.opening}
+                  </td>
+                  <td className="py-2 font-semibold text-black">52 Wk High</td>
+                  <td className="py-2 text-right font-mono text-black/70">
+                    ₹{props.yearlyHigh}
+                  </td>
                 </tr>
                 <tr>
-                  <td className="font-semibold">Closing</td>
-                  <td className="pr-4 grey-text">₹{props.closing}</td>
-                  <td className="font-semibold">52 Wk Low</td>
-                  <td className=" grey-text">₹{props.yearlyLow}</td>
+                  <td className="py-2 font-semibold text-black">Closing</td>
+                  <td className="py-2 pr-4 text-right font-mono text-black/70">
+                    ₹{props.closing}
+                  </td>
+                  <td className="py-2 font-semibold text-black">52 Wk Low</td>
+                  <td className="py-2 text-right font-mono text-black/70">
+                    ₹{props.yearlyLow}
+                  </td>
                 </tr>
                 <tr>
-                  <td className="font-semibold pr-4">Equity Type</td>
-                  <td className="pr-4 grey-text">{props.equityType}</td>
-                  <td className="font-semibold pr-4">Market Cap (Cr.)</td>
-                  <td className=" grey-text">{props.marketCap}</td>
+                  <td className="py-2 font-semibold text-black">Equity Type</td>
+                  <td className="py-2 pr-4 text-right font-mono text-black/70">
+                    {props.equityType}
+                  </td>
+                  <td className="py-2 font-semibold text-black">
+                    Market Cap (Cr.)
+                  </td>
+                  <td className="py-2 text-right font-mono text-black/70">
+                    {props.marketCap}
+                  </td>
                 </tr>
               </tbody>
             </table>

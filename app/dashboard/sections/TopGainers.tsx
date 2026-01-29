@@ -1,5 +1,6 @@
 import { useState } from "react";
 import TopMoverComponent from "../components/TopMoverComponent";
+import ScrollableContainer from "../components/ScrollableContainer";
 
 export default function TopGainers(props: any) {
   const { data } = props;
@@ -7,87 +8,77 @@ export default function TopGainers(props: any) {
   const medium = data?.MIDCAP.items ? data.MIDCAP.items : [];
   const small = data?.SMALLCAP.items ? data.SMALLCAP.items : [];
   const [display, setDisplay] = useState("LARGECAP");
-  const buttonClass =
-    "  text-gray-500  text-sm  px-2 rounded-md mr-2 transition transition-all-0.5s";
+  
   return (
     <div>
-      <div className="mt-1 mb-2">
+      <div className="flex flex-row gap-2 mb-4">
         <button
-          onClick={(evt) => {
-            setDisplay("LARGECAP");
-          }}
-          className={` ${buttonClass} ${display === "LARGECAP" ? "bg-teal-600 text-white" : "bg-white border-[1px] border-[#696969]"}  `}
+          onClick={() => setDisplay("LARGECAP")}
+          className={`px-4 py-2 text-xs font-mono border border-[#374151] transition-colors ${
+            display === "LARGECAP"
+              ? "bg-black text-white border-black"
+              : "bg-white text-black hover:border-black"
+          }`}
         >
-          Large
+          LARGE
         </button>
         <button
-          onClick={(evt) => {
-            setDisplay("MIDCAP");
-          }}
-          className={` ${buttonClass} ${display === "MIDCAP" ? "bg-teal-600 text-white" : "bg-white border-[1px] border-[#696969]"}  `}
+          onClick={() => setDisplay("MIDCAP")}
+          className={`px-4 py-2 text-xs font-mono border border-[#374151] transition-colors ${
+            display === "MIDCAP"
+              ? "bg-black text-white border-black"
+              : "bg-white text-black hover:border-black"
+          }`}
         >
-          Mid
+          MID
         </button>
         <button
-          onClick={(evt) => {
-            setDisplay("SMALLCAP");
-          }}
-          className={` ${buttonClass} ${display === "SMALLCAP" ? "bg-teal-600 text-white" : "bg-white border-[1px] border-[#696969]"}  `}
+          onClick={() => setDisplay("SMALLCAP")}
+          className={`px-4 py-2 text-xs font-mono border border-[#374151] transition-colors ${
+            display === "SMALLCAP"
+              ? "bg-black text-white border-black"
+              : "bg-white text-black hover:border-black"
+          }`}
         >
-          Small
+          SMALL
         </button>
       </div>
-      {display === "LARGECAP" && (
-        <div className="flex flex-row overflow-y-scroll">
-          {large.map((item: any, index: number) => {
-            return (
-              <div key={index}>
-                <TopMoverComponent
-                  companyName={item.company.companyName}
-                  ltp={item.stats.ltp}
-                  dayChange={item.stats.dayChange}
-                  dayChangePerc={item.stats.dayChangePerc}
-                  symbol={item.company.nseScriptCode}
-                />
-              </div>
-            );
-          })}
-        </div>
-      )}
-      {display === "MIDCAP" && (
-        <div className="flex flex-row overflow-y-scroll">
-          {medium.map((item: any, index: number) => {
-            return (
-              <div key={index}>
-                <TopMoverComponent
-                  companyName={item.company.companyName}
-                  ltp={item.stats.ltp}
-                  dayChange={item.stats.dayChange}
-                  dayChangePerc={item.stats.dayChangePerc}
-                  symbol={item.company.nseScriptCode}
-                />
-              </div>
-            );
-          })}
-        </div>
-      )}
-      {display === "SMALLCAP" && (
-        <div className="flex flex-row overflow-y-scroll">
-          {small.map((item: any, index: number) => {
-            return (
-              <div key={index}>
-                <TopMoverComponent
-                  companyName={item.company.companyName}
-                  ltp={item.stats.ltp}
-                  dayChange={item.stats.dayChange}
-                  dayChangePerc={item.stats.dayChangePerc}
-                  symbol={item.company.nseScriptCode}
-                />
-              </div>
-            );
-          })}
-        </div>
-      )}
+      
+      <ScrollableContainer>
+        {display === "LARGECAP" &&
+          large.map((item: any, index: number) => (
+            <TopMoverComponent
+              key={index}
+              companyName={item.company.companyName}
+              ltp={item.stats.ltp}
+              dayChange={item.stats.dayChange}
+              dayChangePerc={item.stats.dayChangePerc}
+              symbol={item.company.nseScriptCode}
+            />
+          ))}
+        {display === "MIDCAP" &&
+          medium.map((item: any, index: number) => (
+            <TopMoverComponent
+              key={index}
+              companyName={item.company.companyName}
+              ltp={item.stats.ltp}
+              dayChange={item.stats.dayChange}
+              dayChangePerc={item.stats.dayChangePerc}
+              symbol={item.company.nseScriptCode}
+            />
+          ))}
+        {display === "SMALLCAP" &&
+          small.map((item: any, index: number) => (
+            <TopMoverComponent
+              key={index}
+              companyName={item.company.companyName}
+              ltp={item.stats.ltp}
+              dayChange={item.stats.dayChange}
+              dayChangePerc={item.stats.dayChangePerc}
+              symbol={item.company.nseScriptCode}
+            />
+          ))}
+      </ScrollableContainer>
     </div>
   );
 }

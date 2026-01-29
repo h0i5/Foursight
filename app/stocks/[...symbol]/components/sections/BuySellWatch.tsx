@@ -1,40 +1,17 @@
+"use client";
 import Popup from "reactjs-popup";
 import BuyPopup from "../handlers/BuyPopup";
 import SellPopup from "../handlers/SellPopup";
 import { apiURL } from "@/app/components/apiURL";
 import axios from "axios";
-import { toast, Slide } from "react-toastify";
 import { getCookie } from "cookies-next";
 import { useState } from "react";
+import { useToast } from "@/app/hooks/use-toast";
 
 export default function BuySellWatch(props: any) {
   let symbol = props.symbol || "";
   let token = getCookie("token");
-
-  const notifySuccess = (message: string) =>
-    toast.success(message, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Slide,
-    });
-  const notifyError = (message: string) =>
-    toast.error(message, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Slide,
-    });
+  const { toast } = useToast();
 
   async function handleWatchlistAddition() {
     let results;
@@ -51,76 +28,88 @@ export default function BuySellWatch(props: any) {
       results = err.response;
     }
     if (results?.status === 200) {
-      notifySuccess("Added to watchlist");
+      toast({
+        title: "Added to watchlist",
+      });
     }
     if (results?.status === 409) {
-      notifyError("Already in watchlist!");
+      toast({
+        title: "Already in watchlist!",
+        variant: "destructive",
+      });
     }
   }
   return (
-    <div className="flex md:flex flex-row">
-      <div>
-        <Popup
-          className=" border-2 rounded-xl w-[200px]"
-          contentStyle={{
-            width: "fit-content",
-            marginLeft: "auto",
-            marginRight: "auto",
-            margin: "12px",
-            marginTop: "auto",
-            marginBottom: "auto",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          trigger={
-            <button className="flex bg-[#037A68] py-0 px-2 text-base text-white rounded-md hover:bg-teal-800 transition transition-all-0.5s">
-              Buy
-            </button>
-          }
-          modal
-        >
+    <div className="flex flex-row gap-2">
+      <Popup
+        contentStyle={{
+          width: "fit-content",
+          border: "1px solid #374151",
+          borderRadius: "0",
+          padding: "0",
+          background: "white",
+          animation: "modalFadeIn 0.2s ease-out",
+        }}
+        overlayStyle={{
+          background: "rgba(0, 0, 0, 0.5)",
+          animation: "overlayFadeIn 0.2s ease-out",
+        }}
+        trigger={
+          <button className="px-4 py-2 bg-[#037a68] text-white text-xs font-mono border border-[#037a68] hover:bg-[#037a68]/90 transition-colors">
+            BUY
+          </button>
+        }
+        modal
+        closeOnDocumentClick
+        lockScroll
+      >
+        {(close: () => void) => (
           <BuyPopup
             companyName={props.companyName}
             symbol={decodeURIComponent(props.symbol)}
             ltp={props.ltp}
+            onClose={close}
           />
-        </Popup>
-      </div>
+        )}
+      </Popup>
 
-      <div>
-        <Popup
-          className=" border-2 rounded-xl w-[200px]"
-          contentStyle={{
-            width: "fit-content",
-            marginLeft: "auto",
-            marginRight: "auto",
-            margin: "12px",
-            marginTop: "auto",
-            marginBottom: "auto",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          trigger={
-            <button className="flex bg-[#CF0000] py-0 px-2 text-base text-white rounded-md hover:bg-red-700 transition transition-all-0.5s ml-3">
-              Sell
-            </button>
-          }
-          modal
-        >
+      <Popup
+        contentStyle={{
+          width: "fit-content",
+          border: "1px solid #374151",
+          borderRadius: "0",
+          padding: "0",
+          background: "white",
+          animation: "modalFadeIn 0.2s ease-out",
+        }}
+        overlayStyle={{
+          background: "rgba(0, 0, 0, 0.5)",
+          animation: "overlayFadeIn 0.2s ease-out",
+        }}
+        trigger={
+          <button className="px-4 py-2 bg-[#ce0000] text-white text-xs font-mono border border-[#ce0000] hover:bg-[#ce0000]/90 transition-colors">
+            SELL
+          </button>
+        }
+        modal
+        closeOnDocumentClick
+        lockScroll
+      >
+        {(close: () => void) => (
           <SellPopup
             companyName={props.companyName}
             symbol={decodeURIComponent(props.symbol)}
             ltp={props.ltp}
+            onClose={close}
           />
-        </Popup>
-      </div>
+        )}
+      </Popup>
+      
       <button
         onClick={handleWatchlistAddition}
-        className="flex h-fit border border-[#B8B8B8] bg-white py-0 px-2 text-base text-black rounded-md  ml-3"
+        className="px-4 py-2 border border-[#374151] bg-white text-black text-xs font-mono hover:bg-black hover:text-white hover:border-black transition-colors"
       >
-        Watch
+        WATCH
       </button>
     </div>
   );

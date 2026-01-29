@@ -12,6 +12,7 @@ import Stats from "./components/sections/Statistics/Stats";
 import BuySellWatch from "./components/sections/BuySellWatch";
 import Loading from "@/app/components/Loading";
 import RouterComponent from "@/app/components/RouterComponent";
+import Footer from "@/app/components/Footer";
 export const runtime = "edge";
 export default function Page({
   params,
@@ -99,22 +100,46 @@ export default function Page({
   }
   let companyName = getCompanyName(symbol);
   return (
-    <div className="md:mx-[15%]">
-      <div>
-        <Navbar />
-      </div>
-      <div className="md:mt-4 mx-6 md:mx-0">
+    <div className="flex flex-col min-h-screen md:mx-[15%]">
+      <Navbar />
+      <main className="flex-grow mx-6 md:mx-0 mb-12 overflow-x-hidden max-w-full">
         <div>
           <RouterComponent />
         </div>
-        <div className="flex w-full md:flex-row justify-between">
-          <div className="xl:w-[60%]">
-            <div>
-              {loading ? (
-                <div className="w-full h-full flex justify-center items-center">
+        
+        <div className="flex w-full flex-col xl:flex-row xl:justify-between gap-8">
+          <div className="xl:w-[60%] flex-1">
+            {loading ? (
+              <div className="space-y-8">
+                <div>
+                  <div className="h-7 w-48 bg-black/10 mb-3"></div>
+                  <div className="flex flex-row items-baseline gap-3">
+                    <div className="h-8 w-32 bg-black/10"></div>
+                    <div className="h-5 w-24 bg-black/10"></div>
+                  </div>
+                </div>
+                <div className="border border-[#374151] bg-white h-[400px] flex items-center justify-center">
                   <Loading />
                 </div>
-              ) : (
+                <div className="xl:hidden flex gap-2 justify-center">
+                  <div className="h-10 w-24 bg-black/10"></div>
+                  <div className="h-10 w-24 bg-black/10"></div>
+                  <div className="h-10 w-24 bg-black/10"></div>
+                </div>
+                <div className="border border-[#374151] bg-white p-6 space-y-6">
+                  <div className="h-5 w-32 bg-black/10"></div>
+                  <div className="grid grid-cols-2 gap-6">
+                    {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                      <div key={i}>
+                        <div className="h-3 w-20 bg-black/10 mb-1"></div>
+                        <div className="h-4 w-24 bg-black/10"></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <>
                 <LTP
                   symbol={symbol}
                   ltp={stockData.ltp}
@@ -122,63 +147,87 @@ export default function Page({
                   dayChangePerc={stockData.dayChangePerc}
                   companyName={companyName}
                 />
-              )}
-            </div>
-            <div className="mt-6">
-              <div className="md:w-full">
-                <HighChart symbol={params.symbol} />
-              </div>
-            </div>
-            <div className="my-6 w-full flex justify-center md:hidden">
-              <BuySellWatch
-                symbol={symbol}
-                companyName={companyName}
-                ltp={stockData.ltp}
-              />
-            </div>
-            <div className="mt-6">
-              {loading ? (
-                <div className="w-full h-full flex justify-center items-center">
-                  <Loading />
+                
+                <div className="mt-8">
+                  <HighChart symbol={params.symbol} />
                 </div>
-              ) : (
-                <Stats
-                  symbol={symbol}
-                  open={stockData.open}
-                  close={stockData.close}
-                  ltp={stockData.ltp}
-                  high={stockData.high}
-                  low={stockData.low}
-                  volume={stockData.volume}
-                  tsInMillis={stockData.tsInMillis}
-                  lowPriceRange={stockData.lowPriceRange}
-                  highPriceRange={stockData.highPriceRange}
-                  totalBuyQty={stockData.totalBuyQty}
-                  totalSellQty={stockData.totalSellQty}
-                  lastTradeQty={stockData.lastTradeQty}
-                  lastTradeTime={stockData.lastTradeTime}
-                  dayChange={stockData.dayChange}
-                  dayChangePerc={stockData.dayChangePerc}
-                  oiDayChange={stockData.oiDayChange}
-                  oiDayChangePerc={stockData.oiDayChangePerc}
-                  lowTradeRange={stockData.lowTradeRange}
-                  highTradeRange={stockData.highTradeRange}
-                />
-              )}
-            </div>
+                
+                <div className="my-8 w-full flex justify-center xl:hidden">
+                  <BuySellWatch
+                    symbol={symbol}
+                    companyName={companyName}
+                    ltp={stockData.ltp}
+                  />
+                </div>
+                
+                <div className="mt-8">
+                  <Stats
+                    symbol={symbol}
+                    open={stockData.open}
+                    close={stockData.close}
+                    ltp={stockData.ltp}
+                    high={stockData.high}
+                    low={stockData.low}
+                    volume={stockData.volume}
+                    tsInMillis={stockData.tsInMillis}
+                    lowPriceRange={stockData.lowPriceRange}
+                    highPriceRange={stockData.highPriceRange}
+                    totalBuyQty={stockData.totalBuyQty}
+                    totalSellQty={stockData.totalSellQty}
+                    lastTradeQty={stockData.lastTradeQty}
+                    lastTradeTime={stockData.lastTradeTime}
+                    dayChange={stockData.dayChange}
+                    dayChangePerc={stockData.dayChangePerc}
+                    oiDayChange={stockData.oiDayChange}
+                    oiDayChangePerc={stockData.oiDayChangePerc}
+                    lowTradeRange={stockData.lowTradeRange}
+                    highTradeRange={stockData.highTradeRange}
+                  />
+                </div>
+              </>
+            )}
           </div>
-          <div className="hidden  grow xl:flex flex-row justify-end">
-            <div className="flex mb-auto ml-auto">
-              {loading ? (
-                <div className="w-full h-full flex justify-center items-center">
-                  <Loading />
+          
+          <div className="hidden xl:block xl:w-[35%]">
+            {loading ? (
+              <div className="space-y-8">
+                <div>
+                  <div className="h-5 w-32 bg-black/10 mb-4"></div>
+                  <div className="border border-[#374151] bg-white">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <div
+                        key={i}
+                        className="border-b border-[#374151] p-4 last:border-b-0"
+                      >
+                        <div className="h-4 w-24 bg-black/10 mb-2"></div>
+                        <div className="h-5 w-20 bg-black/10"></div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              ) : (
-                <TopMoversColumn data={topMovers} />
-              )}
-            </div>
+                <div>
+                  <div className="h-5 w-32 bg-black/10 mb-4"></div>
+                  <div className="border border-[#374151] bg-white">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <div
+                        key={i}
+                        className="border-b border-[#374151] p-4 last:border-b-0"
+                      >
+                        <div className="h-4 w-24 bg-black/10 mb-2"></div>
+                        <div className="h-5 w-20 bg-black/10"></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <TopMoversColumn data={topMovers} />
+            )}
           </div>
         </div>
+      </main>
+      <div className="mx-6 md:mx-0 mt-8">
+        <Footer />
       </div>
     </div>
   );

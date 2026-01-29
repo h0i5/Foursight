@@ -9,13 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-toast": "^1.2.15",
     "@vercel/analytics": "^1.5.0",
     "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "cookies-next": "^4.3.0",
+    "geist": "^1.5.1",
     "highcharts": "^11.4.8",
     "highcharts-react-official": "^3.2.1",
+    "lucide-react": "^0.563.0",
     "moment": "^2.30.1",
     "next": "14.2.15",
     "react": "^18",
@@ -23,7 +28,10 @@
     "react-icons": "^5.5.0",
     "react-minimal-pie-chart": "^8.4.1",
     "react-toastify": "^10.0.6",
-    "reactjs-popup": "^2.0.6"
+    "reactjs-popup": "^2.0.6",
+    "recharts": "^3.7.0",
+    "tailwind-merge": "^3.4.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/node": "^22",

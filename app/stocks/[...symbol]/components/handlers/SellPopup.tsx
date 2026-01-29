@@ -1,53 +1,32 @@
+"use client";
 import { apiURL } from "@/app/components/apiURL";
 import Loading from "@/app/components/Loading";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useState } from "react";
-import { toast, Slide } from "react-toastify";
+import { useToast } from "@/app/hooks/use-toast";
 
 export default function SellPopup(props: any) {
   const [quantity, setQuantity] = useState(0);
   let symbol = props.symbol || "";
   let token = getCookie("token");
-  const notifySuccess = (message: string) =>
-    toast.success(message, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Slide,
-    });
-  const notifyError = (message: string) =>
-    toast.error(message, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Slide,
-    });
+  const { toast } = useToast();
+  const onClose = props.onClose || (() => {});
   function updateQuantity(e: any) {
-    setQuantity(e.target.value);
-
-    if (e.target.value < 0) {
+    const value = parseFloat(e.target.value) || 0;
+    if (value < 0) {
       setQuantity(0);
-      return;
-    } else if ((e.target.value = NaN)) {
-      setQuantity(0);
-      return;
+    } else {
+      setQuantity(value);
     }
   }
   const [loading, setLoading] = useState(false);
 
   async function handleSell(e: any) {
     e.preventDefault();
+    if (quantity <= 0) return;
+
+    setLoading(true);
     const data = {
       symbol: decodeURIComponent(props.symbol),
       quantity: quantity,
@@ -63,55 +42,83 @@ export default function SellPopup(props: any) {
           quantity: quantity,
         },
       });
-      setLoading(false);
     } catch (err: any) {
       results = err.response;
+    } finally {
+      setLoading(false);
     }
-    if (results.status === 200) {
-      notifySuccess(`Successfully sold ${quantity} ${props.symbol}`);
-    } else if (results.status === 401) {
-      notifyError("Insufficient stocks!");
+
+    if (results?.status === 200) {
+      toast({
+        title: `Successfully sold ${quantity} ${props.symbol}`,
+      });
+      setQuantity(0);
+      setTimeout(() => {
+        onClose();
+        window.location.reload();
+      }, 500);
+    } else if (results?.status === 401) {
+      toast({
+        title: "Insufficient stocks!",
+        variant: "destructive",
+      });
     } else {
-      notifyError("Failed to sell the stock");
+      toast({
+        title: "Failed to sell the stock",
+        variant: "destructive",
+      });
     }
   }
 
   return (
-    <div className="bg-white mx-4 my-2">
-      <div className="flex flex-row">
-        <h1 className="text-3xl  red-text mr-2">SELL</h1>
-        <h1 className="text-2xl">{props.companyName}</h1>
+    <div className="bg-white p-6 min-w-[320px]">
+      <div className="mb-6">
+        <h1 className="text-xl font-bold font-mono text-[#ce0000] mb-2">
+          SELL
+        </h1>
+        <h2 className="text-lg font-semibold text-black">
+          {props.companyName}
+        </h2>
       </div>
-      <div className="mt-2 text-lg">
-        LTP: <span className="ml-1 font-semibold red-text">₹ {props.ltp}</span>
+      <div className="mb-6 text-sm font-mono text-black/70">
+        LTP: <span className="text-black">₹{props.ltp}</span>
       </div>
-      <div>
-        <form onSubmit={handleSell}>
-          <div className="text-lg flex flex-col mt-4">
-            <label className="text-xl ">Quantity</label>
+      <form onSubmit={handleSell}>
+        <div className="flex flex-col gap-4">
+          <div>
+            <label className="text-xs font-mono text-black/60 uppercase tracking-wider mb-2 block">
+              Quantity
+            </label>
             <input
               type="number"
-              className="border border-[#B8B8B8] rounded-md my-2 p-2"
+              className="w-full border border-[#374151] px-3 py-2 text-sm font-mono focus:outline-none focus:border-black transition-colors"
               value={quantity}
               onChange={updateQuantity}
+              min="0"
             />
-            <h1 className="red-text font-semibold">
-              Total value: ₹{(quantity * props.ltp).toFixed(2)}
-            </h1>
-            <div className="flex justify-center items-center">
-              <button className="mt-2 flex w-fit px-4 text-xl font-semibold p-2 bg-[#037A68] text-white  rounded-md">
-                {loading ? (
-                  <div className=" w-full h-full flex justify-center items-center">
-                    <Loading /> <span className="ml-2"> Sell </span>
-                  </div>
-                ) : (
-                  "Sell"
-                )}
-              </button>
-            </div>
           </div>
-        </form>
-      </div>
+          <div className="text-sm font-mono text-black">
+            Total value:{" "}
+            <span className="text-[#ce0000]">
+              ₹{(quantity * props.ltp).toFixed(2)}
+            </span>
+          </div>
+          <button
+            type="submit"
+            disabled={loading || quantity <= 0}
+            className="w-full px-4 py-3 bg-[#ce0000] text-white text-sm font-mono border border-[#ce0000] hover:bg-[#ce0000]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+          >
+            {loading ? (
+              <>
+                <Loading />
+                <span className="ml-2">Selling...</span>
+              </>
+            ) : (
+              "SELL"
+            )}
+          </button>
+        </div>
+      </form>
     </div>
   );
 }

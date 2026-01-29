@@ -19,38 +19,38 @@ export default function Hamburger() {
   }, [isOpen, handleClickOutside]);
 
   let dropdownClass =
-    "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-300 ease-in-out";
+    "block px-4 py-2 text-sm hover:bg-gray-100 transition-colors duration-300 ease-in-out font-mono";
 
   let options = [
     {
-      title: "Portfolio",
+      title: "PORTFOLIO",
       id: 1,
       href: "/portfolio",
     },
     {
-      title: "Watchlist",
+      title: "WATCHLIST",
       id: 2,
       href: "/watchlist",
     },
     {
-      title: "Top Movers",
+      title: "TOP MOVERS",
       id: 3,
       href: "/topmovers",
     },
     {
-      title: "Log Out",
+      title: "LOG OUT",
       id: 4,
       href: "/logout",
     },
   ];
 
   return (
-    <div className="ml-2 flex justify-center">
+    <div className="ml-2 flex items-center justify-center">
       <div className="relative inline-block text-left">
         <div>
           <button
             type="button"
-            className="inline-flex w-full justify-center rounded-md border border-gray-300 px-2 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100 transition-all duration-300 ease-in-out"
+            className="inline-flex w-full justify-center rounded-md border border-[#374151] px-2 h-[34px] text-sm font-mono font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100 transition-all duration-300 ease-in-out items-center"
             id="menu-button"
             aria-expanded={isOpen}
             aria-haspopup="true"
@@ -93,7 +93,11 @@ export default function Hamburger() {
                 <NavTransition
                   key={option.id}
                   href={option.href}
-                  className={dropdownClass}
+                  className={`${dropdownClass} ${
+                    option.title === "LOG OUT"
+                      ? "text-[#ce0000]"
+                      : "text-gray-700"
+                  }`}
                 >
                   {option.title}
                 </NavTransition>

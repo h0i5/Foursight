@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { NavTransition } from "./NavTransition";
 import Hamburger from "./utils/Hamburger";
 import { getCookie } from "cookies-next";
@@ -10,32 +10,13 @@ import { CiSearch } from "react-icons/ci";
 const NavbarMobile = (props: any) => {
   const router = useRouter();
   const [logStatus, setLogStatus] = useState(false);
-  function sleep(ms: number): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
-  const handleTransition = async (
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-    link: string,
-    href: string,
-  ) => {
-    e.preventDefault();
-    const body = document.querySelector("body");
-
-    body?.classList.add("page-transition-down");
-
-    await sleep(400);
-    router.push(href);
-    await sleep(500);
-
-    body?.classList.remove("page-transition");
-  };
   const [query, setQuery] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   async function handleSearch(e: any) {
     e.preventDefault();
-    const body = document.querySelector("body");
-    handleTransition(e, query, `/stocks?search=${query}`);
+    router.push(`/stocks?search=${query}`);
   }
 
   useEffect(() => {
@@ -51,32 +32,47 @@ const NavbarMobile = (props: any) => {
 
   const handleButtonClick = () => {
     setIsVisible(!isVisible);
+    // Focus input after making it visible
+    if (!isVisible) {
+      setTimeout(() => {
+        searchInputRef.current?.focus();
+      }, 100);
+    }
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Check for Ctrl+K (or Cmd+K on Mac)
+      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+        e.preventDefault();
+        setIsVisible(true);
+        setTimeout(() => {
+          searchInputRef.current?.focus();
+        }, 100);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   return (
-    <div className="my-4 mx-6  text-xl">
+    <div className="py-4 px-6">
       <div className="flex flex-row items-center justify-between">
-        <div className="flex flex-row items-center">
+        <NavTransition className="flex flex-row items-center" href="/">
           <img src="/FoursightLogo.png" alt="Foursight Logo" className="h-8" />
-          <p className="ml-2 font-medium green-text">
-            <NavTransition className="" href="/">
-              Foursight
-            </NavTransition>
-          </p>
-        </div>
-        <div className="flex flex-row justify-center items-center">
-          <div className="mr-2">
-            <button onClick={handleButtonClick}>
-              <CiSearch className="text-[#037A68] cursor-pointer" />
-            </button>
-          </div>
+          <span className="ml-2 font-medium text-black">Foursight</span>
+        </NavTransition>
+        <div className="flex flex-row justify-center items-center gap-2">
+          <button onClick={handleButtonClick} className="p-2">
+            <CiSearch className="text-black cursor-pointer text-lg" />
+          </button>
           {!logStatus && (
-            <NavTransition
-              href={logStatus ? "/logout" : "/signup"}
-              className="flex "
-            >
-              <button className="bg-[#037A68] flex items-center justify-center py-1 px-2 text-sm text-white rounded-md  ml-3">
-                Login/Register
+            <NavTransition href="/signup" className="flex">
+              <button className="bg-black flex items-center justify-center h-[34px] px-3 text-xs font-mono text-white border border-black hover:bg-black/90 transition">
+                SIGN UP
               </button>
             </NavTransition>
           )}
@@ -84,25 +80,29 @@ const NavbarMobile = (props: any) => {
         </div>
       </div>
       <div
-        className={`search-bar my-2  flex flex-row   border border-1 border-[#C6C6C6] hover:border-[#858585] transition transition-all-0.5s rounded-lg px-2 py-2 ${isVisible ? "animate-in" : ""}`}
+        className={`search-bar mt-3 flex flex-row border transition px-3 h-[34px] items-center ${
+          isFocused ? "border-black" : "border-[#374151] hover:border-black"
+        } ${isVisible ? "animate-in" : ""}`}
       >
         <form
-          className="flex flex-row w-full justify-between"
+          className="flex flex-row w-full justify-between h-full items-center"
           onSubmit={handleSearch}
         >
           <input
+            ref={searchInputRef}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full flex bg-transparent focus:border-none focus:outline-none border-none px-2 text-base rounded-lg"
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            className="w-full flex bg-transparent focus:border-none focus:outline-none border-none px-2 text-xs font-mono h-full"
             type="text"
-            placeholder="Search for stocks"
+            placeholder="Search stocks (Ctrl+K)"
           />
-          <button className="my-auto">
-            <CiSearch className="hover:green-text" />
+          <button type="submit" className="my-auto">
+            <CiSearch className="hover:text-[#037a68]" />
           </button>
         </form>
       </div>
-      <hr className="w-full mt-2" />
     </div>
   );
 };

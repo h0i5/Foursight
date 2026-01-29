@@ -5,69 +5,69 @@ import TopMovers from "../components/sections/TopMovers/TopMovers";
 import { useSearchParams } from "next/navigation";
 import { symbols } from "../components/symbols";
 import { Suspense } from "react";
+import RouterComponent from "../components/RouterComponent";
+import ScrollableContainer from "../dashboard/components/ScrollableContainer";
+import Footer from "../components/Footer";
+
 function StocksPage() {
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("search") || "";
+  const filteredSymbols = symbols.filter(
+    (scrip) =>
+      scrip["Company Name"]
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      scrip["Scrip"].toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <Suspense>
-      <div className="md:mx-[15%]">
+      <div className="flex flex-col min-h-screen md:mx-[15%]">
         <Navbar />
-        <div className="md:mt-4 mx-6 md:mx-0">
-          <div className="flex flex-row">
-            <p className="text-xs text-[#1E1E1E] font-light mr-2 ">
-              <Link className="hover:underline" href={"/"}>
-                {" "}
-                Home
-              </Link>{" "}
-              &gt;{" "}
-            </p>
-            <p className="text-xs text-[#1E1E1E] font-light mr-2"> Stocks</p>
+        <main className="flex-grow mx-6 md:mx-0 overflow-x-hidden max-w-full">
+          <div>
+            <RouterComponent />
           </div>
-          <div className="mb-8">
-            <div className={searchQuery !== "" ? "block" : "hidden"}>
-              <h1 className=" text-2xl font-bold mt-4">
+
+          {searchQuery !== "" && (
+            <div className="mb-8">
+              <h1 className="text-2xl md:text-3xl font-bold mb-6 font-mono">
                 Showing results for{" "}
-                <span className="green-text">{searchQuery}</span>
+                <span className="text-[#037a68]">{searchQuery}</span>
               </h1>
-            </div>
-            <div
-              className={`mt-2 flex flex-row overflow-y-scroll ${
-                searchQuery.trim() == "" ? "hidden" : "block"
-              }`}
-            >
-              {symbols.map((scrip) => {
-                if (
-                  scrip["Company Name"]
-                    .toLowerCase()
-                    .includes(searchQuery.toLowerCase()) ||
-                  scrip["Scrip"]
-                    .toLowerCase()
-                    .includes(searchQuery.toLowerCase())
-                ) {
-                  return (
-                    <div
+              {filteredSymbols.length > 0 ? (
+                <ScrollableContainer>
+                  {filteredSymbols.map((scrip) => (
+                    <Link
                       key={scrip["Scrip"]}
-                      className="mb-2 hover:border-teal-600 transition transition-all-0.5s p-2 border border-[#858585] mr-2 rounded-lg text-lg green-text min-w-[240px]"
+                      href={`/stocks/${encodeURIComponent(scrip["Scrip"])}`}
+                      className="flex flex-col border border-[#374151] p-6 min-w-[280px] hover:border-black transition-colors bg-white"
                     >
-                      <Link
-                        href={`/stocks/${encodeURIComponent(scrip["Scrip"])}`}
-                        className="flex flex-col justify-between h-full"
-                      >
-                        <p className="font-semibold">{scrip["Company Name"]}</p>
-                        <br></br>
-                        <p className="text-sm mt-2 text-black">
-                          {scrip["Scrip"]}
-                        </p>
-                      </Link>
-                    </div>
-                  );
-                }
-              })}
+                      <p className="font-semibold text-lg mb-2 text-black">
+                        {scrip["Company Name"]}
+                      </p>
+                      <p className="text-sm font-mono text-black/70">
+                        {scrip["Scrip"]}
+                      </p>
+                    </Link>
+                  ))}
+                </ScrollableContainer>
+              ) : (
+                <div className="py-12 text-center">
+                  <p className="text-lg text-black/70 font-mono">
+                    No results found for "{searchQuery}"
+                  </p>
+                </div>
+              )}
             </div>
-          </div>
+          )}
+
           <div>
             <TopMovers />
           </div>
+        </main>
+        <div className="mx-6 md:mx-0 mt-8">
+          <Footer />
         </div>
       </div>
     </Suspense>

@@ -35,49 +35,59 @@ export default function Orderbook(props: any) {
   }, [symbol]);
 
   return (
-    <div className="mt-2 mb-4">
-      <h1 className="mb-2 font-semibold">Order Book</h1>
-      <div className="mb-4 border border-2-[#E0E0E0] py-4 px-2 rounded-md text-sm">
-        <h1>
-          Last Updated: <span className="green-text">{time}</span>
-        </h1>
+    <div>
+      <h2 className="text-base font-semibold font-mono mb-3 text-black">
+        ORDER BOOK
+      </h2>
+      <div className="mb-4 py-2">
+        <p className="text-xs font-mono text-black/60">
+          Last Updated: <span className="text-black">{time}</span>
+        </p>
       </div>
-      <div className="flex flex-col md:flex-row md:justify-around">
-        <div className="md:w-[50%]">
-          <table className="w-full md:w-full border border-[#E0E0E0] mb-4 md:mb-0 rounded-md text-sm md:text-base border-separate border-spacing-x-4 border-spacing-y-2">
-            <thead>
-              <tr className="text-gray-500 font-medium">
-                <td>Bid Price</td>
-                <td>Quantity</td>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.entries(buyOrdersData).map(([key, value]) => (
-                <tr key={key}>
-                  <td>₹ {value.price}</td>
-                  <td className="green-text">{value.qty}</td>
-                </tr>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <div className="border border-[#374151] bg-white">
+            <div className="px-4 py-2 bg-white">
+              <h3 className="text-xs font-mono font-semibold text-black">
+                BID PRICE
+              </h3>
+            </div>
+            <div className="divide-y divide-[#374151]">
+              {Object.entries(buyOrdersData).map(([key, value]: [string, any]) => (
+                <div
+                  key={key}
+                  className="flex justify-between px-4 py-2 hover:bg-black/5 transition-colors"
+                >
+                  <span className="text-sm font-mono text-black">₹{value.price}</span>
+                  <span className="text-sm font-mono text-[#037a68]">
+                    {value.qty.toLocaleString("en-IN")}
+                  </span>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </div>
         </div>
-        <div className="md:w-[50%] ml-2">
-          <table className="w-full md:w-full border border-[#E0E0E0] rounded-md text-sm md:text-base border-separate border-spacing-x-4 border-spacing-y-2">
-            <thead>
-              <tr className="text-gray-500 font-medium">
-                <td>Ask Price</td>
-                <td>Quantity</td>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.entries(sellOrdersData).map(([key, value]) => (
-                <tr key={key}>
-                  <td>₹ {value.price}</td>
-                  <td className="red-text">{value.qty}</td>
-                </tr>
+        <div>
+          <div className="border border-[#374151] bg-white">
+            <div className="px-4 py-2 bg-white">
+              <h3 className="text-xs font-mono font-semibold text-black">
+                ASK PRICE
+              </h3>
+            </div>
+            <div className="divide-y divide-[#374151]">
+              {Object.entries(sellOrdersData).map(([key, value]: [string, any]) => (
+                <div
+                  key={key}
+                  className="flex justify-between px-4 py-2 hover:bg-black/5 transition-colors"
+                >
+                  <span className="text-sm font-mono text-black">₹{value.price}</span>
+                  <span className="text-sm font-mono text-[#ce0000]">
+                    {value.qty.toLocaleString("en-IN")}
+                  </span>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>

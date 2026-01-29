@@ -8,11 +8,14 @@ import { NavTransition } from "../components/navbar/NavTransition";
 import parseJwt from "../components/navbar/utils/parseJwt";
 import Networth from "./sections/Networth";
 import RouterComponent from "../components/RouterComponent";
+import Footer from "../components/Footer";
 
 export default function PortfolioPage() {
   let token = getCookie("token");
-  const [details, setDetails] = useState({});
-  const [profitDetails, setProfitDetails] = useState({});
+  const [details, setDetails] = useState<any>({});
+  const [profitDetails, setProfitDetails] = useState<any>({});
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     let tokenContents;
     if (token) {
@@ -44,24 +47,24 @@ export default function PortfolioPage() {
         setProfitDetails(results.data);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     }
     getProfit();
     getNetworth();
   }, [token]);
   return (
-    <div>
-      <div className="md:mx-[15%]">
-        <Navbar />
-        <div className="flex flex-col justify-start mx-6 md:mx-0">
-          <div className="my-4 ">
-            <RouterComponent />
-          </div>
-
-          <div>
-            <Networth data={details} profitDetails={profitDetails} />
-          </div>
+    <div className="flex flex-col min-h-screen md:mx-[15%]">
+      <Navbar />
+      <main className="flex-grow mx-6 md:mx-0 mb-12 overflow-x-hidden max-w-full">
+        <div>
+          <RouterComponent />
         </div>
+        <Networth data={details} profitDetails={profitDetails} loading={loading} />
+      </main>
+      <div className="mx-6 md:mx-0 mt-8">
+        <Footer />
       </div>
     </div>
   );

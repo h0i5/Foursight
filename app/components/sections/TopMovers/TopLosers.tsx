@@ -1,20 +1,21 @@
 import Link from "next/link";
 import Scrip from "../../Scrip";
+import ScrollableContainer from "../../../dashboard/components/ScrollableContainer";
 
 export default function TopLosers(props: { type: string; apiData: any }) {
   let topLosers = props.apiData;
 
   return (
-    <div className=" mb-12 my-4">
+    <div className="mb-12 my-4">
       <Link href="/topmovers">
-        <h1 className="text-2xl md:text-3xl font-bold">
+        <h1 className="text-2xl md:text-3xl font-bold font-mono mb-4">
           Top{" "}
           <span
             className={
               props.type === "Gainers"
-                ? "green-text"
+                ? "text-[#037a68]"
                 : props.type === "Losers"
-                ? "red-text"
+                ? "text-[#ce0000]"
                 : "text-black"
             }
           >
@@ -23,7 +24,7 @@ export default function TopLosers(props: { type: string; apiData: any }) {
           this week
         </h1>
       </Link>
-      <div className="flex flex-row overflow-x-scroll mt-4">
+      <ScrollableContainer>
         {topLosers?.map((scrip: any, index: number) => (
           <Scrip
             key={index}
@@ -40,7 +41,7 @@ export default function TopLosers(props: { type: string; apiData: any }) {
             marketCap={scrip.company.marketCap}
           />
         ))}
-      </div>
+      </ScrollableContainer>
     </div>
   );
 }

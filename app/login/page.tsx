@@ -1,10 +1,7 @@
 "use client";
-import { Slide, ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { usernameRegex } from "../components/regexHandlers";
 import { useState } from "react";
 import Navbar from "../components/navbar/Navbar";
-import Link from "next/link";
 import axios from "axios";
 import { apiURL } from "../components/apiURL";
 import { useRouter } from "next/navigation";
@@ -12,9 +9,13 @@ var crypto = require("crypto");
 import { setCookie } from "cookies-next";
 import { NavTransition } from "../components/navbar/NavTransition";
 import Loading from "../components/Loading";
+import { useToast } from "../hooks/use-toast";
+import Footer from "../components/Footer";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { toast } = useToast();
+  
   function parseJwt(token: string) {
     if (!token) {
       return;
@@ -25,31 +26,6 @@ export default function LoginPage() {
   }
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const notifySuccess = (message: string) =>
-    toast.success(message, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Slide,
-    });
-  const notifyError = (message: string) =>
-    toast.error(message, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Slide,
-    });
   const [loading, setLoading] = useState(false);
 
   async function loginHandler(e: React.FormEvent) {
@@ -60,10 +36,16 @@ export default function LoginPage() {
       .digest("hex");
 
     if (username === "" || password === "") {
-      notifyError("Please fill all the fields");
+      toast({
+        title: "Please fill all the fields",
+        variant: "destructive",
+      });
       return;
     } else if (!usernameRegex(username)) {
-      notifyError("Enter a valid username!");
+      toast({
+        title: "Enter a valid username!",
+        variant: "destructive",
+      });
       return;
     }
     let results;
@@ -77,7 +59,9 @@ export default function LoginPage() {
       results = err.response;
     }
     if (results?.status === 200) {
-      notifySuccess("Logged in successfully");
+      toast({
+        title: "Logged in successfully",
+      });
       setCookie("token", results.data.token, {
         expires: new Date(parseJwt(results.data.token).exp * 1000),
       });
@@ -86,90 +70,79 @@ export default function LoginPage() {
         router.push("/dashboard");
       }, 1000);
     } else if (results?.status === 401) {
-      notifyError("Incorrect Credentials");
+      toast({
+        title: "Incorrect Credentials",
+        variant: "destructive",
+      });
     } else {
-      notifyError("Something went wrong. Please try again later.");
+      toast({
+        title: "Something went wrong. Please try again later.",
+        variant: "destructive",
+      });
     }
   }
 
-  let inputClass =
-    "px-4 border border-[#E0E0E0] w-full p-2 rounded-lg mb-3 hover:border-black transition transition-all-0.5s";
-  let labelClass = "text-md font-semibold my-2";
   return (
-    <div className="md:mx-[15%] min-h-screen ">
-      <div className="flex flex-col ">
+    <div className="flex flex-col min-h-screen bg-white">
+      <div className="text-center md:text-start flex flex-col md:mx-[15%]">
         <Navbar />
-        <div className="rounded-xl xl:w-full flex flex-col xl:flex-row border border-[#037A68]  mx-6 xl:mx-0 mt-[10%] ">
-          <ToastContainer
-            position="top-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-            transition={Slide}
-          />
-          <div className="rounded-t-xl xl:rounded-tr-none xl:rounded-l-xl p-6 px-8 xl:w-[50%] text-white bg-[#037A68]">
-            <h1 className="text-3xl  font-semibold ">Login</h1>
-            <hr className="mb-8 mt-4 border-2 rounded-lg"></hr>
-            <p className="text-xl">
-              Get access to real-time data and graphical analysis for{" "}
-              <span className="text-[#00FFD8]"> 2000+ stocks.</span>
+      </div>
+      <div className="flex-grow flex items-center justify-center px-6 py-12">
+        <div className="w-full max-w-md">
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold mb-3 text-black font-mono">WELCOME BACK</h1>
+            <p className="text-black/60">
+              Sign in to your account to continue trading
             </p>
           </div>
-          <div className="p-4  xl:w-[50%]">
-            <form className="mx-2 xl:mx-12" onSubmit={loginHandler}>
-              <div className="flex flex-col">
-                <label htmlFor="username" className={labelClass}>
-                  Username
-                </label>
-                <input
-                  name="username"
-                  className={inputClass}
-                  value={username}
-                  placeholder="Enter your username"
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-
-                <label htmlFor="password" className={labelClass}>
-                  Password
-                </label>
-                <input
-                  name="password"
-                  type="password"
-                  className={inputClass}
-                  value={password}
-                  placeholder="Your password goes here..."
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <div className=" justify-center flex flex-col items-center w-full">
-                <button className="bg-[#037A68] hover:bg-teal-800 transition transition-all-0.5s text-white font-semibold p-2 mt-4 rounded-md">
-                  {loading ? (
-                    <div className=" w-full h-full flex justify-center items-center">
-                      <Loading /> <span className="ml-2"> Login </span>
-                    </div>
-                  ) : (
-                    "Login"
-                  )}
-                </button>
-                <p className="text-sm mt-2">
-                  Don&apos;t have an account?{" "}
-                  <NavTransition
-                    href={"/signup"}
-                    className="green-text hover:underline"
-                  >
-                    Sign Up
-                  </NavTransition>{" "}
-                </p>
-              </div>
-            </form>
-          </div>
+          <form onSubmit={loginHandler} className="space-y-6">
+            <div>
+              <label htmlFor="username" className="block text-sm font-medium mb-2 text-black">
+                Username
+              </label>
+              <input
+                name="username"
+                id="username"
+                className="w-full px-4 py-3 border border-[#374151] bg-white text-black text-sm font-mono focus:outline-none focus:border-black transition-colors"
+                value={username}
+                placeholder="Enter your username"
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium mb-2 text-black">
+                Password
+              </label>
+              <input
+                name="password"
+                id="password"
+                type="password"
+                className="w-full px-4 py-3 border border-[#374151] bg-white text-black text-sm font-mono focus:outline-none focus:border-black transition-colors"
+                value={password}
+                placeholder="Enter your password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full px-8 py-4 text-white bg-black hover:bg-black/90 transition-all duration-200 text-sm font-mono border border-black flex items-center justify-center"
+            >
+              {loading ? <Loading /> : "LOGIN"}
+            </button>
+            <p className="text-sm text-center text-black/60">
+              Don&apos;t have an account?{" "}
+              <NavTransition
+                href="/signup"
+                className="text-[#037a68] hover:underline font-medium"
+              >
+                Sign up
+              </NavTransition>
+            </p>
+          </form>
         </div>
+      </div>
+      <div className="mx-6 md:mx-[15%] mt-8">
+        <Footer />
       </div>
     </div>
   );

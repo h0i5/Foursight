@@ -1,39 +1,15 @@
+"use client";
 import { apiURL } from "@/app/components/apiURL";
 import { symbols } from "@/app/components/symbols";
 import axios from "axios";
 import Link from "next/link";
 import { getCookie } from "cookies-next";
-import { Slide, toast, ToastContainer } from "react-toastify";
 import { useRouter } from "next/navigation";
-import "react-toastify/dist/ReactToastify.css";
-
-const notifySuccess = (message: string) =>
-  toast.success(message, {
-    position: "top-right",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-    transition: Slide,
-  });
-const notifyError = (message: string) =>
-  toast.error(message, {
-    position: "top-right",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-    transition: Slide,
-  });
+import { useToast } from "@/app/hooks/use-toast";
 
 export default function WatchlistScrip(props: any) {
   const router = useRouter();
+  const { toast } = useToast();
   const symbol = props.scrip.symbol;
   const token = getCookie("token");
   const ltp = props.scrip.ltp;
@@ -66,51 +42,42 @@ export default function WatchlistScrip(props: any) {
     }
     if (results.status === 200) {
       window.location.reload();
-      notifySuccess("Removed " + symbol + " from watchlist");
+      toast({
+        title: "Removed " + symbol + " from watchlist",
+      });
     } else {
-      notifyError("Failed to remove " + symbol + " from watchlist");
+      toast({
+        title: "Failed to remove " + symbol + " from watchlist",
+        variant: "destructive",
+      });
     }
   }
 
   return (
-    <div className="">
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        transition={Slide}
-      />
-      <div className="flex flex-col border-2 border-[#E0E0E0] p-4 px-6  rounded-lg">
+    <div className="h-full">
+      <div className="flex flex-col border border-[#374151] p-6 h-full bg-white hover:border-black transition-colors">
         <Link href={`/stocks/${encodeURIComponent(symbol)}`}>
-          <div>
-            <h1
-              className={`${
-                dayChange > 0 ? "green-text" : "red-text"
-              } text-xl mb-6 font-bold  line-clamp-1`}
-            >
+          <div className="mb-6">
+            <h1 className="text-xl font-bold mb-4 text-black line-clamp-1">
               {companyName}
             </h1>
-            <div className="flex font-semibold w-full justify-between">
-              <h1>₹{ltp}</h1>
-              <div className="flex flex-row">
+            <div className="flex items-baseline justify-between gap-4">
+              <h1 className="text-2xl font-mono font-semibold text-black">
+                ₹{ltp}
+              </h1>
+              <div className="flex flex-row items-baseline gap-1">
                 <h1
                   className={`${
-                    dayChange > 0 ? "green-text" : "red-text"
-                  } mr-1`}
+                    dayChange > 0 ? "text-[#037a68]" : "text-[#ce0000]"
+                  } font-mono text-lg`}
                 >
+                  {dayChange > 0 ? "+" : ""}
                   {dayChange.toFixed(2)}
                 </h1>
                 <h1
                   className={`${
-                    dayChange > 0 ? "green-text" : "red-text"
-                  } text-sm flex items-end`}
+                    dayChange > 0 ? "text-[#037a68]" : "text-[#ce0000]"
+                  } font-mono text-sm`}
                 >
                   ({dayChangePerc > 0 ? "+" : ""}
                   {dayChangePerc.toFixed(2)}%)
@@ -119,14 +86,14 @@ export default function WatchlistScrip(props: any) {
             </div>
           </div>
         </Link>
-        <div className="w-full">
+        <div className="w-full mt-auto">
           <button
             onClick={(e) => {
               handleWatchlistRemoval(symbol);
             }}
-            className="font-light w-full text-center border-2 border-[#E0E0E0] hover:bg-[#ececec] transition transition-all-0.5s px-4 py-2 rounded-md mt-2"
+            className="w-full text-center border border-[#374151] hover:bg-black hover:text-white hover:border-black transition-colors px-4 py-3 text-sm font-mono"
           >
-            Remove
+            REMOVE
           </button>
         </div>
       </div>

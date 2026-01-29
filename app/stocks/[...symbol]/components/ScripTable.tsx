@@ -16,49 +16,61 @@ export default function ScripTable(stockData: any) {
     lastTradeTime,
   } = stockData;
 
+  const isPositive = dayChangePerc > 0;
+
   return (
-    <table className="text-sm md:text-base border-separate border-spacing-x-0 border-spacing-y-3">
-      <tbody>
-        <tr>
-          <td className="table-title font-semibold pr-12">Open</td>
-          <td className="table-title font-semibold pr-12">Volume</td>
-          <td className="table-title font-semibold pr-12">Upper Circuit</td>
-        </tr>
-        <tr>
-          <td className="pr-4 green-text font-normal tracking-wide">
-            ₹ {open}
-          </td>
-          <td className="pr-4 green-text font-normal tracking-wide">
-            {volume.toLocaleString("hi")}
-          </td>
-          <td className="pr-4 green-text font-normal tracking-wide">
-            ₹ {highPriceRange}
-          </td>
-        </tr>
-        <tr>
-          <td className="table-title font-semibold pr-12">
+    <div>
+      <h2 className="text-base font-semibold font-mono mb-4 text-black">
+        KEY METRICS
+      </h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="flex flex-col">
+          <div className="text-xs font-mono text-black/60 mb-2 uppercase tracking-wider">
+            Open
+          </div>
+          <div className="text-base font-mono text-black">₹{open}</div>
+        </div>
+        <div className="flex flex-col">
+          <div className="text-xs font-mono text-black/60 mb-2 uppercase tracking-wider">
+            Volume
+          </div>
+          <div className="text-base font-mono text-black">
+            {volume.toLocaleString("en-IN")}
+          </div>
+        </div>
+        <div className="flex flex-col">
+          <div className="text-xs font-mono text-black/60 mb-2 uppercase tracking-wider">
+            Upper Circuit
+          </div>
+          <div className="text-base font-mono text-black">₹{highPriceRange}</div>
+        </div>
+        <div className="flex flex-col">
+          <div className="text-xs font-mono text-black/60 mb-2 uppercase tracking-wider">
             Yesterday&apos;s Close
-          </td>
-          <td className="table-title font-semibold pr-12">Day Change</td>
-          <td className="table-title font-semibold pr-12">Lower Circuit</td>
-        </tr>
-        <tr>
-          <td className="pr-4 green-text font-normal tracking-wide ">
-            ₹ {close}
-          </td>
-          <td
-            className={`pr-4  font-normal tracking-wide ${
-              dayChangePerc > 0 ? "green-text" : "red-text"
+          </div>
+          <div className="text-base font-mono text-black">₹{close}</div>
+        </div>
+        <div className="flex flex-col">
+          <div className="text-xs font-mono text-black/60 mb-2 uppercase tracking-wider">
+            Day Change
+          </div>
+          <div
+            className={`text-base font-mono ${
+              isPositive ? "text-[#037a68]" : "text-[#ce0000]"
             }`}
           >
+            {isPositive ? "+" : ""}
             {dayChangePerc.toFixed(2)}%
-          </td>
-          <td className="pr-4 green-text font-normal tracking-wide ">
-            ₹ {lowPriceRange}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </div>
+        </div>
+        <div className="flex flex-col">
+          <div className="text-xs font-mono text-black/60 mb-2 uppercase tracking-wider">
+            Lower Circuit
+          </div>
+          <div className="text-base font-mono text-black">₹{lowPriceRange}</div>
+        </div>
+      </div>
+    </div>
   );
 }
 // {

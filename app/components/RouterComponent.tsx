@@ -19,20 +19,27 @@ export default function RouterComponent() {
   };
 
   return (
-    <div className=" mr-6 md:mx-0">
-      <div className="flex flex-row">
-        {pathArray.map((path: any) => {
+    <div className="mr-6 md:mx-0 py-4">
+      <div className="flex flex-row flex-wrap items-center gap-2">
+        {pathArray.map((path: any, index: number) => {
+          const isLast = index === pathArray.length - 1;
           return (
-            <div key={null}>
-              <p className="text-xs text-[#1E1E1E] font-light mr-2">
-                <NavTransition href={`/${path}`} className="hover:underline">
-                  {objectArray[path]
-                    ? objectArray[path]
-                    : path.charAt(0).toUpperCase() + path.slice(1)}{" "}
-                </NavTransition>
-
-                {pathArray.indexOf(path) !== pathArray.length - 1 && ">"}
-              </p>
+            <div key={path + index} className="flex items-center gap-2">
+              <NavTransition
+                href={`/${path}`}
+                className={`text-xs font-mono ${
+                  isLast
+                    ? "text-black"
+                    : "text-black/70 hover:text-black hover:underline"
+                }`}
+              >
+                {objectArray[path]
+                  ? objectArray[path]
+                  : path.charAt(0).toUpperCase() + path.slice(1)}
+              </NavTransition>
+              {!isLast && (
+                <span className="text-xs text-black/50 font-mono">&gt;</span>
+              )}
             </div>
           );
         })}
