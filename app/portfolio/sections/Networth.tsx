@@ -145,9 +145,13 @@ export default function Networth(props: any) {
           <h2 className="text-base font-semibold font-mono mb-4 text-black">
             HOLDING CHART
           </h2>
-          {loading || !chartArray || chartArray.length === 0 ? (
+          {loading ? (
             <div className="flex justify-center items-center py-12">
               <Loading />
+            </div>
+          ) : !chartArray || chartArray.length === 0 ? (
+            <div className="flex justify-center items-center py-12">
+              <p className="text-sm font-mono text-black/60">No holdings to display</p>
             </div>
           ) : (
             <div className="max-w-[320px] mx-auto px-4">
