@@ -1,6 +1,6 @@
 "use client";
 import { usernameRegex } from "../components/regexHandlers";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Navbar from "../components/navbar/Navbar";
 import axios from "axios";
 import { apiURL } from "../components/apiURL";
@@ -12,7 +12,7 @@ import Loading from "../components/Loading";
 import { useToast } from "../hooks/use-toast";
 import Footer from "../components/Footer";
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
   const { toast } = useToast();
   const searchParams = useSearchParams();
@@ -199,5 +199,25 @@ export default function LoginPage() {
         <Footer />
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex flex-col min-h-screen bg-white">
+        <div className="text-center md:text-start flex flex-col md:mx-[15%]">
+          <Navbar />
+        </div>
+        <div className="flex-grow flex items-center justify-center px-6 py-12">
+          <Loading />
+        </div>
+        <div className="mx-6 md:mx-[15%] mt-8">
+          <Footer />
+        </div>
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   );
 }
