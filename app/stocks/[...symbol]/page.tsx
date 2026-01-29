@@ -18,10 +18,23 @@ export default function Page({
   params,
 }: {
   params: {
-    symbol: string;
+    symbol: string | string[];
   };
 }) {
-  const symbol = params.symbol[0];
+  const symbol = Array.isArray(params.symbol) ? params.symbol[0] : params.symbol;
+  
+  if (!symbol) {
+    return (
+      <div className="flex flex-col min-h-screen md:mx-[15%]">
+        <Navbar />
+        <main className="flex-grow mx-6 md:mx-0 mb-12 overflow-x-hidden max-w-full">
+          <div className="py-20 text-center">
+            <p className="text-lg font-mono text-black/70">Invalid stock symbol</p>
+          </div>
+        </main>
+      </div>
+    );
+  }
   const [stockData, setStockData] = useState({
     type: "stock",
     symbol: symbol,
@@ -90,9 +103,11 @@ export default function Page({
     getTopMoverData();
   }, [symbol]);
   function getCompanyName(symbol: string) {
+    if (!symbol) return "";
     let companyName = "";
+    const decodedSymbol = decodeURIComponent(symbol);
     symbols.forEach((scrip) => {
-      if (scrip.Scrip === decodeURIComponent(params.symbol[0])) {
+      if (scrip.Scrip === decodedSymbol) {
         companyName = scrip["Company Name"];
       }
     });
@@ -149,7 +164,7 @@ export default function Page({
                 />
                 
                 <div className="mt-8">
-                  <HighChart symbol={params.symbol} />
+                  <HighChart symbol={Array.isArray(params.symbol) ? params.symbol : [params.symbol]} />
                 </div>
                 
                 <div className="my-8 w-full flex justify-center xl:hidden">

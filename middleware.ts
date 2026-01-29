@@ -46,4 +46,5 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: ["/dashboard", "/login", "/", "/portfolio"],
+  // /auth/callback is not in matcher, so it won't be processed by middleware
 };

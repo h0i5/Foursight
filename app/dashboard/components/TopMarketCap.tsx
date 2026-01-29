@@ -31,13 +31,15 @@ export default function TopMarketCap(props: any) {
             </tr>
           </thead>
           <tbody>
-            {data.data?.records.map((coin: any, index: number) => {
-              const isPositive = coin.livePriceDto.dayChange > 0;
-              const marketCapValue = (parseInt(coin.marketCap) / 10000000).toLocaleString('en-IN', { maximumFractionDigits: 0 });
+            {data.data?.records?.map((coin: any, index: number) => {
+              if (!coin || !coin.nseScriptCode) return null;
+              
+              const isPositive = coin.livePriceDto?.dayChange > 0;
+              const marketCapValue = coin.marketCap ? (parseInt(coin.marketCap) / 10000000).toLocaleString('en-IN', { maximumFractionDigits: 0 }) : "N/A";
               
               return (
                 <tr
-                  key={coin.id}
+                  key={coin.nseScriptCode || `market-cap-${index}`}
                   onClick={() => router.push(`/stocks/${encodeURIComponent(coin.nseScriptCode)}`)}
                   className="border-b border-[#374151] last:border-b-0 hover:bg-black/5 transition-colors cursor-pointer"
                 >
@@ -47,20 +49,22 @@ export default function TopMarketCap(props: any) {
                         isPositive ? "text-[#037a68]" : "text-[#ce0000]"
                       }`}
                     >
-                      {coin.companyName}
+                      {coin.companyName || "N/A"}
                     </span>
                   </td>
                   <td className="py-4 px-6 text-right">
                     <div className="flex flex-col items-end">
                       <div className="text-sm font-mono font-semibold text-black mb-1">
-                        ₹{coin.livePriceDto.ltp}
+                        ₹{coin.livePriceDto?.ltp || "0.00"}
                       </div>
                       <div
                         className={`text-xs font-mono ${
                           isPositive ? "text-[#037a68]" : "text-[#ce0000]"
                         }`}
                       >
-                        {isPositive ? "+" : ""}{coin.livePriceDto.dayChange.toFixed(2)} ({isPositive ? "+" : ""}{coin.livePriceDto.dayChangePerc.toFixed(2)}%)
+                        {coin.livePriceDto?.dayChange !== undefined 
+                          ? `${isPositive ? "+" : ""}${coin.livePriceDto.dayChange.toFixed(2)} (${isPositive ? "+" : ""}${coin.livePriceDto.dayChangePerc?.toFixed(2) || "0.00"}%)`
+                          : "N/A"}
                       </div>
                     </div>
                   </td>
@@ -68,10 +72,10 @@ export default function TopMarketCap(props: any) {
                     {marketCapValue} Cr
                   </td>
                   <td className="py-4 px-6 text-right font-mono text-sm text-[#037a68]">
-                    ₹{coin.yearlyHighPrice}
+                    ₹{coin.yearlyHighPrice || "N/A"}
                   </td>
                   <td className="py-4 px-6 text-right font-mono text-sm text-[#ce0000]">
-                    ₹{coin.yearlyLowPrice}
+                    ₹{coin.yearlyLowPrice || "N/A"}
                   </td>
                 </tr>
               );
