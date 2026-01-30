@@ -10,8 +10,8 @@ export default function TopMoversColumn(data: any) {
           TOP GAINERS
         </h2>
         <div className="border border-[#374151] bg-white">
-          {TOP_GAINERS.map((item: any) => (
-            <div key={item.symbol}>
+          {TOP_GAINERS.map((item: any, index: number) => (
+            <div key={item?.company?.nseScriptCode || `top-gainer-${index}`}>
               <TopMoversItem data={item} />
             </div>
           ))}
@@ -22,8 +22,8 @@ export default function TopMoversColumn(data: any) {
           TOP LOSERS
         </h2>
         <div className="border border-[#374151] bg-white">
-          {TOP_LOSERS.map((item: any) => (
-            <div key={item.symbol}>
+          {TOP_LOSERS.map((item: any, index: number) => (
+            <div key={item?.company?.nseScriptCode || `top-loser-${index}`}>
               <TopMoversItem data={item} />
             </div>
           ))}

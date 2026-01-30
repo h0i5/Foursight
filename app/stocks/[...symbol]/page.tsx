@@ -1,6 +1,6 @@
 "use client";
 import Navbar from "@/app/components/navbar/Navbar";
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import axios from "axios";
 import { apiURL } from "@/app/components/apiURL";
 import { symbols } from "@/app/components/symbols";
@@ -17,19 +17,38 @@ export const runtime = "edge";
 export default function Page({
   params,
 }: {
-  params: {
+  params: Promise<{
     symbol: string | string[];
-  };
+  }>;
 }) {
-  const symbol = Array.isArray(params.symbol) ? params.symbol[0] : params.symbol;
+  // Unwrap params Promise using React's use hook (Next.js 15+)
+  const resolvedParams = use(params);
+  const symbol = resolvedParams?.symbol 
+    ? (Array.isArray(resolvedParams.symbol) ? resolvedParams.symbol[0] : resolvedParams.symbol)
+    : undefined;
   
-  if (!symbol) {
+  // Only show error if params exists but symbol is invalid
+  if (resolvedParams && !symbol) {
     return (
       <div className="flex flex-col min-h-screen md:mx-[15%]">
         <Navbar />
         <main className="flex-grow mx-6 md:mx-0 mb-12 overflow-x-hidden max-w-full">
           <div className="py-20 text-center">
             <p className="text-lg font-mono text-black/70">Invalid stock symbol</p>
+          </div>
+        </main>
+      </div>
+    );
+  }
+  
+  // If params or symbol is not available yet, show loading
+  if (!resolvedParams || !symbol) {
+    return (
+      <div className="flex flex-col min-h-screen md:mx-[15%]">
+        <Navbar />
+        <main className="flex-grow mx-6 md:mx-0 mb-12 overflow-x-hidden max-w-full">
+          <div className="py-20 text-center">
+            <Loading />
           </div>
         </main>
       </div>
@@ -164,7 +183,7 @@ export default function Page({
                 />
                 
                 <div className="mt-8">
-                  <HighChart symbol={Array.isArray(params.symbol) ? params.symbol : [params.symbol]} />
+                  <HighChart symbol={Array.isArray(resolvedParams.symbol) ? resolvedParams.symbol : [resolvedParams.symbol]} />
                 </div>
                 
                 <div className="my-8 w-full flex justify-center xl:hidden">
