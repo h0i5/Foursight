@@ -93,11 +93,19 @@ export default function Page({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!symbol) {
+      setLoading(false);
+      return;
+    }
+    
+    // Store symbol in a const after guard check so TypeScript knows it's defined
+    const symbolValue = symbol;
+    
     async function getStockData() {
       let data;
       try {
         data = await axios.post(`${apiURL}/getStockQuote`, {
-          symbol: btoa(decodeURIComponent(symbol)),
+          symbol: btoa(decodeURIComponent(symbolValue)),
         });
         setLoading(false);
       } catch (err) {
@@ -132,7 +140,7 @@ export default function Page({
     });
     return companyName;
   }
-  let companyName = getCompanyName(symbol);
+  let companyName = symbol ? getCompanyName(symbol) : "";
   return (
     <div className="flex flex-col min-h-screen md:mx-[15%]">
       <Navbar />
