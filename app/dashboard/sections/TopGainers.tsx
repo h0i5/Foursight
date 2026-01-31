@@ -8,7 +8,7 @@ export default function TopGainers(props: any) {
   const medium = data?.MIDCAP.items ? data.MIDCAP.items : [];
   const small = data?.SMALLCAP.items ? data.SMALLCAP.items : [];
   const [display, setDisplay] = useState("LARGECAP");
-  
+
   return (
     <div>
       <div className="flex flex-row gap-2 mb-4">
@@ -43,7 +43,7 @@ export default function TopGainers(props: any) {
           SMALL
         </button>
       </div>
-      
+
       <ScrollableContainer>
         {display === "LARGECAP" &&
           large.map((item: any, index: number) => (
@@ -54,6 +54,7 @@ export default function TopGainers(props: any) {
               dayChange={item.stats.dayChange}
               dayChangePerc={item.stats.dayChangePerc}
               symbol={item.company.nseScriptCode}
+              logoUrl={item.company.logoUrl}
             />
           ))}
         {display === "MIDCAP" &&
@@ -65,6 +66,7 @@ export default function TopGainers(props: any) {
               dayChange={item.stats.dayChange}
               dayChangePerc={item.stats.dayChangePerc}
               symbol={item.company.nseScriptCode}
+              logoUrl={item.company.logoUrl}
             />
           ))}
         {display === "SMALLCAP" &&
@@ -76,6 +78,7 @@ export default function TopGainers(props: any) {
               dayChange={item.stats.dayChange}
               dayChangePerc={item.stats.dayChangePerc}
               symbol={item.company.nseScriptCode}
+              logoUrl={item.company.logoUrl}
             />
           ))}
       </ScrollableContainer>
