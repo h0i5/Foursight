@@ -84,7 +84,10 @@ export default function WeeklyChart(props: any) {
           type="category"
           tickFormatter={(value) => {
             // Find the data point with this index and format its timestamp
-            const dataPoint = chartData.find((d) => d.index === value);
+            const dataPoint = chartData.find(
+              (d: { index: number; timestamp: number; price: number }) =>
+                d.index === value
+            );
             if (!dataPoint) return "";
             const date = new Date(dataPoint.timestamp);
             const dateStr = date.toLocaleDateString("en-IN", {
