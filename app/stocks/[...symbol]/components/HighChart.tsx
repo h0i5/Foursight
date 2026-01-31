@@ -1,4 +1,4 @@
-import { use, useEffect, useState, useRef, Suspense } from "react";
+import { useEffect, useState } from "react";
 import DailyChart from "./charts/DailyChart";
 import axios from "axios";
 import { apiURL } from "@/app/components/apiURL";
@@ -13,8 +13,10 @@ export default function HighChart(props: any) {
   const [weeklyCandlesData, setWeeklyCandlesData] = useState([]);
   const [monthlyCandlesData, setMonthlyCandlesData] = useState([]);
   const [yearlyCandlesData, setYearlyCandlesData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     async function getDailyCandlesData() {
       let data;
       try {
@@ -23,6 +25,8 @@ export default function HighChart(props: any) {
         });
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
       setDailyCandlesData(data?.data.dailyCandles.data.candles);
       setWeeklyCandlesData(data?.data.weeklyCandles.data.candles);
@@ -35,47 +39,55 @@ export default function HighChart(props: any) {
   return (
     <div>
       <div>
-        {display === "DAILY" && <DailyChart data={dailyCandlesData} />}
-        {display === "WEEKLY" && <WeeklyChart data={weeklyCandlesData} />}
-        {display === "MONTHLY" && <MonthlyChart data={monthlyCandlesData} />}
-        {display === "YEARLY" && <YearlyChart data={yearlyCandlesData} />}
-        <div className="flex text-sm flex-row justify-center">
+        {display === "DAILY" && (
+          <DailyChart data={dailyCandlesData} loading={loading} />
+        )}
+        {display === "WEEKLY" && (
+          <WeeklyChart data={weeklyCandlesData} loading={loading} />
+        )}
+        {display === "MONTHLY" && (
+          <MonthlyChart data={monthlyCandlesData} loading={loading} />
+        )}
+        {display === "YEARLY" && (
+          <YearlyChart data={yearlyCandlesData} loading={loading} />
+        )}
+        <div className="flex text-xs font-mono flex-row justify-center gap-2 mt-4">
           <button
-            className={`p-1  px-3 mx-2  rounded-2xl ${
-              display == "DAILY"
-                ? "bg-white text-black border border-1 border-[#037a68]"
-                : "border border-1 border-[#858585]"
-            } `}
+            className={`px-3 py-1 border border-[#374151] transition-colors ${
+              display === "DAILY"
+                ? "bg-black text-white border-black"
+                : "bg-white text-black hover:bg-black/5"
+            }`}
             onClick={() => setDisplay("DAILY")}
           >
             1D
           </button>
           <button
-            className={`p-1 px-3 mx-2  rounded-2xl ${
-              display == "WEEKLY"
-                ? "bg-white text-black border border-1 border-[#037a68]"
-                : "border border-1 border-[#858585]"
-            } `}
+            className={`px-3 py-1 border border-[#374151] transition-colors ${
+              display === "WEEKLY"
+                ? "bg-black text-white border-black"
+                : "bg-white text-black hover:bg-black/5"
+            }`}
             onClick={() => setDisplay("WEEKLY")}
           >
             1W
           </button>
           <button
-            className={`p-1 px-3 mx-2  rounded-2xl ${
-              display == "MONTHLY"
-                ? "bg-white text-black border border-1 border-[#037a68]"
-                : "border border-1 border-[#858585]"
-            } `}
+            className={`px-3 py-1 border border-[#374151] transition-colors ${
+              display === "MONTHLY"
+                ? "bg-black text-white border-black"
+                : "bg-white text-black hover:bg-black/5"
+            }`}
             onClick={() => setDisplay("MONTHLY")}
           >
             1M
           </button>
           <button
-            className={`p-1 px-3 mx-2  rounded-2xl ${
-              display == "YEARLY"
-                ? "bg-white text-black border border-1 border-[#037a68]"
-                : "border border-1 border-[#858585]"
-            } `}
+            className={`px-3 py-1 border border-[#374151] transition-colors ${
+              display === "YEARLY"
+                ? "bg-black text-white border-black"
+                : "bg-white text-black hover:bg-black/5"
+            }`}
             onClick={() => setDisplay("YEARLY")}
           >
             1Y

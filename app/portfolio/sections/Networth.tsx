@@ -4,14 +4,15 @@ import parseJwt from "@/app/components/navbar/utils/parseJwt";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useEffect, useState } from "react";
+import { PieChart, Pie, Cell, Legend } from "recharts";
 import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  Legend,
-  Tooltip,
-} from "recharts";
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
+  type ChartConfig,
+} from "@/app/components/ui/chart";
 import HoldingTable from "../components/HoldingTable";
 import OrderTable from "../components/OrderTable";
 import { NavTransition } from "@/app/components/navbar/NavTransition";
@@ -37,6 +38,15 @@ export default function Networth(props: any) {
     "#FFD93D", // Golden yellow
   ];
 
+  // Create chart config for shadcn/ui charts
+  const chartConfig = chartArray.reduce((acc, item, index) => {
+    acc[item.name] = {
+      label: item.name,
+      color: COLORS[index % COLORS.length],
+    };
+    return acc;
+  }, {} as ChartConfig);
+
   useEffect(() => {
     if (data.scrips && data.scrips.length > 0) {
       setChartArray(
@@ -45,7 +55,7 @@ export default function Networth(props: any) {
             name: scrip.scrip,
             value: scrip.quantity * scrip.buyPrice,
           };
-        }),
+        })
       );
     } else {
       setChartArray([]);
@@ -151,23 +161,44 @@ export default function Networth(props: any) {
             </div>
           ) : !chartArray || chartArray.length === 0 ? (
             <div className="flex justify-center items-center py-12">
-              <p className="text-sm font-mono text-black/60">No holdings to display</p>
+              <p className="text-sm font-mono text-black/60">
+                No holdings to display
+              </p>
             </div>
           ) : (
             <div className="max-w-[320px] mx-auto px-4">
-              <ResponsiveContainer width="100%" height={320}>
-                <PieChart margin={{ top: 10, right: 10, bottom: 40, left: 10 }}>
+              <ChartContainer config={chartConfig} className="h-[320px] w-full">
+                <PieChart>
+                  <ChartTooltip
+                    content={({ active, payload }) => {
+                      if (!active || !payload || !payload[0]) return null;
+                      const data = payload[0];
+                      const value = `₹${Number(data.value).toFixed(2)}`;
+                      const name = data.name || "";
+
+                      return (
+                        <div className="font-mono border border-[#374151] bg-white text-black px-3 py-2">
+                          <div className="text-xs text-black/70">{name}</div>
+                          <div className="text-sm font-semibold text-black">
+                            {value}
+                          </div>
+                        </div>
+                      );
+                    }}
+                  />
                   <Pie
                     data={chartArray}
-                    cx="50%"
-                    cy="45%"
-                    labelLine={false}
-                    label={({ percent }: { percent?: number }) =>
-                      percent && percent > 0.05 ? `${(percent * 100).toFixed(0)}%` : ""
-                    }
-                    outerRadius={80}
-                    fill="#8884d8"
                     dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={80}
+                    label={({ percent }: { percent?: number }) =>
+                      percent && percent > 0.05
+                        ? `${(percent * 100).toFixed(0)}%`
+                        : ""
+                    }
+                    labelLine={false}
                     stroke="#374151"
                     strokeWidth={1}
                   >
@@ -178,37 +209,16 @@ export default function Networth(props: any) {
                       />
                     ))}
                   </Pie>
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "white",
-                      border: "1px solid #374151",
-                      borderRadius: "0",
-                      fontFamily: "var(--font-geist-mono)",
-                      fontSize: "11px",
-                      padding: "8px",
-                    }}
-                    itemStyle={{
-                      fontFamily: "var(--font-geist-mono)",
-                      fontSize: "11px",
-                    }}
-                    formatter={(value: any, name: any) => [
-                      `₹${parseFloat(value).toFixed(2)}`,
-                      name,
-                    ]}
-                  />
-                  <Legend
-                    wrapperStyle={{
-                      fontSize: "10px",
-                      fontFamily: "var(--font-geist-mono)",
-                      paddingTop: "8px",
-                    }}
-                    iconType="square"
-                    formatter={(value) => value}
-                    layout="horizontal"
-                    verticalAlign="bottom"
+                  <ChartLegend
+                    content={
+                      <ChartLegendContent
+                        className="font-mono text-xs"
+                        nameKey="name"
+                      />
+                    }
                   />
                 </PieChart>
-              </ResponsiveContainer>
+              </ChartContainer>
             </div>
           )}
         </div>

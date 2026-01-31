@@ -29,7 +29,7 @@
     "react-minimal-pie-chart": "^8.4.1",
     "react-toastify": "^10.0.6",
     "reactjs-popup": "^2.0.6",
-    "recharts": "^3.7.0",
+    "recharts": "2.15.4",
     "tailwind-merge": "^3.4.0",
     "tailwindcss-animate": "^1.0.7"
   },
