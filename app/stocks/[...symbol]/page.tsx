@@ -23,10 +23,12 @@ export default function Page({
 }) {
   // Unwrap params Promise using React's use hook (Next.js 15+)
   const resolvedParams = use(params);
-  const symbol = resolvedParams?.symbol 
-    ? (Array.isArray(resolvedParams.symbol) ? resolvedParams.symbol[0] : resolvedParams.symbol)
+  const symbol = resolvedParams?.symbol
+    ? Array.isArray(resolvedParams.symbol)
+      ? resolvedParams.symbol[0]
+      : resolvedParams.symbol
     : undefined;
-  
+
   // Only show error if params exists but symbol is invalid
   if (resolvedParams && !symbol) {
     return (
@@ -34,13 +36,15 @@ export default function Page({
         <Navbar />
         <main className="flex-grow mx-6 md:mx-0 mb-12 overflow-x-hidden max-w-full">
           <div className="py-20 text-center">
-            <p className="text-lg font-mono text-black/70">Invalid stock symbol</p>
+            <p className="text-lg font-mono text-black/70">
+              Invalid stock symbol
+            </p>
           </div>
         </main>
       </div>
     );
   }
-  
+
   // If params or symbol is not available yet, show loading
   if (!resolvedParams || !symbol) {
     return (
@@ -97,10 +101,10 @@ export default function Page({
       setLoading(false);
       return;
     }
-    
+
     // Store symbol in a const after guard check so TypeScript knows it's defined
     const symbolValue = symbol;
-    
+
     async function getStockData() {
       let data;
       try {
@@ -148,7 +152,7 @@ export default function Page({
         <div>
           <RouterComponent />
         </div>
-        
+
         <div className="flex w-full flex-col xl:flex-row xl:justify-between gap-8">
           <div className="xl:w-[60%] flex-1">
             {loading ? (
@@ -189,11 +193,17 @@ export default function Page({
                   dayChangePerc={stockData.dayChangePerc}
                   companyName={companyName}
                 />
-                
+
                 <div className="mt-8">
-                  <HighChart symbol={Array.isArray(resolvedParams.symbol) ? resolvedParams.symbol : [resolvedParams.symbol]} />
+                  <HighChart
+                    symbol={
+                      Array.isArray(resolvedParams.symbol)
+                        ? resolvedParams.symbol
+                        : [resolvedParams.symbol]
+                    }
+                  />
                 </div>
-                
+
                 <div className="my-8 w-full flex justify-center xl:hidden">
                   <BuySellWatch
                     symbol={symbol}
@@ -201,7 +211,7 @@ export default function Page({
                     ltp={stockData.ltp}
                   />
                 </div>
-                
+
                 <div className="mt-8">
                   <Stats
                     symbol={symbol}
@@ -229,7 +239,7 @@ export default function Page({
               </>
             )}
           </div>
-          
+
           <div className="hidden xl:block xl:w-[35%]">
             {loading ? (
               <div className="space-y-8">

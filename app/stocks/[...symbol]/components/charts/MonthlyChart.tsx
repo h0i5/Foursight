@@ -15,9 +15,11 @@ export default function MonthlyChart(props: any) {
 
   const chartColor = "#037a68";
 
-  // Format data: [timestamp (seconds), price] -> { timestamp: number (ms), price: number }
-  const chartData = data.map((d: [number, number]) => {
+  // Format data: [timestamp (seconds), price] -> { index: number, timestamp: number (ms), price: number }
+  // Use index for x-axis to avoid gaps when market is closed
+  const chartData = data.map((d: [number, number], index: number) => {
     return {
+      index: index, // Use index for x-axis positioning (no gaps)
       timestamp: d[0] * 1000, // Convert seconds to milliseconds (as number)
       price: d[1],
     };
@@ -78,21 +80,29 @@ export default function MonthlyChart(props: any) {
       >
         <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.1} />
         <XAxis
-          dataKey="timestamp"
-          type="number"
-          scale="time"
-          domain={["dataMin", "dataMax"]}
+          dataKey="index"
+          type="category"
           tickFormatter={(value) => {
-            const date = new Date(value);
-            return date.toLocaleDateString("en-IN", {
+            // Find the data point with this index and format its timestamp
+            const dataPoint = chartData.find((d) => d.index === value);
+            if (!dataPoint) return "";
+            const date = new Date(dataPoint.timestamp);
+            const dateStr = date.toLocaleDateString("en-IN", {
+              day: "2-digit",
               month: "short",
-              year: "numeric",
               timeZone: "Asia/Kolkata",
             });
+            const timeStr = date.toLocaleTimeString("en-IN", {
+              hour: "2-digit",
+              minute: "2-digit",
+              timeZone: "Asia/Kolkata",
+            });
+            return `${dateStr}, ${timeStr}`;
           }}
           stroke="#374151"
           tick={{ fill: "#374151", fontSize: 11 }}
           tickLine={{ stroke: "#374151" }}
+          interval="preserveStartEnd"
         />
         <YAxis
           domain={yAxisDomain}
@@ -113,11 +123,18 @@ export default function MonthlyChart(props: any) {
               year: "numeric",
               timeZone: "Asia/Kolkata",
             });
+            const formattedTime = date.toLocaleTimeString("en-IN", {
+              hour: "2-digit",
+              minute: "2-digit",
+              timeZone: "Asia/Kolkata",
+            });
             const price = `₹${Number(data.price).toFixed(2)}`;
 
             return (
               <div className="font-mono border border-[#374151] bg-white text-black px-3 py-2">
-                <div className="text-xs text-black/70">{formattedDate}</div>
+                <div className="text-xs text-black/70">
+                  {formattedDate}, {formattedTime}
+                </div>
                 <div className="text-sm font-semibold text-black">{price}</div>
               </div>
             );

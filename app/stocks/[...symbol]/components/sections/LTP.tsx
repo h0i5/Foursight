@@ -3,7 +3,7 @@ import BuySellWatch from "./BuySellWatch";
 export default function LTP(props: any) {
   const isPositive = props.dayChange >= 0;
   const changeColor = isPositive ? "text-[#037a68]" : "text-[#ce0000]";
-  
+
   return (
     <div className="mb-6">
       <div className="flex flex-col xl:flex-row xl:items-start xl:justify-between gap-4">

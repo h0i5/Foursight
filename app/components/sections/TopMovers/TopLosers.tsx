@@ -39,6 +39,7 @@ export default function TopLosers(props: { type: string; apiData: any }) {
             yearlyHigh={scrip.stats.yearHighPrice}
             yearlyLow={scrip.stats.yearLowPrice}
             marketCap={scrip.company.marketCap}
+            logoUrl={scrip.company.logoUrl}
           />
         ))}
       </ScrollableContainer>

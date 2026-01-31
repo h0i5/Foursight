@@ -13,6 +13,7 @@ export default function Scrip(props: {
   yearlyHigh: number;
   yearlyLow: number;
   marketCap: string;
+  logoUrl?: string;
 }) {
   return (
     <Suspense
@@ -22,7 +23,16 @@ export default function Scrip(props: {
     >
       <div className="min-w-[450px] md:min-w-[500px] flex flex-col border border-[#374151] p-6 bg-white hover:border-black transition-colors">
         <Link href={`/stocks/${encodeURIComponent(props.symbol)}`}>
-          <h1 className="text-xl font-bold mb-4 text-black">{props.title}</h1>
+          <div className="flex flex-row items-center gap-3 mb-4">
+            {props.logoUrl && (
+              <img
+                src={props.logoUrl}
+                alt={props.title}
+                className="w-10 h-10 object-contain flex-shrink-0"
+              />
+            )}
+            <h1 className="text-xl font-bold text-black">{props.title}</h1>
+          </div>
           <div className="flex flex-row items-baseline gap-4 mb-6">
             <p className="text-2xl font-mono font-semibold text-black">
               ₹{props.ltp}
