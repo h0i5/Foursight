@@ -1,78 +1,90 @@
 "use client";
 import Link from "next/link";
-import Navbar from "../components/navbar/Navbar";
 import TopMovers from "../components/sections/TopMovers/TopMovers";
 import { useSearchParams } from "next/navigation";
 import { symbols } from "../components/symbols";
 import { Suspense } from "react";
-import RouterComponent from "../components/RouterComponent";
-import ScrollableContainer from "../dashboard/components/ScrollableContainer";
-import Footer from "../components/Footer";
 
 function StocksPage() {
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("search") || "";
   const filteredSymbols = symbols.filter(
     (scrip) =>
-      scrip["Company Name"]
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase()) ||
+      scrip["Company Name"].toLowerCase().includes(searchQuery.toLowerCase()) ||
       scrip["Scrip"].toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <Suspense>
-      <div className="flex flex-col min-h-screen md:mx-[15%]">
-        <Navbar />
-        <main className="flex-grow mx-6 md:mx-0 overflow-x-hidden max-w-full">
-          <div>
-            <RouterComponent />
-          </div>
-
-          {searchQuery !== "" && (
-            <div className="mb-8">
-              <h1 className="text-2xl md:text-3xl font-bold mb-6 font-mono">
-                Showing results for{" "}
-                <span className="text-[#037a68]">{searchQuery}</span>
+    <div className="px-4 sm:px-6 lg:px-8 pt-8 mb-16">
+      <div className="max-w-7xl mx-auto">
+        {searchQuery !== "" ? (
+          <>
+            <div className="mt-8 mb-6">
+              <span className="text-xs font-mono text-muted-foreground tracking-wider">01 / RESULTS</span>
+            </div>
+            <div className="mb-2">
+              <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
+                Results for{" "}
+                <span className="font-mono text-brand">"{searchQuery}"</span>
               </h1>
+              <p className="text-xs font-mono text-muted-foreground tracking-wider mt-1">
+                {filteredSymbols.length} MATCHES
+              </p>
+            </div>
+
+            <div className="mt-6 mb-12">
               {filteredSymbols.length > 0 ? (
-                <ScrollableContainer>
+                <div className="flex flex-col border-y border-border divide-y divide-border">
                   {filteredSymbols.map((scrip) => (
                     <Link
                       key={scrip["Scrip"]}
                       href={`/stocks/${encodeURIComponent(scrip["Scrip"])}`}
-                      className="flex flex-col border border-[#374151] p-6 min-w-[280px] hover:border-black transition-colors bg-white"
+                      className="flex items-center justify-between px-4 py-3 bg-card hover:bg-muted transition-colors"
                     >
-                      <p className="font-semibold text-lg mb-2 text-black">
-                        {scrip["Company Name"]}
-                      </p>
-                      <p className="text-sm font-mono text-black/70">
-                        {scrip["Scrip"]}
-                      </p>
+                      <div>
+                        <span className="text-xs font-mono text-muted-foreground tracking-wider block mb-0.5">
+                          {scrip["Scrip"]}
+                        </span>
+                        <span className="text-sm font-medium text-foreground">
+                          {scrip["Company Name"]}
+                        </span>
+                      </div>
+                      <span className="font-mono text-muted-foreground text-sm">→</span>
                     </Link>
                   ))}
-                </ScrollableContainer>
+                </div>
               ) : (
-                <div className="py-12 text-center">
-                  <p className="text-lg text-black/70 font-mono">
-                    No results found for "{searchQuery}"
-                  </p>
+                <div className="border border-border bg-muted px-6 py-10 font-mono text-sm">
+                  <div className="text-muted-foreground mb-1">
+                    <span className="text-foreground/40">&gt; </span>
+                    NO MATCHES FOR "{searchQuery.toUpperCase()}"
+                  </div>
+                  <div className="text-foreground/40">TRY A DIFFERENT QUERY</div>
                 </div>
               )}
             </div>
-          )}
 
-          <div>
+            <div className="mb-6">
+              <span className="text-xs font-mono text-muted-foreground tracking-wider">02 / TOP MOVERS</span>
+            </div>
             <TopMovers />
-          </div>
-        </main>
-        <div className="mx-6 md:mx-0 mt-8">
-          <Footer />
-        </div>
+          </>
+        ) : (
+          <>
+            <div className="mt-8 mb-6">
+              <span className="text-xs font-mono text-muted-foreground tracking-wider">01 / EXPLORE</span>
+            </div>
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight mb-8">
+              Explore stocks
+            </h1>
+            <TopMovers />
+          </>
+        )}
       </div>
-    </Suspense>
+    </div>
   );
 }
+
 export default function Stocks() {
   return (
     <Suspense>

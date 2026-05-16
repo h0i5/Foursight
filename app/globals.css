@@ -2,27 +2,79 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Semantic color tokens ─────────────────────────────────────────────────
+   Light = current Foursight palette (pixel-identical to before).
+   Dark  = Supabase dark design-system scale.
+   Values are RGB channels so Tailwind alpha modifiers work (bg-background/80).
+   To add a new theme: create .theme-name { --background: r g b; … }
+   ────────────────────────────────────────────────────────────────────────── */
+:root {
+  --background:       255 255 255;
+  --foreground:       0 0 0;
+  --card:             255 255 255;
+  --card-foreground:  0 0 0;
+  --popover:          255 255 255;
+  --popover-foreground: 0 0 0;
+  --muted:            245 245 245;
+  --muted-foreground: 61 61 61;
+  --border:           55 65 81;
+  --input:            55 65 81;
+  --ring:             3 122 104;
+  --brand:            3 122 104;
+  --brand-foreground: 255 255 255;
+  --positive:         3 122 104;
+  --negative:         206 0 0;
+}
+
+.dark {
+  --background:       18 18 18;
+  --foreground:       237 237 237;
+  --card:             22 22 22;
+  --card-foreground:  237 237 237;
+  --popover:          28 28 28;
+  --popover-foreground: 237 237 237;
+  --muted:            34 34 34;
+  --muted-foreground: 160 160 160;
+  --border:           46 46 46;
+  --input:            46 46 46;
+  --ring:             62 207 142;
+  --brand:            62 207 142;
+  --brand-foreground: 10 10 10;
+  --positive:         62 207 142;
+  --negative:         255 77 77;
+}
+
 * {
     border-radius: 0 !important;
 }
 
+[data-sileo-badge] {
+    border-radius: 9999px !important;
+}
+
+/* Dot matrix shape overrides — * reset above kills border-radius on dots */
+.dmx-dot { border-radius: 999px !important; }
+.dmx-root.dmx-dot-shape-square .dmx-dot,
+.dmx-root.dmx-dot-shape-diamond .dmx-dot,
+.dmx-root.dmx-dot-shape-hearts .dmx-dot { border-radius: 0 !important; }
+
 body {
-    background-color: #ffffff;
-    color: #000000;
-    font-family: var(--font-geist-sans);
+    background-color: rgb(var(--background));
+    color: rgb(var(--foreground));
+    font-family: var(--font-sans);
     overflow-x: hidden;
 }
 
 .green-text {
-    color: #037a68;
+    color: rgb(var(--positive));
 }
 
 .red-text {
-    color: #ce0000;
+    color: rgb(var(--negative));
 }
 
 .grey-text {
-    color: #3d3d3d;
+    color: rgb(var(--muted-foreground));
 }
 
 input {
@@ -33,7 +85,7 @@ input {
     padding: 12px;
     margin-bottom: 12px;
     margin-top: 4px;
-    border: 1px solid #374151;
+    border: 1px solid rgb(var(--border));
 }
 
 form > label {
@@ -45,7 +97,7 @@ form > label {
     display: flex;
     flex-direction: column;
     width: 400px;
-    border: 1px solid #374151;
+    border: 1px solid rgb(var(--border));
 }
 
 .search-bar {
@@ -146,3 +198,18 @@ form > label {
     }
 }
 
+@keyframes staggerUp {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}

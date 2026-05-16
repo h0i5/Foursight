@@ -25,10 +25,10 @@ function ToastItem({ toast, onClose }: ToastProps) {
   }, [toast.id, onClose]);
 
   return (
-    <div className="bg-white border border-black p-4 min-w-[300px] max-w-[400px]">
-      <h3 className="text-base font-semibold mb-2 text-black">{toast.message}</h3>
+    <div className="bg-card border border-border p-4 min-w-[300px] max-w-[400px]">
+      <h3 className="text-base font-semibold mb-2 text-foreground">{toast.message}</h3>
       {toast.description && (
-        <p className="text-sm text-black/60 font-mono leading-relaxed">{toast.description}</p>
+        <p className="text-sm text-foreground/60 font-mono leading-relaxed">{toast.description}</p>
       )}
     </div>
   );

@@ -9,8 +9,12 @@
     "baseColor": "slate",
     "cssVariables": false
   },
+  "iconLibrary": "lucide",
   "aliases": {
     "components": "@/app/components",
     "utils": "@/app/lib/utils"
+  },
+  "registries": {
+    "@dotmatrix": "https://dotmatrix.zzzzshawn.cloud/r/{name}.json"
   }
 }

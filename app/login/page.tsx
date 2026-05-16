@@ -1,7 +1,6 @@
 "use client";
 import { usernameRegex } from "../components/regexHandlers";
 import { useState, useEffect, Suspense } from "react";
-import Navbar from "../components/navbar/Navbar";
 import axios from "axios";
 import { apiURL } from "../components/apiURL";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -9,26 +8,21 @@ var crypto = require("crypto");
 import { setCookie } from "cookies-next";
 import { NavTransition } from "../components/navbar/NavTransition";
 import Loading from "../components/Loading";
-import { useToast } from "../hooks/use-toast";
-import Footer from "../components/Footer";
+import { sileo } from "sileo";
 
 function LoginContent() {
   const router = useRouter();
-  const { toast } = useToast();
   const searchParams = useSearchParams();
   
   // Check for OAuth errors in URL params
   useEffect(() => {
     const error = searchParams?.get("error");
     if (error) {
-      toast({
-        title: "OAuth authentication failed. Please try again.",
-        variant: "destructive",
-      });
+      sileo.error({ title: "OAuth authentication failed. Please try again." });
       // Clean up URL
       router.replace("/login");
     }
-  }, [searchParams, toast, router]);
+  }, [searchParams, router]);
   
   function parseJwt(token: string) {
     if (!token) {
@@ -55,16 +49,10 @@ function LoginContent() {
       .digest("hex");
 
     if (username === "" || password === "") {
-      toast({
-        title: "Please fill all the fields",
-        variant: "destructive",
-      });
+      sileo.error({ title: "Please fill all the fields" });
       return;
     } else if (!usernameRegex(username)) {
-      toast({
-        title: "Enter a valid username!",
-        variant: "destructive",
-      });
+      sileo.error({ title: "Enter a valid username!" });
       return;
     }
     let results;
@@ -78,9 +66,7 @@ function LoginContent() {
       results = err.response;
     }
     if (results?.status === 200) {
-      toast({
-        title: "Logged in successfully",
-      });
+      sileo.success({ title: "Logged in successfully" });
       setCookie("token", results.data.token, {
         expires: new Date(parseJwt(results.data.token).exp * 1000),
       });
@@ -89,28 +75,18 @@ function LoginContent() {
         router.push("/dashboard");
       }, 1000);
     } else if (results?.status === 401) {
-      toast({
-        title: "Incorrect Credentials",
-        variant: "destructive",
-      });
+      sileo.error({ title: "Incorrect Credentials" });
     } else {
-      toast({
-        title: "Something went wrong. Please try again later.",
-        variant: "destructive",
-      });
+      sileo.error({ title: "Something went wrong. Please try again later." });
     }
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
-      <div className="text-center md:text-start flex flex-col md:mx-[15%]">
-        <Navbar />
-      </div>
-      <div className="flex-grow flex items-center justify-center px-6 py-12">
+    <div className="flex-grow flex items-center justify-center px-6 py-12">
         <div className="w-full max-w-md">
           <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-3 text-black font-mono">WELCOME BACK</h1>
-            <p className="text-black/60">
+            <h1 className="text-4xl font-bold mb-3 text-foreground font-mono">WELCOME BACK</h1>
+            <p className="text-foreground/60">
               Sign in to your account to continue trading
             </p>
           </div>
@@ -119,7 +95,7 @@ function LoginContent() {
             <button
               type="button"
               onClick={handleGoogleLogin}
-              className="w-full px-8 py-4 bg-white text-black hover:bg-black/5 transition-all duration-200 text-sm font-mono border border-[#374151] hover:border-black flex items-center justify-center gap-3"
+              className="w-full px-8 py-4 bg-card text-foreground hover:bg-muted transition-all duration-200 text-sm font-mono border border-border hover:border-foreground flex items-center justify-center gap-3"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path
@@ -144,34 +120,34 @@ function LoginContent() {
           </div>
 
           <div className="flex items-center gap-4 mb-6">
-            <div className="flex-1 border-t border-[#374151]"></div>
-            <span className="text-xs font-mono text-black/60">OR</span>
-            <div className="flex-1 border-t border-[#374151]"></div>
+            <div className="flex-1 border-t border-border"></div>
+            <span className="text-xs font-mono text-foreground/60">OR</span>
+            <div className="flex-1 border-t border-border"></div>
           </div>
 
           <form onSubmit={loginHandler} className="space-y-6">
             <div>
-              <label htmlFor="username" className="block text-sm font-medium mb-2 text-black">
+              <label htmlFor="username" className="block text-sm font-medium mb-2 text-foreground">
                 Username
               </label>
               <input
                 name="username"
                 id="username"
-                className="w-full px-4 py-3 border border-[#374151] bg-white text-black text-sm font-mono focus:outline-none focus:border-black transition-colors"
+                className="w-full px-4 py-3 border border-border bg-card text-foreground text-sm font-mono focus:outline-none focus:border-foreground transition-colors placeholder:text-muted-foreground"
                 value={username}
                 placeholder="Enter your username"
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium mb-2 text-black">
+              <label htmlFor="password" className="block text-sm font-medium mb-2 text-foreground">
                 Password
               </label>
               <input
                 name="password"
                 id="password"
                 type="password"
-                className="w-full px-4 py-3 border border-[#374151] bg-white text-black text-sm font-mono focus:outline-none focus:border-black transition-colors"
+                className="w-full px-4 py-3 border border-border bg-card text-foreground text-sm font-mono focus:outline-none focus:border-foreground transition-colors placeholder:text-muted-foreground"
                 value={password}
                 placeholder="Enter your password"
                 onChange={(e) => setPassword(e.target.value)}
@@ -179,25 +155,21 @@ function LoginContent() {
             </div>
             <button
               type="submit"
-              className="w-full px-8 py-4 text-white bg-black hover:bg-black/90 transition-all duration-200 text-sm font-mono border border-black flex items-center justify-center"
+              className="w-full px-8 py-4 text-background bg-foreground hover:bg-foreground/90 transition-all duration-200 text-sm font-mono border border-foreground flex items-center justify-center"
             >
               {loading ? <Loading /> : "LOGIN"}
             </button>
-            <p className="text-sm text-center text-black/60">
+            <p className="text-sm text-center text-foreground/60">
               Don&apos;t have an account?{" "}
               <NavTransition
                 href="/signup"
-                className="text-[#037a68] hover:underline font-medium"
+                className="text-brand hover:underline font-medium"
               >
                 Sign up
               </NavTransition>
             </p>
           </form>
         </div>
-      </div>
-      <div className="mx-6 md:mx-[15%] mt-8">
-        <Footer />
-      </div>
     </div>
   );
 }
@@ -205,16 +177,8 @@ function LoginContent() {
 export default function LoginPage() {
   return (
     <Suspense fallback={
-      <div className="flex flex-col min-h-screen bg-white">
-        <div className="text-center md:text-start flex flex-col md:mx-[15%]">
-          <Navbar />
-        </div>
-        <div className="flex-grow flex items-center justify-center px-6 py-12">
-          <Loading />
-        </div>
-        <div className="mx-6 md:mx-[15%] mt-8">
-          <Footer />
-        </div>
+      <div className="flex-grow flex items-center justify-center py-12">
+        <Loading />
       </div>
     }>
       <LoginContent />

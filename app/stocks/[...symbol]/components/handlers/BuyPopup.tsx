@@ -4,12 +4,11 @@ import Loading from "@/app/components/Loading";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useState } from "react";
-import { useToast } from "@/app/hooks/use-toast";
+import { sileo } from "sileo";
 
 export default function BuyPopup(props: any) {
   let symbol = props.symbol || "";
   let token = getCookie("token");
-  const { toast } = useToast();
   const onClose = props.onClose || (() => {});
 
   const [quantity, setQuantity] = useState(0);
@@ -27,7 +26,7 @@ export default function BuyPopup(props: any) {
   async function handleBuy(e: any) {
     e.preventDefault();
     if (quantity <= 0) return;
-    
+
     setLoading(true);
     const data = {
       symbol: decodeURIComponent(props.symbol),
@@ -49,59 +48,51 @@ export default function BuyPopup(props: any) {
     } finally {
       setLoading(false);
     }
-    
+
     if (results?.status === 200) {
-      toast({
-        title: `Successfully bought ${quantity} ${props.symbol}`,
-      });
+      sileo.success({ title: `Successfully bought ${quantity} ${props.symbol}` });
       setQuantity(0);
       setTimeout(() => {
         onClose();
         window.location.reload();
       }, 500);
     } else if (results?.status === 401) {
-      toast({
-        title: "Insufficient Funds!",
-        variant: "destructive",
-      });
+      sileo.error({ title: "Insufficient Funds!" });
     } else {
-      toast({
-        title: "Failed to buy the stock",
-        variant: "destructive",
-      });
+      sileo.error({ title: "Failed to buy the stock" });
     }
   }
 
   return (
-    <div className="bg-white p-6 min-w-[320px]">
+    <div className="bg-card p-6 min-w-[320px]">
       <div className="mb-6">
-        <h1 className="text-xl font-bold font-mono text-[#037a68] mb-2">BUY</h1>
-        <h2 className="text-lg font-semibold text-black">{props.companyName}</h2>
+        <h1 className="text-xl font-bold font-mono text-brand mb-2">BUY</h1>
+        <h2 className="text-lg font-semibold text-foreground">{props.companyName}</h2>
       </div>
-      <div className="mb-6 text-sm font-mono text-black/70">
-        LTP: <span className="text-black">₹{props.ltp}</span>
+      <div className="mb-6 text-sm font-mono text-foreground/70">
+        LTP: <span className="text-foreground">₹{props.ltp}</span>
       </div>
       <form onSubmit={handleBuy}>
         <div className="flex flex-col gap-4">
           <div>
-            <label className="text-xs font-mono text-black/60 uppercase tracking-wider mb-2 block">
+            <label className="text-xs font-mono text-foreground/60 uppercase tracking-wider mb-2 block">
               Quantity
             </label>
             <input
               type="number"
-              className="w-full border border-[#374151] px-3 py-2 text-sm font-mono focus:outline-none focus:border-black transition-colors"
+              className="w-full border border-border px-3 py-2 text-sm font-mono text-foreground focus:outline-none focus:border-foreground transition-colors"
               value={quantity}
               onChange={updateQuantity}
               min="0"
             />
           </div>
-          <div className="text-sm font-mono text-black">
-            Total value: <span className="text-[#037a68]">₹{(quantity * props.ltp).toFixed(2)}</span>
+          <div className="text-sm font-mono text-foreground">
+            Total value: <span className="text-brand">₹{(quantity * props.ltp).toFixed(2)}</span>
           </div>
           <button
             type="submit"
             disabled={loading || quantity <= 0}
-            className="w-full px-4 py-3 bg-[#037a68] text-white text-sm font-mono border border-[#037a68] hover:bg-[#037a68]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+            className="w-full px-4 py-3 bg-brand text-brand-foreground text-sm font-mono border border-brand hover:bg-brand/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
           >
             {loading ? (
               <>

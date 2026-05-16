@@ -13,10 +13,10 @@ export default function TopLosers(props: { type: string; apiData: any }) {
           <span
             className={
               props.type === "Gainers"
-                ? "text-[#037a68]"
+                ? "text-positive"
                 : props.type === "Losers"
-                ? "text-[#ce0000]"
-                : "text-black"
+                ? "text-negative"
+                : "text-foreground"
             }
           >
             {props.type}

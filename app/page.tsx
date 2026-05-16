@@ -1,149 +1,360 @@
-import Link from "next/link";
 import { NavTransition } from "./components/navbar/NavTransition";
-import Navbar from "./components/navbar/Navbar";
-import {
-  HiChartBar,
-  HiEye,
-  HiTrendingUp,
-  HiCollection,
-  HiFire,
-  HiCode,
-} from "react-icons/hi";
-import Footer from "./components/Footer";
+import MarqueeTicker from "./components/landing/MarqueeTicker";
+import { MiniSparkMain, MiniSparkTall } from "./components/landing/MiniSpark";
 
-export default function Homepage() {
+const PORTFOLIO_HOLDINGS = [
+  { symbol: "RELIANCE", qty: 12, change: "+2.41%", positive: true },
+  { symbol: "INFY", qty: 8, change: "-0.87%", positive: false },
+  { symbol: "HDFCBANK", qty: 20, change: "+1.13%", positive: true },
+];
+
+const WATCHLIST_ITEMS = [
+  { symbol: "TCS", ltp: "3,812.40" },
+  { symbol: "TATAMOTORS", ltp: "812.45" },
+  { symbol: "BAJFINANCE", ltp: "6,914.55" },
+  { symbol: "SUNPHARMA", ltp: "1,572.80" },
+];
+
+const TOP_GAINERS = [
+  { symbol: "TATAMOTORS", pct: "+3.07%" },
+  { symbol: "INFY", pct: "+2.11%" },
+  { symbol: "BAJFINANCE", pct: "+1.39%" },
+];
+
+const TOP_LOSERS = [
+  { symbol: "ADANIENT", pct: "-1.82%" },
+  { symbol: "AXISBANK", pct: "-0.61%" },
+  { symbol: "HDFCBANK", pct: "-0.43%" },
+];
+
+function Chip({ label }: { label: string }) {
   return (
-    <div className="flex flex-col min-h-screen bg-white">
-      <div className="text-center md:text-start flex flex-col md:mx-[15%]">
-        <Navbar logStatus={false} />
-      </div>
-
-      <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="py-20 px-6 md:px-12">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="text-left">
-                <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6 text-black">
-                  Master the Market with{" "}
-                  <span className="text-[#037a68]">Paper Trading</span>
-                </h1>
-                <p className="text-xl text-black/70 mb-12 max-w-xl leading-relaxed">
-                  Experience real-time market dynamics without the risk.
-                  Foursight brings you a comprehensive paper trading platform to
-                  hone your skills.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <NavTransition
-                    href="/signup"
-                    className="px-8 py-4 text-white bg-black hover:bg-black/90 transition-all text-sm font-mono border border-black inline-block"
-                  >
-                    START TRADING NOW
-                  </NavTransition>
-                  <NavTransition
-                    href="/dashboard"
-                    className="px-8 py-4 text-black bg-white hover:bg-black/5 transition-all text-sm font-mono border border-[#374151] inline-block"
-                  >
-                    VIEW DASHBOARD
-                  </NavTransition>
-                </div>
-              </div>
-              <div className="hidden md:block">
-                <img
-                  src="/StockPage.jpg"
-                  alt="Foursight Stock Trading Platform"
-                  className="w-full h-auto "
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Features Section */}
-        <section className="py-24 px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-16 text-black">
-              Powerful Features
-            </h2>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              <FeatureCard
-                icon={<HiChartBar />}
-                title="Live Data for 2000+ Stocks"
-                description="Access real-time data for a wide range of stocks, ensuring you're always up-to-date with the market."
-                accent="green"
-              />
-              <FeatureCard
-                icon={<HiEye />}
-                title="Advanced Charting"
-                description="Visualize stock performance with our charting, helping you make informed decisions."
-                accent="green"
-              />
-              <FeatureCard
-                icon={<HiTrendingUp />}
-                title="Paper Trading Portfolio"
-                description="Build and manage your virtual portfolio, testing strategies without risking real money."
-                accent="green"
-              />
-              <FeatureCard
-                icon={<HiCollection />}
-                title="Customizable Watchlists"
-                description="Create and monitor personalized watchlists to keep track of your favorite stocks."
-                accent="green"
-              />
-              <FeatureCard
-                icon={<HiFire />}
-                title="Live Top Movers"
-                description="Stay informed with real-time data on top gainers, losers, and most active stocks across all market caps."
-                accent="red"
-              />
-              <FeatureCard
-                icon={<HiCode />}
-                title="Open Source"
-                description="Foursight is an open-source project, built for aspiring traders."
-                accent="green"
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-24 px-6">
-          <div className="max-w-2xl mx-auto text-center">
-            <div className="border border-[#374151] p-12 bg-white">
-              <h2 className="text-4xl font-bold mb-6 text-black">
-                Ready to Start Your Trading Journey?
-              </h2>
-              <p className="text-xl text-black/60 mb-8">
-                Join traders who are honing their skills with Foursight. Sign up
-                today and take your first step towards mastering the market.
-              </p>
-              <NavTransition
-                href="/signup"
-                className="px-8 py-4 text-white bg-black hover:bg-black/90 transition-all text-sm font-mono border border-black inline-block"
-              >
-                CREATE YOUR FREE ACCOUNT
-              </NavTransition>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <div className="mx-6 md:mx-[15%] mt-8">
-        <Footer />
-      </div>
-    </div>
+    <span className="inline-block font-mono text-[10px] tracking-widest text-muted-foreground uppercase mb-4">
+      {label}
+    </span>
   );
 }
 
-function FeatureCard({ icon, title, description, accent }: any) {
-  const accentColor = accent === "red" ? "#ce0000" : "#037a68";
+export default function Home() {
   return (
-    <div className="border border-[#374151] p-8 bg-white hover:border-black transition-colors">
-      <div className="mb-4 text-2xl" style={{ color: accentColor }}>
-        {icon}
-      </div>
-      <h3 className="text-lg font-semibold mb-3 text-black">{title}</h3>
-      <p className="text-black/60 leading-relaxed">{description}</p>
-    </div>
+    <>
+      {/* ── 01 / HERO ─────────────────────────────────────────────────────── */}
+      <section className="px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-0">
+        <div className="max-w-7xl mx-auto">
+          <div
+            className="border-t border-border pt-5 sm:pt-6 mb-8 sm:mb-10"
+          >
+            <span className="font-mono text-xs text-muted-foreground tracking-widest uppercase">
+              — 01 / OVERVIEW
+            </span>
+          </div>
+
+          <h1
+            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.92] mb-6 sm:mb-8 max-w-4xl"
+          >
+            Trade the<br />
+            Indian markets.{" "}
+            <span className="font-mono" style={{ color: "rgb(var(--positive))" }}>
+              Risk&nbsp;=&gt;&nbsp;0.
+            </span>
+          </h1>
+
+          <p
+            className="text-base sm:text-lg text-foreground/60 max-w-xl mb-8 sm:mb-10 leading-relaxed"
+          >
+            Foursight is an open-source paper-trading terminal for NSE.
+            Live data on 2000+ stocks — build watchlists, simulate trades,
+            track P&amp;L. Without spending a rupee.
+          </p>
+
+          <div
+            className="flex flex-col sm:flex-row gap-3 mb-12 sm:mb-16"
+          >
+            <NavTransition
+              href="/signup"
+              className="px-6 sm:px-8 py-3 sm:py-4 text-background bg-foreground hover:bg-foreground/90 transition-colors text-sm font-mono border border-foreground text-center"
+          >
+              START PAPER TRADING →
+            </NavTransition>
+            <NavTransition
+              href="/dashboard"
+              className="px-6 sm:px-8 py-3 sm:py-4 text-foreground bg-card hover:bg-muted transition-colors text-sm font-mono border border-border text-center"
+          >
+              OPEN DASHBOARD
+            </NavTransition>
+          </div>
+        </div>
+
+        <div>
+          <MarqueeTicker />
+        </div>
+      </section>
+
+      {/* ── STAT STRIP ────────────────────────────────────────────────────── */}
+      <section className="px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 border-b border-l border-border">
+            {[
+              { value: "2000+", label: "NSE-LISTED SCRIPS" },
+              { value: "₹2.5L", label: "VIRTUAL CAPITAL" },
+              { value: "1D·1W·1M·1Y", label: "CHART RANGES" },
+              { value: "MIT", label: "LICENSE" },
+            ].map((stat) => (
+              <div key={stat.label} className="border-t border-r border-border p-5 sm:p-6 lg:p-8">
+                <div className="font-mono text-xl sm:text-2xl md:text-3xl font-semibold text-foreground mb-1 break-words">
+                  {stat.value}
+                </div>
+                <div className="font-mono text-[9px] sm:text-[10px] tracking-widest text-muted-foreground uppercase">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 02 / FEATURES — BENTO ─────────────────────────────────────────── */}
+      <section className="px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-10 sm:mb-12">
+            <span className="font-mono text-xs text-muted-foreground tracking-widest uppercase">
+              — 02 / FEATURES
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mt-3 leading-tight">
+              Built like a terminal.<br />Behaves like one.
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-px bg-border">
+
+            {/* 01 / DATA — col-span-2 */}
+            <div className="sm:col-span-2 bg-card p-5 sm:p-8 hover:bg-muted transition-colors duration-200 flex flex-col justify-between gap-5 sm:gap-6">
+              <div>
+                <Chip label="01 / DATA" />
+                <h3 className="font-mono text-sm uppercase tracking-wider text-foreground mb-2">
+                  Live data · 2000+ scrips
+                </h3>
+                <p className="text-sm text-foreground/50 leading-relaxed">
+                  Real-time NSE prices, volume, open/high/low/close, 52-week ranges — refreshed continuously.
+                </p>
+              </div>
+              <div className="flex items-end gap-4 sm:gap-6 flex-wrap">
+                <MiniSparkMain />
+                <div className="flex flex-col gap-1 pb-1">
+                  <span className="font-mono text-xs text-muted-foreground">RELIANCE</span>
+                  <span className="font-mono text-lg font-semibold text-foreground">₹2,941.55</span>
+                  <span className="font-mono text-xs" style={{ color: "rgb(var(--positive))" }}>+1.24% today</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 02 / CHARTS — row-span-2 on md+ */}
+            <div className="sm:col-span-2 md:col-span-1 md:row-span-2 bg-card p-5 sm:p-8 hover:bg-muted transition-colors duration-200 flex flex-col gap-5 sm:gap-6">
+              <div>
+                <Chip label="02 / CHARTS" />
+                <h3 className="font-mono text-sm uppercase tracking-wider text-foreground mb-2">
+                  Advanced charting
+                </h3>
+                <p className="text-sm text-foreground/50 leading-relaxed">
+                  Candle &amp; line charts across four timeframes. Tooltips with IST timestamps.
+                </p>
+              </div>
+              <div className="flex flex-col items-start gap-3 flex-grow justify-center">
+                <span className="font-mono text-3xl font-bold" style={{ color: "rgb(var(--positive))" }}>
+                  +1.42%
+                </span>
+                <MiniSparkTall />
+                <div className="flex gap-2 mt-2">
+                  {["1D", "1W", "1M", "1Y"].map((t) => (
+                    <span
+                      key={t}
+                      className="font-mono text-[10px] border border-border px-2 py-1 text-muted-foreground hover:border-muted-foreground transition-colors"
+          >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
+                TIMEFRAMES: 1D · 1W · 1M · 1Y
+              </p>
+            </div>
+
+            {/* 03 / PORTFOLIO */}
+            <div className="bg-card p-5 sm:p-8 hover:bg-muted transition-colors duration-200 flex flex-col gap-4">
+              <div>
+                <Chip label="03 / PORTFOLIO" />
+                <h3 className="font-mono text-sm uppercase tracking-wider text-foreground mb-1">
+                  Paper portfolio
+                </h3>
+              </div>
+              <div className="border border-border p-4 bg-background">
+                <div className="font-mono text-[10px] text-muted-foreground uppercase tracking-wider mb-1">NET WORTH</div>
+                <div className="font-mono text-lg sm:text-xl font-bold text-foreground mb-4">₹2,61,430.75</div>
+                <div className="flex flex-col gap-2">
+                  {PORTFOLIO_HOLDINGS.map((h) => (
+                    <div key={h.symbol} className="flex items-center justify-between gap-2">
+                      <span className="font-mono text-xs text-foreground shrink-0">{h.symbol}</span>
+                      <span className="font-mono text-xs text-muted-foreground">{h.qty} shares</span>
+                      <span
+                        className="font-mono text-xs font-medium shrink-0"
+                        style={{ color: h.positive ? "rgb(var(--positive))" : "rgb(var(--negative))" }}
+          >
+                        {h.change}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* 04 / WATCHLIST */}
+            <div className="bg-card p-5 sm:p-8 hover:bg-muted transition-colors duration-200 flex flex-col gap-4">
+              <div>
+                <Chip label="04 / WATCHLIST" />
+                <h3 className="font-mono text-sm uppercase tracking-wider text-foreground mb-1">
+                  Customizable watchlists
+                </h3>
+              </div>
+              <div className="border border-border bg-background divide-y divide-border">
+                {WATCHLIST_ITEMS.map((w) => (
+                  <div key={w.symbol} className="flex items-center justify-between px-3 sm:px-4 py-2.5">
+                    <span className="font-mono text-xs font-semibold text-foreground">{w.symbol}</span>
+                    <span className="font-mono text-xs text-muted-foreground">₹{w.ltp}</span>
+                  </div>
+                ))}
+                <div className="flex items-center px-3 sm:px-4 py-2.5">
+                  <span className="font-mono text-xs text-muted-foreground">+ ADD SCRIP</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 05 / MOVERS */}
+            <div className="bg-card p-5 sm:p-8 hover:bg-muted transition-colors duration-200 flex flex-col gap-4">
+              <div>
+                <Chip label="05 / MOVERS" />
+                <h3 className="font-mono text-sm uppercase tracking-wider text-foreground mb-1">
+                  Live top movers
+                </h3>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <div className="font-mono text-[10px] uppercase tracking-wider mb-2" style={{ color: "rgb(var(--positive))" }}>GAINERS</div>
+                  <div className="flex flex-col gap-1.5">
+                    {TOP_GAINERS.map((g) => (
+                      <div key={g.symbol} className="flex flex-col">
+                        <span className="font-mono text-[11px] font-semibold text-foreground leading-tight">{g.symbol}</span>
+                        <span className="font-mono text-[11px]" style={{ color: "rgb(var(--positive))" }}>{g.pct}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <div className="font-mono text-[10px] uppercase tracking-wider mb-2" style={{ color: "rgb(var(--negative))" }}>LOSERS</div>
+                  <div className="flex flex-col gap-1.5">
+                    {TOP_LOSERS.map((l) => (
+                      <div key={l.symbol} className="flex flex-col">
+                        <span className="font-mono text-[11px] font-semibold text-foreground leading-tight">{l.symbol}</span>
+                        <span className="font-mono text-[11px]" style={{ color: "rgb(var(--negative))" }}>{l.pct}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 06 / OSS — col-span-2 */}
+            <div className="sm:col-span-2 bg-card p-5 sm:p-8 hover:bg-muted transition-colors duration-200 flex flex-col justify-between gap-5 sm:gap-6">
+              <div>
+                <Chip label="06 / OSS" />
+                <h3 className="font-mono text-sm uppercase tracking-wider text-foreground mb-2">
+                  Open source · MIT license
+                </h3>
+                <p className="text-sm text-foreground/50">
+                  Built in public. Fork it, self-host it, contribute to it. No lock-in.
+                </p>
+              </div>
+              <div className="bg-background border border-border p-4 font-mono text-xs sm:text-sm flex flex-col gap-2 overflow-hidden">
+                <div className="flex gap-1 min-w-0">
+                  <span className="text-muted-foreground shrink-0">$ </span>
+                  <span className="text-foreground truncate">git clone github.com/h0i5/foursight</span>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">&gt; </span>
+                  <a
+                    href="https://github.com/h0i5/foursight"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-4"
+                    style={{ color: "rgb(var(--positive))" }}
+          >
+                    ★ STAR ON GITHUB →
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── 03 / HOW IT WORKS ─────────────────────────────────────────────── */}
+      <section className="px-4 sm:px-6 lg:px-8 py-16 sm:py-24 border-t border-border">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-10 sm:mb-12">
+            <span className="font-mono text-xs text-muted-foreground tracking-widest uppercase">
+              — 03 / FLOW
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mt-3">
+              From signup to first trade<br className="hidden sm:block" /> in 60 seconds.
+            </h2>
+          </div>
+          <div className="flex flex-col divide-y divide-border border-t border-border">
+            {[
+              {
+                n: "01",
+                title: "Create an account",
+                sub: "Free. Open source. No card required. MIT license — self-host if you want.",
+              },
+              {
+                n: "02",
+                title: "Build a watchlist",
+                sub: "Search across 2000+ NSE-listed scrips. Add anything. Track what matters.",
+              },
+              {
+                n: "03",
+                title: "Place your first paper trade",
+                sub: "Simulate buys and sells with ₹2.5L virtual capital. Real P&L. Zero risk.",
+              },
+            ].map((step) => (
+              <div
+                key={step.n}
+                className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-8 md:gap-12 py-6 sm:py-8"
+          >
+                <span className="font-mono text-3xl sm:text-4xl md:text-5xl font-bold text-muted-foreground/30 shrink-0 sm:w-16">
+                  {step.n}
+                </span>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-8 md:gap-12 flex-1">
+                  <h3 className="font-semibold text-lg sm:text-xl text-foreground sm:w-56 md:w-64 shrink-0">
+                    {step.title}
+                  </h3>
+                  <p className="text-foreground/50 text-sm leading-relaxed max-w-xl">
+                    {step.sub}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-10 sm:mt-12 border-t border-border pt-8 sm:pt-10">
+            <NavTransition
+              href="/signup"
+              className="inline-block px-6 sm:px-8 py-3 sm:py-4 text-background bg-foreground hover:bg-foreground/90 transition-colors text-sm font-mono border border-foreground"
+          >
+              CREATE FREE ACCOUNT →
+            </NavTransition>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

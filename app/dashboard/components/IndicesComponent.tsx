@@ -1,25 +1,19 @@
 export default function IndicesComponent(props: any) {
   let data = props.data;
-  const isPositive = data.data?.dayChange > 0;
-  const accentColor = isPositive ? "#037a68" : "#ce0000";
-  
+  const isPositive = data.data?.dayChange >= 0;
+
   return (
-    <div className="flex flex-col px-6 py-4 border border-[#374151] bg-white min-w-[140px] hover:border-black transition-colors relative">
-      <div
-        className="absolute left-0 top-0 bottom-0 w-1"
-        style={{ backgroundColor: accentColor }}
-      ></div>
-      <div className="pl-3">
-        <div className={`text-xs font-mono font-medium mb-3 ${isPositive ? "text-[#037a68]" : "text-[#ce0000]"}`}>
-          {data.name}
-        </div>
-        <div className={`${isPositive ? "text-[#037a68]" : "text-[#ce0000]"} font-mono`}>
-          <p className="text-lg font-semibold mb-1">{data.data?.value}</p>
-          <div className="flex flex-row gap-1 text-xs">
-            <span>{data.data?.dayChange.toFixed(2)}</span>
-            <span>({data.data?.dayChangePerc.toFixed(2)}%)</span>
-          </div>
-        </div>
+    <div className="relative flex flex-col px-5 py-4 bg-card min-w-[160px] border border-border hover:bg-muted transition-colors cursor-default overflow-hidden">
+      <div className={`absolute top-0 left-0 right-0 h-[2px] ${isPositive ? "bg-positive" : "bg-negative"}`} />
+      <span className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase mb-3 mt-1">
+        {data.name}
+      </span>
+      <span className="text-2xl font-mono font-semibold text-foreground mb-1">
+        {data.data?.value}
+      </span>
+      <div className={`flex flex-row gap-1 text-xs font-mono font-medium ${isPositive ? "text-positive" : "text-negative"}`}>
+        <span>{isPositive ? "+" : ""}{data.data?.dayChange.toFixed(2)}</span>
+        <span>({isPositive ? "+" : ""}{data.data?.dayChangePerc.toFixed(2)}%)</span>
       </div>
     </div>
   );

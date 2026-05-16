@@ -19,7 +19,7 @@ export default function Hamburger() {
   }, [isOpen, handleClickOutside]);
 
   let dropdownClass =
-    "block px-4 py-2 text-sm hover:bg-gray-100 transition-colors duration-300 ease-in-out font-mono";
+    "block px-4 py-2 text-sm hover:bg-muted transition-colors duration-300 ease-in-out font-mono";
 
   let options = [
     {
@@ -45,19 +45,19 @@ export default function Hamburger() {
   ];
 
   return (
-    <div className="ml-2 flex items-center justify-center">
+    <div className="flex items-center justify-center">
       <div className="relative inline-block text-left">
         <div>
           <button
             type="button"
-            className="inline-flex w-full justify-center rounded-md border border-[#374151] px-2 h-[34px] text-sm font-mono font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100 transition-all duration-300 ease-in-out items-center"
+            className="inline-flex w-full justify-center border border-border px-2 h-[34px] text-sm font-mono font-medium text-foreground shadow-sm hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background transition-all duration-300 ease-in-out items-center"
             id="menu-button"
             aria-expanded={isOpen}
             aria-haspopup="true"
             onClick={() => setIsOpen(!isOpen)}
           >
             <svg
-              className=" h-5 w-5 transition-transform duration-300 ease-in-out"
+              className="h-5 w-5 transition-transform duration-300 ease-in-out"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
@@ -76,7 +76,7 @@ export default function Hamburger() {
         </div>
         {isOpen && (
           <div
-            className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition-all duration-1s ease-in-out transform opacity-0 scale-95"
+            className="absolute right-0 z-10 mt-2 w-56 origin-top-right bg-popover shadow-lg ring-1 ring-border focus:outline-none transition-all duration-1s ease-in-out transform opacity-0 scale-95"
             style={{
               transform: isOpen
                 ? "translateY(0) scale(1)"
@@ -95,8 +95,8 @@ export default function Hamburger() {
                   href={option.href}
                   className={`${dropdownClass} ${
                     option.title === "LOG OUT"
-                      ? "text-[#ce0000]"
-                      : "text-gray-700"
+                      ? "text-negative"
+                      : "text-popover-foreground"
                   }`}
                 >
                   {option.title}

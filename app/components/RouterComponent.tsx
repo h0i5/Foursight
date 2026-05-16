@@ -29,8 +29,8 @@ export default function RouterComponent() {
                 href={`/${path}`}
                 className={`text-xs font-mono ${
                   isLast
-                    ? "text-black"
-                    : "text-black/70 hover:text-black hover:underline"
+                    ? "text-foreground"
+                    : "text-foreground/70 hover:text-foreground hover:underline"
                 }`}
               >
                 {objectArray[path]
@@ -38,7 +38,7 @@ export default function RouterComponent() {
                   : path.charAt(0).toUpperCase() + path.slice(1)}
               </NavTransition>
               {!isLast && (
-                <span className="text-xs text-black/50 font-mono">&gt;</span>
+                <span className="text-xs text-foreground/50 font-mono">&gt;</span>
               )}
             </div>
           );

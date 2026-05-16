@@ -4,13 +4,12 @@ import Loading from "@/app/components/Loading";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useState } from "react";
-import { useToast } from "@/app/hooks/use-toast";
+import { sileo } from "sileo";
 
 export default function SellPopup(props: any) {
   const [quantity, setQuantity] = useState(0);
   let symbol = props.symbol || "";
   let token = getCookie("token");
-  const { toast } = useToast();
   const onClose = props.onClose || (() => {});
   function updateQuantity(e: any) {
     const value = parseFloat(e.target.value) || 0;
@@ -49,64 +48,56 @@ export default function SellPopup(props: any) {
     }
 
     if (results?.status === 200) {
-      toast({
-        title: `Successfully sold ${quantity} ${props.symbol}`,
-      });
+      sileo.success({ title: `Successfully sold ${quantity} ${props.symbol}` });
       setQuantity(0);
       setTimeout(() => {
         onClose();
         window.location.reload();
       }, 500);
     } else if (results?.status === 401) {
-      toast({
-        title: "Insufficient stocks!",
-        variant: "destructive",
-      });
+      sileo.error({ title: "Insufficient stocks!" });
     } else {
-      toast({
-        title: "Failed to sell the stock",
-        variant: "destructive",
-      });
+      sileo.error({ title: "Failed to sell the stock" });
     }
   }
 
   return (
-    <div className="bg-white p-6 min-w-[320px]">
+    <div className="bg-card p-6 min-w-[320px]">
       <div className="mb-6">
-        <h1 className="text-xl font-bold font-mono text-[#ce0000] mb-2">
+        <h1 className="text-xl font-bold font-mono text-negative mb-2">
           SELL
         </h1>
-        <h2 className="text-lg font-semibold text-black">
+        <h2 className="text-lg font-semibold text-foreground">
           {props.companyName}
         </h2>
       </div>
-      <div className="mb-6 text-sm font-mono text-black/70">
-        LTP: <span className="text-black">₹{props.ltp}</span>
+      <div className="mb-6 text-sm font-mono text-foreground/70">
+        LTP: <span className="text-foreground">₹{props.ltp}</span>
       </div>
       <form onSubmit={handleSell}>
         <div className="flex flex-col gap-4">
           <div>
-            <label className="text-xs font-mono text-black/60 uppercase tracking-wider mb-2 block">
+            <label className="text-xs font-mono text-foreground/60 uppercase tracking-wider mb-2 block">
               Quantity
             </label>
             <input
               type="number"
-              className="w-full border border-[#374151] px-3 py-2 text-sm font-mono focus:outline-none focus:border-black transition-colors"
+              className="w-full border border-border px-3 py-2 text-sm font-mono text-foreground focus:outline-none focus:border-foreground transition-colors"
               value={quantity}
               onChange={updateQuantity}
               min="0"
             />
           </div>
-          <div className="text-sm font-mono text-black">
+          <div className="text-sm font-mono text-foreground">
             Total value:{" "}
-            <span className="text-[#ce0000]">
+            <span className="text-negative">
               ₹{(quantity * props.ltp).toFixed(2)}
             </span>
           </div>
           <button
             type="submit"
             disabled={loading || quantity <= 0}
-            className="w-full px-4 py-3 bg-[#ce0000] text-white text-sm font-mono border border-[#ce0000] hover:bg-[#ce0000]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+            className="w-full px-4 py-3 bg-negative text-white text-sm font-mono border border-negative hover:bg-negative/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
           >
             {loading ? (
               <>

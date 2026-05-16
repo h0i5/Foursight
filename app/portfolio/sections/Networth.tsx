@@ -77,8 +77,8 @@ export default function Networth(props: any) {
   return (
     <div>
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-        <div className="border border-[#374151] px-6 py-4 bg-white">
-          <h2 className="text-xs font-mono text-black/60 uppercase tracking-wider mb-3">
+        <div className="border border-border px-6 py-4 bg-card">
+          <h2 className="text-xs font-mono text-foreground/60 uppercase tracking-wider mb-3">
             Portfolio Value
           </h2>
           {loading ? (
@@ -87,12 +87,12 @@ export default function Networth(props: any) {
             </div>
           ) : (
             <div className="flex flex-row items-baseline gap-3">
-              <h1 className="text-2xl md:text-3xl font-mono font-semibold text-black">
+              <h1 className="text-2xl md:text-3xl font-mono font-semibold text-foreground">
                 ₹{portfolioValue.toFixed(2)}
               </h1>
               <span
                 className={`text-sm font-mono font-semibold ${
-                  isProfitPositive ? "text-[#037a68]" : "text-[#ce0000]"
+                  isProfitPositive ? "text-positive" : "text-negative"
                 }`}
               >
                 {isProfitPositive ? "+" : ""}
@@ -103,8 +103,8 @@ export default function Networth(props: any) {
           )}
         </div>
 
-        <div className="border border-[#374151] px-6 py-4 bg-white">
-          <h2 className="text-xs font-mono text-black/60 uppercase tracking-wider mb-3">
+        <div className="border border-border px-6 py-4 bg-card">
+          <h2 className="text-xs font-mono text-foreground/60 uppercase tracking-wider mb-3">
             Stocks
           </h2>
           {loading ? (
@@ -112,14 +112,14 @@ export default function Networth(props: any) {
               <Loading />
             </div>
           ) : (
-            <h1 className="text-2xl md:text-3xl font-mono font-semibold text-[#037a68]">
+            <h1 className="text-2xl md:text-3xl font-mono font-semibold text-positive">
               {data.scrips?.length || 0}
             </h1>
           )}
         </div>
 
-        <div className="border border-[#374151] px-6 py-4 bg-white">
-          <h2 className="text-xs font-mono text-black/60 uppercase tracking-wider mb-3">
+        <div className="border border-border px-6 py-4 bg-card">
+          <h2 className="text-xs font-mono text-foreground/60 uppercase tracking-wider mb-3">
             Remaining Cash
           </h2>
           {loading ? (
@@ -127,16 +127,16 @@ export default function Networth(props: any) {
               <Loading />
             </div>
           ) : (
-            <h1 className="text-2xl md:text-3xl font-mono font-semibold text-black">
+            <h1 className="text-2xl md:text-3xl font-mono font-semibold text-foreground">
               ₹{data.remainingCash || 0}
             </h1>
           )}
         </div>
 
-        <div className="border border-[#374151] p-6 bg-white sm:col-span-2 xl:col-span-2">
-          <h2 className="text-base font-semibold font-mono mb-4 text-black">
-            HOLDINGS
-          </h2>
+        <div className="border border-border p-6 bg-card sm:col-span-2 xl:col-span-2">
+          <div className="mb-4">
+            <span className="text-xs font-mono text-muted-foreground tracking-wider">02 / HOLDINGS</span>
+          </div>
           {loading ? (
             <div className="flex justify-center items-center py-12">
               <Loading />
@@ -151,17 +151,17 @@ export default function Networth(props: any) {
           )}
         </div>
 
-        <div className="border border-[#374151] p-6 bg-white sm:col-span-2 xl:col-span-1">
-          <h2 className="text-base font-semibold font-mono mb-4 text-black">
-            HOLDING CHART
-          </h2>
+        <div className="border border-border p-6 bg-card sm:col-span-2 xl:col-span-1">
+          <div className="mb-4">
+            <span className="text-xs font-mono text-muted-foreground tracking-wider">03 / ALLOCATION</span>
+          </div>
           {loading ? (
             <div className="flex justify-center items-center py-12">
               <Loading />
             </div>
           ) : !chartArray || chartArray.length === 0 ? (
             <div className="flex justify-center items-center py-12">
-              <p className="text-sm font-mono text-black/60">
+              <p className="text-sm font-mono text-foreground/60">
                 No holdings to display
               </p>
             </div>
@@ -177,9 +177,9 @@ export default function Networth(props: any) {
                       const name = data.name || "";
 
                       return (
-                        <div className="font-mono border border-[#374151] bg-white text-black px-3 py-2">
-                          <div className="text-xs text-black/70">{name}</div>
-                          <div className="text-sm font-semibold text-black">
+                        <div className="font-mono border border-border bg-card text-foreground px-3 py-2">
+                          <div className="text-xs text-foreground/70">{name}</div>
+                          <div className="text-sm font-semibold text-foreground">
                             {value}
                           </div>
                         </div>
@@ -199,7 +199,7 @@ export default function Networth(props: any) {
                         : ""
                     }
                     labelLine={false}
-                    stroke="#374151"
+                    stroke="rgb(var(--border))"
                     strokeWidth={1}
                   >
                     {chartArray.map((entry, index) => (
@@ -223,10 +223,10 @@ export default function Networth(props: any) {
           )}
         </div>
 
-        <div className="border border-[#374151] p-6 bg-white sm:col-span-2 xl:col-span-3">
-          <h2 className="text-base font-semibold font-mono mb-4 text-black">
-            ORDER BOOK
-          </h2>
+        <div className="border border-border p-6 bg-card sm:col-span-2 xl:col-span-3">
+          <div className="mb-4">
+            <span className="text-xs font-mono text-muted-foreground tracking-wider">04 / RECENT ORDERS</span>
+          </div>
           {loading ? (
             <div className="flex justify-center items-center py-12">
               <Loading />
@@ -238,7 +238,7 @@ export default function Networth(props: any) {
                 <div className="mt-4 text-right">
                   <NavTransition
                     href="/portfolio/orders"
-                    className="text-sm font-mono text-[#037a68] hover:underline"
+                    className="text-sm font-mono text-positive hover:underline"
                   >
                     VIEW ALL
                   </NavTransition>

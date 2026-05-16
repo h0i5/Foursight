@@ -1,5 +1,4 @@
 "use client";
-import Navbar from "@/app/components/navbar/Navbar";
 import { useEffect, useState, use } from "react";
 import axios from "axios";
 import { apiURL } from "@/app/components/apiURL";
@@ -11,8 +10,6 @@ import LTP from "./components/sections/LTP";
 import Stats from "./components/sections/Statistics/Stats";
 import BuySellWatch from "./components/sections/BuySellWatch";
 import Loading from "@/app/components/Loading";
-import RouterComponent from "@/app/components/RouterComponent";
-import Footer from "@/app/components/Footer";
 export const runtime = "edge";
 export default function Page({
   params,
@@ -32,29 +29,20 @@ export default function Page({
   // Only show error if params exists but symbol is invalid
   if (resolvedParams && !symbol) {
     return (
-      <div className="flex flex-col min-h-screen md:mx-[15%]">
-        <Navbar />
-        <main className="flex-grow mx-6 md:mx-0 mb-12 overflow-x-hidden max-w-full">
-          <div className="py-20 text-center">
-            <p className="text-lg font-mono text-black/70">
-              Invalid stock symbol
-            </p>
-          </div>
-        </main>
+      <div className="px-4 sm:px-6 lg:px-8 py-20">
+        <div className="max-w-7xl mx-auto text-center">
+          <p className="text-lg font-mono text-foreground/70">Invalid stock symbol</p>
+        </div>
       </div>
     );
   }
 
-  // If params or symbol is not available yet, show loading
   if (!resolvedParams || !symbol) {
     return (
-      <div className="flex flex-col min-h-screen md:mx-[15%]">
-        <Navbar />
-        <main className="flex-grow mx-6 md:mx-0 mb-12 overflow-x-hidden max-w-full">
-          <div className="py-20 text-center">
-            <Loading />
-          </div>
-        </main>
+      <div className="px-4 sm:px-6 lg:px-8 py-20">
+        <div className="max-w-7xl mx-auto flex justify-center">
+          <Loading />
+        </div>
       </div>
     );
   }
@@ -146,42 +134,47 @@ export default function Page({
   }
   let companyName = symbol ? getCompanyName(symbol) : "";
   return (
-    <div className="flex flex-col min-h-screen md:mx-[15%]">
-      <Navbar />
-      <main className="flex-grow mx-6 md:mx-0 mb-12 overflow-x-hidden max-w-full">
-        <div>
-          <RouterComponent />
+    <div className="px-4 sm:px-6 lg:px-8 pt-8 mb-12">
+      <div className="max-w-7xl mx-auto">
+        {/* Breadcrumb */}
+        <div className="mb-6">
+          <span className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase">
+            <Link href="/stocks" className="hover:text-foreground transition-colors">STOCKS</Link>
+            {" / "}{decodeURIComponent(symbol)}
+          </span>
         </div>
 
         <div className="flex w-full flex-col xl:flex-row xl:justify-between gap-8">
+          {/* Main column */}
           <div className="xl:w-[60%] flex-1">
             {loading ? (
               <div className="space-y-8">
                 <div>
-                  <div className="h-7 w-48 bg-black/10 mb-3"></div>
-                  <div className="flex flex-row items-baseline gap-3">
-                    <div className="h-8 w-32 bg-black/10"></div>
-                    <div className="h-5 w-24 bg-black/10"></div>
+                  <div className="h-4 w-36 bg-foreground/10 mb-3"></div>
+                  <div className="h-10 w-44 bg-foreground/10 mb-3"></div>
+                  <div className="h-7 w-32 bg-foreground/10"></div>
+                </div>
+                <div>
+                  <div className="border-t border-dashed border-border pt-4 mb-5 flex items-center justify-between">
+                    <div className="h-3 w-20 bg-foreground/10"></div>
+                    <div className="flex gap-1">
+                      {[1,2,3,4].map(i => <div key={i} className="h-7 w-10 bg-foreground/10 border border-border" />)}
+                    </div>
+                  </div>
+                  <div className="border border-border bg-card h-[360px] flex items-center justify-center">
+                    <Loading />
                   </div>
                 </div>
-                <div className="border border-[#374151] bg-white h-[400px] flex items-center justify-center">
-                  <Loading />
-                </div>
-                <div className="xl:hidden flex gap-2 justify-center">
-                  <div className="h-10 w-24 bg-black/10"></div>
-                  <div className="h-10 w-24 bg-black/10"></div>
-                  <div className="h-10 w-24 bg-black/10"></div>
-                </div>
-                <div className="border border-[#374151] bg-white p-6 space-y-6">
-                  <div className="h-5 w-32 bg-black/10"></div>
-                  <div className="grid grid-cols-2 gap-6">
-                    {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                      <div key={i}>
-                        <div className="h-3 w-20 bg-black/10 mb-1"></div>
-                        <div className="h-4 w-24 bg-black/10"></div>
-                      </div>
-                    ))}
+                <div className="border border-border">
+                  <div className="bg-muted border-b border-border px-4 py-2">
+                    <div className="h-3 w-20 bg-foreground/10"></div>
                   </div>
+                  {[1,2,3,4,5,6].map(i => (
+                    <div key={i} className="grid grid-cols-2 px-4 py-3 border-b border-border last:border-b-0">
+                      <div className="h-3 w-20 bg-foreground/10"></div>
+                      <div className="h-3 w-16 bg-foreground/10"></div>
+                    </div>
+                  ))}
                 </div>
               </div>
             ) : (
@@ -204,7 +197,7 @@ export default function Page({
                   />
                 </div>
 
-                <div className="my-8 w-full flex justify-center xl:hidden">
+                <div className="mt-8 xl:hidden">
                   <BuySellWatch
                     symbol={symbol}
                     companyName={companyName}
@@ -240,46 +233,37 @@ export default function Page({
             )}
           </div>
 
+          {/* Sidebar */}
           <div className="hidden xl:block xl:w-[35%]">
             {loading ? (
-              <div className="space-y-8">
-                <div>
-                  <div className="h-5 w-32 bg-black/10 mb-4"></div>
-                  <div className="border border-[#374151] bg-white">
-                    {[1, 2, 3, 4, 5].map((i) => (
-                      <div
-                        key={i}
-                        className="border-b border-[#374151] p-4 last:border-b-0"
-                      >
-                        <div className="h-4 w-24 bg-black/10 mb-2"></div>
-                        <div className="h-5 w-20 bg-black/10"></div>
-                      </div>
-                    ))}
+              <div className="space-y-10">
+                {[0, 1].map(s => (
+                  <div key={s}>
+                    <div className="mb-3">
+                      <div className="h-3 w-24 bg-foreground/10"></div>
+                    </div>
+                    <div className="border border-border bg-card divide-y divide-border">
+                      {[1,2,3,4,5].map(i => (
+                        <div key={i} className="flex items-center justify-between px-4 py-3">
+                          <div>
+                            <div className="h-3 w-16 bg-foreground/10 mb-1.5"></div>
+                            <div className="h-2.5 w-24 bg-foreground/10"></div>
+                          </div>
+                          <div className="text-right">
+                            <div className="h-3 w-14 bg-foreground/10 mb-1.5"></div>
+                            <div className="h-2.5 w-10 bg-foreground/10 ml-auto"></div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <div className="h-5 w-32 bg-black/10 mb-4"></div>
-                  <div className="border border-[#374151] bg-white">
-                    {[1, 2, 3, 4, 5].map((i) => (
-                      <div
-                        key={i}
-                        className="border-b border-[#374151] p-4 last:border-b-0"
-                      >
-                        <div className="h-4 w-24 bg-black/10 mb-2"></div>
-                        <div className="h-5 w-20 bg-black/10"></div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                ))}
               </div>
             ) : (
               <TopMoversColumn data={topMovers} />
             )}
           </div>
         </div>
-      </main>
-      <div className="mx-6 md:mx-0 mt-8">
-        <Footer />
       </div>
     </div>
   );

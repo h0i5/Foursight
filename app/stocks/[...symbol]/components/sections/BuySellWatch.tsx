@@ -5,14 +5,12 @@ import SellPopup from "../handlers/SellPopup";
 import { apiURL } from "@/app/components/apiURL";
 import axios from "axios";
 import { getCookie } from "cookies-next";
-import { useState } from "react";
-import { useToast } from "@/app/hooks/use-toast";
+import { sileo } from "sileo";
 import React from "react";
 
 export default function BuySellWatch(props: any) {
   let symbol = props.symbol || "";
   let token = getCookie("token");
-  const { toast } = useToast();
 
   async function handleWatchlistAddition() {
     let results;
@@ -21,42 +19,36 @@ export default function BuySellWatch(props: any) {
         method: "post",
         url: apiURL + "/transaction/addWatchlist",
         headers: { Authorization: "Bearer " + token },
-        data: {
-          scrip: decodeURIComponent(symbol),
-        },
+        data: { scrip: decodeURIComponent(symbol) },
       });
     } catch (err: any) {
       results = err.response;
     }
-    if (results?.status === 200) {
-      toast({
-        title: "Added to watchlist",
-      });
-    }
-    if (results?.status === 409) {
-      toast({
-        title: "Already in watchlist!",
-        variant: "destructive",
-      });
-    }
+    if (results?.status === 200) sileo.success({ title: "Added to watchlist" });
+    if (results?.status === 409) sileo.error({ title: "Already in watchlist!" });
   }
+
+  const popupStyle = {
+    width: "fit-content",
+    border: "1px solid rgb(var(--border))",
+    borderRadius: "0",
+    padding: "0",
+    background: "rgb(var(--card))",
+    animation: "modalFadeIn 0.2s ease-out",
+  };
+
+  const overlayStyle = {
+    background: "rgba(0, 0, 0, 0.5)",
+    animation: "overlayFadeIn 0.2s ease-out",
+  };
+
   return (
-    <div className="flex flex-row gap-2">
+    <div className="flex flex-row gap-2 w-full xl:w-auto">
       <Popup
-        contentStyle={{
-          width: "fit-content",
-          border: "1px solid #374151",
-          borderRadius: "0",
-          padding: "0",
-          background: "white",
-          animation: "modalFadeIn 0.2s ease-out",
-        }}
-        overlayStyle={{
-          background: "rgba(0, 0, 0, 0.5)",
-          animation: "overlayFadeIn 0.2s ease-out",
-        }}
+        contentStyle={popupStyle}
+        overlayStyle={overlayStyle}
         trigger={
-          <button className="px-4 py-2 bg-[#037a68] text-white text-xs font-mono border border-[#037a68] hover:bg-[#037a68]/90 transition-colors">
+          <button className="flex-1 px-5 py-2.5 bg-card border border-border text-positive text-xs font-mono font-semibold hover:bg-positive hover:text-white hover:border-positive transition-colors">
             BUY
           </button>
         }
@@ -64,7 +56,7 @@ export default function BuySellWatch(props: any) {
         closeOnDocumentClick
         lockScroll
       >
-        {/* @ts-ignore - reactjs-popup supports function children for modal */}
+        {/* @ts-ignore */}
         {(close: () => void) => (
           <BuyPopup
             companyName={props.companyName}
@@ -76,20 +68,10 @@ export default function BuySellWatch(props: any) {
       </Popup>
 
       <Popup
-        contentStyle={{
-          width: "fit-content",
-          border: "1px solid #374151",
-          borderRadius: "0",
-          padding: "0",
-          background: "white",
-          animation: "modalFadeIn 0.2s ease-out",
-        }}
-        overlayStyle={{
-          background: "rgba(0, 0, 0, 0.5)",
-          animation: "overlayFadeIn 0.2s ease-out",
-        }}
+        contentStyle={popupStyle}
+        overlayStyle={overlayStyle}
         trigger={
-          <button className="px-4 py-2 bg-[#ce0000] text-white text-xs font-mono border border-[#ce0000] hover:bg-[#ce0000]/90 transition-colors">
+          <button className="flex-1 px-5 py-2.5 bg-card border border-border text-negative text-xs font-mono font-semibold hover:bg-negative hover:text-white hover:border-negative transition-colors">
             SELL
           </button>
         }
@@ -97,7 +79,7 @@ export default function BuySellWatch(props: any) {
         closeOnDocumentClick
         lockScroll
       >
-        {/* @ts-ignore - reactjs-popup supports function children for modal */}
+        {/* @ts-ignore */}
         {(close: () => void) => (
           <SellPopup
             companyName={props.companyName}
@@ -107,10 +89,10 @@ export default function BuySellWatch(props: any) {
           />
         )}
       </Popup>
-      
+
       <button
         onClick={handleWatchlistAddition}
-        className="px-4 py-2 border border-[#374151] bg-white text-black text-xs font-mono hover:bg-black hover:text-white hover:border-black transition-colors"
+        className="flex-1 px-5 py-2.5 border border-border bg-card text-foreground text-xs font-mono hover:bg-foreground hover:text-background hover:border-foreground transition-colors"
       >
         WATCH
       </button>

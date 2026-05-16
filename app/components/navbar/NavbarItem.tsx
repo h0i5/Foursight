@@ -9,7 +9,7 @@ export default function NavbarItem(props: {
   return (
     <div
       className={
-        "text-[#037A68] py-1 px-2 mx-2 md:mr-1 my-2 font-semibold text-xl md:text-xl rounded-lg hover:text-teal-800 transition transition-all-1.5s hover:bg-teal-700 "
+        "text-brand py-1 px-2 mx-2 md:mr-1 my-2 font-semibold text-xl md:text-xl rounded-lg hover:text-brand/80 transition transition-all-1.5s hover:bg-brand/20 "
       }
     >
       <div className="hidden md:block">

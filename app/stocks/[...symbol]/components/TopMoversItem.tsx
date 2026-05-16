@@ -1,40 +1,43 @@
 import { NavTransition } from "@/app/components/navbar/NavTransition";
 
-export default function TopMoversItem(data: any) {
-  const nseScriptCode = data.data.company.nseScriptCode;
-  const companyName = data.data.company.companyName;
-  const logoUrl = data.data.company.logoUrl;
-  const ltp = data.data.stats.ltp.toFixed(2);
-  const dayChange = data.data.stats.dayChange.toFixed(2);
-  const dayChangePerc = data.data.stats.dayChangePerc.toFixed(2);
-  const isPositive = dayChange >= 0;
-  const changeColor = isPositive ? "text-[#037a68]" : "text-[#ce0000]";
+export default function TopMoversItem({ data }: { data: any; accent?: string }) {
+  const nseScriptCode = data.company.nseScriptCode;
+  const companyName = data.company.companyName;
+  const logoUrl = data.company.logoUrl;
+  const ltp = data.stats.ltp.toFixed(2);
+  const dayChange = data.stats.dayChange.toFixed(2);
+  const dayChangePerc = data.stats.dayChangePerc.toFixed(2);
+  const isPositive = Number(dayChange) >= 0;
+  const changeColor = isPositive ? "text-positive" : "text-negative";
 
   return (
     <NavTransition
       href={`/stocks/${encodeURIComponent(nseScriptCode)}`}
-      className="block hover:bg-black/5 transition-colors"
+      className="block hover:bg-muted transition-colors"
     >
-      <div className="flex w-full flex-row justify-between items-center px-4 py-3">
-        <div className="flex flex-row items-center gap-2">
+      <div className="flex items-center justify-between px-4 py-3 gap-3">
+        <div className="flex items-center gap-2.5 min-w-0">
           {logoUrl && (
             <img
               src={logoUrl}
               alt={companyName}
-              className="w-6 h-6 object-contain flex-shrink-0"
+              className="w-5 h-5 object-contain flex-shrink-0 opacity-80"
             />
           )}
-          <div className="text-sm font-semibold text-black">
-            {nseScriptCode}
+          <div className="min-w-0">
+            <div className="text-xs font-mono font-semibold text-foreground truncate">
+              {nseScriptCode}
+            </div>
+            <div className="text-[11px] text-foreground/55 truncate mt-0.5 max-w-[120px]">
+              {companyName}
+            </div>
           </div>
         </div>
-        <div className="flex flex-row items-baseline gap-2">
-          <span className="text-sm font-mono text-black">₹{ltp}</span>
-          <span className={`text-sm font-mono ${changeColor}`}>
-            {isPositive ? "+" : ""}
-            {dayChange} ({isPositive ? "+" : ""}
-            {dayChangePerc}%)
-          </span>
+        <div className="text-right flex-shrink-0">
+          <div className="text-sm font-mono text-foreground tabular-nums">₹{ltp}</div>
+          <div className={`text-xs font-mono tabular-nums ${changeColor}`}>
+            {isPositive ? "+" : ""}{dayChangePerc}%
+          </div>
         </div>
       </div>
     </NavTransition>

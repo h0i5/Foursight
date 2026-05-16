@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function SignUpForm() {
   return (
-    <div className="bg-[#D9D9D9] p-8 px-12 text-lg my-8 md:text-2xl flex rounded-lg mx-8">
+    <div className="bg-muted p-8 px-12 text-lg my-8 md:text-2xl flex mx-8">
       <form className="flex flex-col">
         <label htmlFor="username">Username</label>
         <input
@@ -21,7 +21,7 @@ export default function SignUpForm() {
         />
         <div className="flex justify-center items-center w-full">
           <button
-            className="bg-[#037A68] p-2 text-white rounded-md flex w-fit justify-center mt-4"
+            className="bg-brand p-2 text-brand-foreground flex w-fit justify-center mt-4"
             type="submit"
           >
             Login
@@ -31,7 +31,7 @@ export default function SignUpForm() {
           <p className="mt-4">
             Don&apos;t have an account?{" "}
             <Link href="/signup">
-              <span className="text-[#037A68]">Signup</span>
+              <span className="text-brand">Signup</span>
             </Link>
           </p>
         </div>

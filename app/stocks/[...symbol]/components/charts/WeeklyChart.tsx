@@ -8,31 +8,32 @@ import {
   type ChartConfig,
 } from "@/app/components/ui/chart";
 import Loading from "@/app/components/Loading";
+import { useChartColors } from "@/app/hooks/useChartColors";
 
 export default function WeeklyChart(props: any) {
   const data = props.data || [];
   const loading = props.loading || false;
+  const colors = useChartColors();
 
-  const chartColor = "#037a68";
+  let chartColor = colors.positive;
+  if (data.length > 0 && data[0][1] > data[data.length - 1][1]) {
+    chartColor = colors.negative;
+  }
 
-  // Format data: [timestamp (seconds), price] -> { index: number, timestamp: number (ms), price: number }
-  // Use index for x-axis to avoid gaps when market is closed
   const chartData = data.map((d: [number, number], index: number) => {
     return {
-      index: index, // Use index for x-axis positioning (no gaps)
-      timestamp: d[0] * 1000, // Convert seconds to milliseconds (as number)
+      index: index,
+      timestamp: d[0] * 1000,
       price: d[1],
     };
   });
 
-  // Calculate Y-axis domain with uniform scaling
   const prices = chartData.map(
     (d: { timestamp: number; price: number }) => d.price
   );
   const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
   const maxPrice = prices.length > 0 ? Math.max(...prices) : 100;
 
-  // Calculate nice round numbers for uniform ticks
   const priceRange = maxPrice - minPrice;
   const orderOfMagnitude = Math.pow(
     10,
@@ -48,14 +49,10 @@ export default function WeeklyChart(props: any) {
       ? 5
       : 10);
 
-  // Round min down and max up to nice intervals
   const niceMin = Math.floor(minPrice / niceStep) * niceStep;
   const niceMax = Math.ceil(maxPrice / niceStep) * niceStep;
 
-  const yAxisDomain = [
-    Math.max(0, niceMin), // Don't go below 0
-    niceMax,
-  ];
+  const yAxisDomain = [Math.max(0, niceMin), niceMax];
 
   const chartConfig = {
     price: {
@@ -66,7 +63,7 @@ export default function WeeklyChart(props: any) {
 
   if (loading || !data || data.length === 0) {
     return (
-      <div className="h-[400px] w-full border border-[#374151] bg-white flex items-center justify-center">
+      <div className="h-[400px] w-full flex items-center justify-center">
         <Loading />
       </div>
     );
@@ -78,12 +75,11 @@ export default function WeeklyChart(props: any) {
         data={chartData}
         margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
       >
-        <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.1} />
+        <CartesianGrid strokeDasharray="3 3" stroke={colors.border} opacity={0.3} />
         <XAxis
           dataKey="index"
           type="category"
           tickFormatter={(value) => {
-            // Find the data point with this index and format its timestamp
             const dataPoint = chartData.find(
               (d: { index: number; timestamp: number; price: number }) =>
                 d.index === value
@@ -102,17 +98,17 @@ export default function WeeklyChart(props: any) {
             });
             return `${dateStr}, ${timeStr}`;
           }}
-          stroke="#374151"
-          tick={{ fill: "#374151", fontSize: 11 }}
-          tickLine={{ stroke: "#374151" }}
+          stroke={colors.border}
+          tick={{ fill: colors.foreground, fontSize: 11 }}
+          tickLine={{ stroke: colors.border }}
           interval="preserveStartEnd"
         />
         <YAxis
           domain={yAxisDomain}
           tickFormatter={(value) => `₹${value.toFixed(2)}`}
-          stroke="#374151"
-          tick={{ fill: "#374151", fontSize: 11 }}
-          tickLine={{ stroke: "#374151" }}
+          stroke={colors.border}
+          tick={{ fill: colors.foreground, fontSize: 11 }}
+          tickLine={{ stroke: colors.border }}
           allowDecimals={true}
         />
         <ChartTooltip
@@ -134,11 +130,11 @@ export default function WeeklyChart(props: any) {
             const price = `₹${Number(data.price).toFixed(2)}`;
 
             return (
-              <div className="font-mono border border-[#374151] bg-white text-black px-3 py-2">
-                <div className="text-xs text-black/70">
+              <div className="font-mono border border-border bg-card text-foreground px-3 py-2">
+                <div className="text-xs text-foreground/70">
                   {formattedDate}, {formattedTime}
                 </div>
-                <div className="text-sm font-semibold text-black">{price}</div>
+                <div className="text-sm font-semibold text-foreground">{price}</div>
               </div>
             );
           }}

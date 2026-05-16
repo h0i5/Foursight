@@ -6,6 +6,7 @@ import Hamburger from "./utils/Hamburger";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { CiSearch } from "react-icons/ci";
+import { ThemeToggle } from "@/app/components/theme/ThemeToggle";
 
 const NavbarMobile = (props: any) => {
   const router = useRouter();
@@ -32,7 +33,6 @@ const NavbarMobile = (props: any) => {
 
   const handleButtonClick = () => {
     setIsVisible(!isVisible);
-    // Focus input after making it visible
     if (!isVisible) {
       setTimeout(() => {
         searchInputRef.current?.focus();
@@ -42,7 +42,6 @@ const NavbarMobile = (props: any) => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Check for Ctrl+K (or Cmd+K on Mac)
       if ((e.ctrlKey || e.metaKey) && e.key === "k") {
         e.preventDefault();
         setIsVisible(true);
@@ -59,19 +58,20 @@ const NavbarMobile = (props: any) => {
   }, []);
 
   return (
-    <div className="py-4 px-6">
+    <div className="py-4">
       <div className="flex flex-row items-center justify-between">
         <NavTransition className="flex flex-row items-center" href="/">
-          <img src="/FoursightLogo.png" alt="Foursight Logo" className="h-8" />
-          <span className="ml-2 font-medium text-black">Foursight</span>
+          <img src="/FoursightLogo.png" alt="Foursight Logo" className="h-8 !rounded-md" />
+          <span className="ml-2 font-medium text-foreground">Foursight</span>
         </NavTransition>
         <div className="flex flex-row justify-center items-center gap-2">
           <button onClick={handleButtonClick} className="p-2">
-            <CiSearch className="text-black cursor-pointer text-lg" />
+            <CiSearch className="text-foreground cursor-pointer text-lg" />
           </button>
+          <ThemeToggle />
           {!logStatus && (
             <NavTransition href="/signup" className="flex">
-              <button className="bg-black flex items-center justify-center h-[34px] px-3 text-xs font-mono text-white border border-black hover:bg-black/90 transition">
+              <button className="bg-foreground flex items-center justify-center h-[34px] px-3 text-xs font-mono text-background border border-foreground hover:bg-foreground/90 transition">
                 SIGN UP
               </button>
             </NavTransition>
@@ -81,7 +81,7 @@ const NavbarMobile = (props: any) => {
       </div>
       <div
         className={`search-bar mt-3 flex flex-row border transition px-3 h-[34px] items-center ${
-          isFocused ? "border-black" : "border-[#374151] hover:border-black"
+          isFocused ? "border-foreground" : "border-border hover:border-foreground"
         } ${isVisible ? "animate-in" : ""}`}
       >
         <form
@@ -94,12 +94,12 @@ const NavbarMobile = (props: any) => {
             onChange={(e) => setQuery(e.target.value)}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
-            className="w-full flex bg-transparent focus:border-none focus:outline-none border-none px-2 text-xs font-mono h-full"
+            className="w-full flex bg-transparent focus:border-none focus:outline-none border-none px-2 text-xs font-mono h-full text-foreground placeholder:text-muted-foreground"
             type="text"
             placeholder="Search stocks (Ctrl+K)"
           />
           <button type="submit" className="my-auto">
-            <CiSearch className="hover:text-[#037a68]" />
+            <CiSearch className="hover:text-brand text-foreground" />
           </button>
         </form>
       </div>

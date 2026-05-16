@@ -5,62 +5,60 @@ export default function Overview(props: any) {
   const {
     symbol,
     ltp,
-    open,
-    close,
     high,
     low,
-    volume,
-    lowPriceRange,
-    highPriceRange,
-    totalBuyQty,
-    totalSellQty,
     dayChange,
-    dayChangePerc,
-    lastTradeQty,
-    lastTradeTime,
   } = props;
 
   const isPositive = dayChange >= 0;
   const range = high - low;
-  const leftPercent = range > 0 ? (((ltp - low) / range) * 100).toFixed(0) : "50";
-  const rightPercent = range > 0 ? (((high - ltp) / range) * 100).toFixed(0) : "50";
-  const leftWidth = `${leftPercent}%`;
-  const rightWidth = `${rightPercent}%`;
+  const ltpPercent = range > 0 ? ((ltp - low) / range) * 100 : 50;
+  const clampedPercent = Math.min(100, Math.max(0, ltpPercent));
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col">
-        <h1 className="text-base font-semibold font-mono mb-4 text-black">
-          TODAY&apos;S PERFORMANCE
-        </h1>
-        <div className="flex max-w-[500px] items-center flex-row mb-4">
-          <div
-            className={`h-3 ${isPositive ? "bg-[#037a68]" : "bg-[#ce0000]"}`}
-            style={{ width: leftWidth }}
-          ></div>
-          <div className="w-1 h-6 bg-black"></div>
-          <div
-            className={`h-3 ${isPositive ? "bg-[#037a68]" : "bg-[#ce0000]"}`}
-            style={{ width: rightWidth }}
-          ></div>
+    <div className="space-y-10">
+      {/* Today's Range */}
+      <div>
+        <div className="border-t border-dashed border-border pt-4 mb-5">
+          <span className="text-xs font-mono text-muted-foreground tracking-wider">03 / TODAY&apos;S RANGE</span>
         </div>
-        <div className="flex flex-row justify-between max-w-[500px]">
-          <div className="flex flex-col">
-            <h2 className="text-sm font-mono text-black/60 mb-1">Low</h2>
-            <p className="text-base font-mono text-black">₹{low}</p>
+        <div className="max-w-[500px]">
+          <div className="relative h-1.5 bg-border mb-3">
+            <div
+              className={`absolute top-0 left-0 h-full ${isPositive ? "bg-positive" : "bg-negative"}`}
+              style={{ width: `${clampedPercent}%` }}
+            />
+            <div
+              className="absolute top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-foreground border-2 border-background"
+              style={{ left: `calc(${clampedPercent}% - 5px)` }}
+            />
           </div>
-          <div className="flex flex-col text-right">
-            <h2 className="text-sm font-mono text-black/60 mb-1">High</h2>
-            <p className="text-base font-mono text-black">₹{high}</p>
+          <div className="flex justify-between">
+            <div>
+              <div className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase mb-0.5">LOW</div>
+              <div className="text-sm font-mono text-foreground tabular-nums">₹{low}</div>
+            </div>
+            <div className="text-right">
+              <div className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase mb-0.5">HIGH</div>
+              <div className="text-sm font-mono text-foreground tabular-nums">₹{high}</div>
+            </div>
           </div>
         </div>
       </div>
-      
-      <div className="pt-6">
+
+      {/* Key Metrics */}
+      <div>
+        <div className="border-t border-dashed border-border pt-4 mb-5">
+          <span className="text-xs font-mono text-muted-foreground tracking-wider">04 / KEY METRICS</span>
+        </div>
         <ScripTable {...props} />
       </div>
-      
-      <div className="pt-6">
+
+      {/* Order Book */}
+      <div>
+        <div className="border-t border-dashed border-border pt-4 mb-5">
+          <span className="text-xs font-mono text-muted-foreground tracking-wider">05 / ORDER BOOK</span>
+        </div>
         <Orderbook symbol={symbol} />
       </div>
     </div>

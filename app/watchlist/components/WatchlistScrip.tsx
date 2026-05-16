@@ -4,98 +4,67 @@ import { symbols } from "@/app/components/symbols";
 import axios from "axios";
 import Link from "next/link";
 import { getCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
-import { useToast } from "@/app/hooks/use-toast";
+import { sileo } from "sileo";
 
-export default function WatchlistScrip(props: any) {
-  const router = useRouter();
-  const { toast } = useToast();
-  const symbol = props.scrip.symbol;
+export default function WatchlistScrip({ scrip, onRemove }: { scrip: any; onRemove: (symbol: string) => void }) {
   const token = getCookie("token");
-  const ltp = props.scrip.ltp;
-  const dayChange = props.scrip.dayChange;
-  const dayChangePerc = props.scrip.dayChangePerc;
-  function getCompanyName(symbol: string) {
-    let companyName = "";
-    symbols.forEach((scrip) => {
-      if (scrip.Scrip === decodeURIComponent(symbol)) {
-        companyName = scrip["Company Name"];
-      }
-    });
-    return companyName;
-  }
-  let companyName = getCompanyName(symbol) || "";
+  const symbol = scrip.symbol;
+  const ltp = scrip.ltp;
+  const dayChange = scrip.dayChange;
+  const dayChangePerc = scrip.dayChangePerc;
+  const isPositive = dayChange > 0;
 
-  async function handleWatchlistRemoval(symbol: string) {
-    let results;
+  function getCompanyName(symbol: string) {
+    const found = symbols.find((s) => s.Scrip === decodeURIComponent(symbol));
+    return found?.["Company Name"] || "";
+  }
+  const companyName = getCompanyName(symbol);
+
+  async function handleRemove() {
     try {
-      results = await axios({
+      const results = await axios({
         method: "post",
         url: apiURL + "/transaction/removeWatchList",
         headers: { Authorization: "Bearer " + token },
-        data: {
-          scrip: symbol,
-        },
+        data: { scrip: symbol },
       });
+      if (results.status === 200) {
+        sileo.success({ title: "Removed " + symbol + " from watchlist" });
+        onRemove(symbol);
+      } else {
+        sileo.error({ title: "Failed to remove " + symbol + " from watchlist" });
+      }
     } catch (err: any) {
-      results = err.response;
-    }
-    if (results.status === 200) {
-      window.location.reload();
-      toast({
-        title: "Removed " + symbol + " from watchlist",
-      });
-    } else {
-      toast({
-        title: "Failed to remove " + symbol + " from watchlist",
-        variant: "destructive",
-      });
+      const status = err.response?.status;
+      if (status === 200) {
+        sileo.success({ title: "Removed " + symbol + " from watchlist" });
+        onRemove(symbol);
+      } else {
+        sileo.error({ title: "Failed to remove " + symbol + " from watchlist" });
+      }
     }
   }
 
   return (
-    <div className="h-full">
-      <div className="flex flex-col border border-[#374151] p-6 h-full bg-white hover:border-black transition-colors">
-        <Link href={`/stocks/${encodeURIComponent(symbol)}`}>
-          <div className="mb-6">
-            <h1 className="text-xl font-bold mb-4 text-black line-clamp-1">
-              {companyName}
-            </h1>
-            <div className="flex items-baseline justify-between gap-4">
-              <h1 className="text-2xl font-mono font-semibold text-black">
-                ₹{ltp}
-              </h1>
-              <div className="flex flex-row items-baseline gap-1">
-                <h1
-                  className={`${
-                    dayChange > 0 ? "text-[#037a68]" : "text-[#ce0000]"
-                  } font-mono text-lg`}
-                >
-                  {dayChange > 0 ? "+" : ""}
-                  {dayChange.toFixed(2)}
-                </h1>
-                <h1
-                  className={`${
-                    dayChange > 0 ? "text-[#037a68]" : "text-[#ce0000]"
-                  } font-mono text-sm`}
-                >
-                  ({dayChangePerc > 0 ? "+" : ""}
-                  {dayChangePerc.toFixed(2)}%)
-                </h1>
-              </div>
-            </div>
-          </div>
-        </Link>
-        <div className="w-full mt-auto">
-          <button
-            onClick={(e) => {
-              handleWatchlistRemoval(symbol);
-            }}
-            className="w-full text-center border border-[#374151] hover:bg-black hover:text-white hover:border-black transition-colors px-4 py-3 text-sm font-mono"
-          >
-            REMOVE
-          </button>
+    <div className="flex flex-col border border-border bg-card hover:bg-muted transition-colors h-full">
+      <Link href={`/stocks/${encodeURIComponent(symbol)}`} className="flex flex-col p-6 flex-grow">
+        <span className="text-xs font-mono text-muted-foreground tracking-wider mb-1">{symbol}</span>
+        <span className="text-sm font-medium text-foreground mb-4 line-clamp-1">{companyName}</span>
+        <span className={`text-2xl font-mono font-semibold mb-1 ${isPositive ? "text-positive" : "text-negative"}`}>
+          ₹{ltp}
+        </span>
+        <div className={`flex flex-row gap-1 text-xs font-mono ${isPositive ? "text-positive" : "text-negative"}`}>
+          <span>{isPositive ? "+" : ""}{dayChange.toFixed(2)}</span>
+          <span>({isPositive ? "+" : ""}{dayChangePerc.toFixed(2)}%)</span>
         </div>
+      </Link>
+      <div className="border-t border-border">
+        <button
+          onClick={handleRemove}
+          className="w-full text-center px-4 py-3 text-xs font-mono text-muted-foreground hover:text-negative hover:bg-muted transition-colors"
+        >
+          REMOVE
+        </button>
       </div>
     </div>
   );

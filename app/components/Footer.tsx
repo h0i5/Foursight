@@ -4,14 +4,14 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="py-8 px-6 md:px-0 text-center border-t border-dotted border-[#374151] mt-auto">
-      <p className="text-sm font-mono text-black/60 mb-2">
-        Made with <span className="text-[#ce0000]">&lt;3</span> by{" "}
+    <footer className="py-8 px-6 md:px-0 text-center border-t border-dotted border-border mt-auto">
+      <p className="text-sm font-mono text-foreground/60 mb-2">
+        Made with <span className="text-negative">&lt;3</span> by{" "}
         <Link
           href="https://harshiyer.in"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[#037a68] hover:underline"
+          className="text-brand hover:underline"
         >
           h0i5
         </Link>{" "}
@@ -20,12 +20,12 @@ export default function Footer() {
           href="https://github.com/h0i5/foursight"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[#037a68] hover:underline"
+          className="text-brand hover:underline"
         >
           GitHub
         </Link>
       </p>
-      <p className="text-xs font-mono text-black/50">
+      <p className="text-xs font-mono text-foreground/50">
         &copy; {currentYear} Harsh Iyer. All rights reserved.
       </p>
     </footer>

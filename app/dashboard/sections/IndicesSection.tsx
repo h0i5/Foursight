@@ -1,41 +1,36 @@
-import { useEffect, useState } from "react";
 import IndicesComponent from "../components/IndicesComponent";
 import ScrollableContainer from "../components/ScrollableContainer";
 
 export default function IndicesSection(props: any) {
   const data = props;
-  let indicesData = [
-    {
-      SENSEX: {
-        name: "SENSEX",
-        data: data.data?.data?.exchangeAggRespMap.BSE.indexLivePointsMap["1"],
-      },
-      NIFTY: {
-        name: "NIFTY",
-        data: data.data?.data?.exchangeAggRespMap.NSE.indexLivePointsMap.NIFTY,
-      },
-      BANKNIFTY: {
-        name: "BANKNIFTY",
-        data: data.data?.data?.exchangeAggRespMap.NSE.indexLivePointsMap
-          .BANKNIFTY,
-      },
-      NIFTYMIDSELECT: {
-        name: "NIFTYMIDSELECT",
-        data: data.data?.data?.exchangeAggRespMap.NSE.indexLivePointsMap
-          .NIFTYMIDSELECT,
-      },
-      FINNIFTY: {
-        name: "FINNIFTY",
-        data: data.data?.data?.exchangeAggRespMap.NSE.indexLivePointsMap
-          .FINNIFTY,
-      },
+  const indicesList = {
+    SENSEX: {
+      name: "SENSEX",
+      data: data.data?.data?.exchangeAggRespMap.BSE.indexLivePointsMap["1"],
     },
-  ];
-  const indicesList = indicesData[0];
-  
+    NIFTY: {
+      name: "NIFTY",
+      data: data.data?.data?.exchangeAggRespMap.NSE.indexLivePointsMap.NIFTY,
+    },
+    BANKNIFTY: {
+      name: "BANKNIFTY",
+      data: data.data?.data?.exchangeAggRespMap.NSE.indexLivePointsMap.BANKNIFTY,
+    },
+    NIFTYMIDSELECT: {
+      name: "NIFTYMIDSELECT",
+      data: data.data?.data?.exchangeAggRespMap.NSE.indexLivePointsMap.NIFTYMIDSELECT,
+    },
+    FINNIFTY: {
+      name: "FINNIFTY",
+      data: data.data?.data?.exchangeAggRespMap.NSE.indexLivePointsMap.FINNIFTY,
+    },
+  };
+
   return (
     <div className="w-full">
-      <h2 className="text-xl font-bold mb-4 text-black">Indices</h2>
+      <div className="border-t border-dashed border-border pt-4 mb-4">
+        <span className="text-xs font-mono text-muted-foreground tracking-wider">01 / INDICES</span>
+      </div>
       <ScrollableContainer>
         <IndicesComponent data={indicesList.SENSEX} />
         <IndicesComponent data={indicesList.NIFTY} />

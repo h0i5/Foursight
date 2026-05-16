@@ -72,11 +72,11 @@ function AuthCallbackContent() {
   }, [searchParams, router]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen bg-background">
       <div className="flex-grow flex items-center justify-center">
         <div className="text-center">
           <Loading />
-          <p className="mt-4 text-sm font-mono text-black/60">Completing sign in...</p>
+          <p className="mt-4 text-sm font-mono text-foreground/60">Completing sign in...</p>
         </div>
       </div>
     </div>
@@ -86,11 +86,11 @@ function AuthCallbackContent() {
 export default function AuthCallback() {
   return (
     <Suspense fallback={
-      <div className="flex flex-col min-h-screen bg-white">
+      <div className="flex flex-col min-h-screen bg-background">
         <div className="flex-grow flex items-center justify-center">
           <div className="text-center">
             <Loading />
-            <p className="mt-4 text-sm font-mono text-black/60">Loading...</p>
+            <p className="mt-4 text-sm font-mono text-foreground/60">Loading...</p>
           </div>
         </div>
       </div>

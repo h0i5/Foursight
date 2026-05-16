@@ -36,8 +36,8 @@ export default function HoldingTable(props: any) {
   if (!data || data.length === 0) {
     return (
       <div className="w-full overflow-x-auto">
-        <div className="border border-[#374151] bg-white min-w-[800px]">
-          <div className="px-6 py-12 text-center text-sm font-mono text-black/60">
+        <div className="border border-border bg-card min-w-[800px]">
+          <div className="px-6 py-12 text-center text-sm font-mono text-foreground/60">
             No holdings yet
           </div>
         </div>
@@ -47,9 +47,9 @@ export default function HoldingTable(props: any) {
 
   return (
     <div className="w-full overflow-x-auto">
-      <div className="border border-[#374151] bg-white min-w-[800px]">
-        <div className="border-b border-[#374151] px-6 py-3 bg-white">
-          <div className="grid grid-cols-7 gap-6 text-xs font-mono font-semibold text-black/60 uppercase tracking-wider">
+      <div className="border border-border bg-card min-w-[800px]">
+        <div className="border-b border-border px-6 py-3 bg-muted">
+          <div className="grid grid-cols-7 gap-6 text-xs font-mono font-semibold text-foreground/60 uppercase tracking-wider">
             <div className="text-left">SCRIP</div>
             <div className="text-right">QUANTITY</div>
             <div className="text-right">BUY</div>
@@ -59,7 +59,7 @@ export default function HoldingTable(props: any) {
             <div className="text-right">VALUE</div>
           </div>
         </div>
-        <div className="divide-y divide-[#374151]">
+        <div className="divide-y divide-border">
           {data.map((holding: any) => {
             if (!holding || !holding.scrip) return null;
             const profit = parseFloat(getProfitsByScrip(holding.scrip) || "0");
@@ -73,29 +73,29 @@ export default function HoldingTable(props: any) {
             return (
               <div
                 key={holding.scrip}
-                className="px-6 py-3 hover:bg-black/5 transition-colors"
+                className="px-6 py-3 hover:bg-muted transition-colors"
               >
                 <div className="grid grid-cols-7 gap-6 text-sm font-mono items-center">
                   <div className="text-left">
                     <NavTransition
                       href={`/stocks/${encodeURIComponent(holding.scrip)}`}
-                      className="font-semibold text-black hover:underline"
+                      className="font-semibold text-foreground hover:underline"
                     >
                       {holding.scrip}
                     </NavTransition>
                   </div>
-                  <div className="text-right text-black">
+                  <div className="text-right text-foreground">
                     {quantity}
                   </div>
-                  <div className="text-right text-black">
+                  <div className="text-right text-foreground">
                     ₹{buyPrice.toFixed(1)}
                   </div>
-                  <div className="text-right text-black">
+                  <div className="text-right text-foreground">
                     ₹{getLTP(holding.scrip)}
                   </div>
                   <div
                     className={`text-right font-semibold ${
-                      isProfitPositive ? "text-[#037a68]" : "text-[#ce0000]"
+                      isProfitPositive ? "text-positive" : "text-negative"
                     }`}
                   >
                     {isProfitPositive ? "+" : ""}
@@ -103,13 +103,13 @@ export default function HoldingTable(props: any) {
                   </div>
                   <div
                     className={`text-right font-semibold ${
-                      profitPerShare > 0 ? "text-[#037a68]" : "text-[#ce0000]"
+                      profitPerShare > 0 ? "text-positive" : "text-negative"
                     }`}
                   >
                     {profitPerShare > 0 ? "+" : ""}
                     {getProfitPerScrip(holding.scrip)}
                   </div>
-                  <div className="text-right text-black">
+                  <div className="text-right text-foreground">
                     ₹{(quantity * buyPrice).toFixed(0)}
                   </div>
                 </div>

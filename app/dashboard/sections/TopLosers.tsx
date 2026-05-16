@@ -14,30 +14,30 @@ export default function TopLosers(props: any) {
       <div className="flex flex-row gap-2 mb-4">
         <button
           onClick={() => setDisplay("LARGECAP")}
-          className={`px-4 py-2 text-xs font-mono border border-[#374151] transition-colors ${
+          className={`px-4 py-2 text-xs font-mono border border-border transition-colors ${
             display === "LARGECAP"
-              ? "bg-black text-white border-black"
-              : "bg-white text-black hover:border-black"
+              ? "bg-foreground text-background border-foreground"
+              : "bg-card text-foreground hover:border-foreground"
           }`}
         >
           LARGE
         </button>
         <button
           onClick={() => setDisplay("MIDCAP")}
-          className={`px-4 py-2 text-xs font-mono border border-[#374151] transition-colors ${
+          className={`px-4 py-2 text-xs font-mono border border-border transition-colors ${
             display === "MIDCAP"
-              ? "bg-black text-white border-black"
-              : "bg-white text-black hover:border-black"
+              ? "bg-foreground text-background border-foreground"
+              : "bg-card text-foreground hover:border-foreground"
           }`}
         >
           MID
         </button>
         <button
           onClick={() => setDisplay("SMALLCAP")}
-          className={`px-4 py-2 text-xs font-mono border border-[#374151] transition-colors ${
+          className={`px-4 py-2 text-xs font-mono border border-border transition-colors ${
             display === "SMALLCAP"
-              ? "bg-black text-white border-black"
-              : "bg-white text-black hover:border-black"
+              ? "bg-foreground text-background border-foreground"
+              : "bg-card text-foreground hover:border-foreground"
           }`}
         >
           SMALL
