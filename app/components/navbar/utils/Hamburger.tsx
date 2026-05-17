@@ -93,6 +93,7 @@ export default function Hamburger() {
                 <NavTransition
                   key={option.id}
                   href={option.href}
+                  onClick={() => setIsOpen(false)}
                   className={`${dropdownClass} ${
                     option.title === "LOG OUT"
                       ? "text-negative"

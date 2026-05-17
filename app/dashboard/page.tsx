@@ -8,23 +8,26 @@ import IndicesSection from "./sections/IndicesSection";
 import TopMoversSection from "./sections/TopMoversSection";
 import getTopMovers from "./handlers/topMovers";
 import TopMarketCap from "./components/TopMarketCap";
-import Loading from "../components/Loading";
 import MarqueeTicker from "../components/landing/MarqueeTicker";
 import { DotmSquare6 } from "../components/ui/dotm-square-6";
 
 export default function DashboardPage() {
-  let token = getCookie("token") as string | undefined;
   const [username, setUsername] = useState("");
+  const [dateLabel, setDateLabel] = useState("");
   const [marketCapData, setMarketCapData] = useState<any>([]);
   const [indicesData, setIndicesData] = useState<any>({});
   const [topMovers, setTopMovers] = useState<any>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (token) {
-      const tokenContents = parseJwt(token as string);
-      setUsername(tokenContents?.username || "");
-    }
+    const token = getCookie("token") as string | undefined;
+    if (token) setUsername(parseJwt(token)?.username || "");
+
+    setDateLabel(new Date().toLocaleDateString("en-IN", {
+      weekday: "long",
+      day: "numeric",
+      month: "short",
+    }));
 
     async function loadDashboard() {
       try {
@@ -43,13 +46,7 @@ export default function DashboardPage() {
       }
     }
     loadDashboard();
-  }, [token]);
-
-  const dateLabel = new Date().toLocaleDateString("en-IN", {
-    weekday: "long",
-    day: "numeric",
-    month: "short",
-  });
+  }, []);
 
   return (
     <>
@@ -64,26 +61,18 @@ export default function DashboardPage() {
               <span className="text-xs font-mono text-muted-foreground tracking-wider">OVERVIEW</span>
               <h1 className="text-3xl md:text-4xl font-bold tracking-tight mt-1">
                 Welcome back,{" "}
-                {loading ? (
-                  <span className="inline-flex items-center align-middle">
-                    <Loading />
-                  </span>
-                ) : (
-                  <span className="text-brand">{username}</span>
-                )}
+                <span className="text-brand">{username}</span>
               </h1>
               <p className="text-sm font-mono text-foreground/50 mt-1 tracking-wider">
                 NSE · LIVE · {dateLabel}
               </p>
             </div>
-            <div className="hidden md:block flex-shrink-0">
+            <div className="hidden md:block flex-shrink-0 mt-4">
               <DotmSquare6
-                size={72}
-                dotSize={6}
-                speed={1.4}
+                size={32}
+                dotSize={4}
+                speed={1.2}
                 bloom
-                opacityBase={0.25}
-                opacityMid={0.55}
                 color="rgb(var(--positive))"
               />
             </div>
