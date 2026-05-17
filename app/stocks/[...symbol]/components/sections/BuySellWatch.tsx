@@ -11,7 +11,7 @@ import { NavTransition } from "@/app/components/navbar/NavTransition";
 
 export default function BuySellWatch(props: any) {
   let symbol = props.symbol || "";
-  let token = getCookie("token");
+  let token = getCookie("token") as string | undefined;
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [buyOpen, setBuyOpen] = useState(false);
   const [sellOpen, setSellOpen] = useState(false);

@@ -8,7 +8,7 @@ import { NavTransition } from "../components/navbar/NavTransition";
 
 export default function WatchlistPage() {
   const [watchlistData, setWatchlistData] = useState<any>({});
-  const token = getCookie("token");
+  const token = getCookie("token") as string | undefined;
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

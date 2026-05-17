@@ -15,7 +15,7 @@ export default function NavbarDesktop(props: any) {
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const token = getCookie("token");
+    const token = getCookie("token") as string | undefined;
     setLogStatus(!!token);
   }, [pathname]);
 

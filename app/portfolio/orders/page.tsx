@@ -6,7 +6,7 @@ import { getCookie } from "cookies-next";
 import { useState, useEffect } from "react";
 
 export default function OrderPage() {
-  let token = getCookie("token");
+  let token = getCookie("token") as string | undefined;
   const [details, setDetails] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 

@@ -10,7 +10,7 @@ export default function Logout() {
   }
 
   useEffect(() => {
-    if (getCookie("token")) {
+    if (getCookie("token") as string | undefined) {
       deleteCookie("token");
       sleep(500);
       router.push("/");

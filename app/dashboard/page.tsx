@@ -13,7 +13,7 @@ import MarqueeTicker from "../components/landing/MarqueeTicker";
 import { DotmSquare6 } from "../components/ui/dotm-square-6";
 
 export default function DashboardPage() {
-  let token = getCookie("token");
+  let token = getCookie("token") as string | undefined;
   const [username, setUsername] = useState("");
   const [marketCapData, setMarketCapData] = useState<any>([]);
   const [indicesData, setIndicesData] = useState<any>({});
@@ -22,7 +22,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (token) {
-      const tokenContents = parseJwt(token);
+      const tokenContents = parseJwt(token as string);
       setUsername(tokenContents?.username || "");
     }
 

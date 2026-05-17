@@ -6,7 +6,7 @@ import { apiURL } from "../components/apiURL";
 import Networth from "./sections/Networth";
 
 export default function PortfolioPage() {
-  let token = getCookie("token");
+  let token = getCookie("token") as string | undefined;
   const [details, setDetails] = useState<any>({});
   const [profitDetails, setProfitDetails] = useState<any>({});
   const [loading, setLoading] = useState(true);

@@ -8,7 +8,7 @@ import { sileo } from "sileo";
 
 export default function BuyPopup(props: any) {
   let symbol = props.symbol || "";
-  let token = getCookie("token");
+  let token = getCookie("token") as string | undefined;
   const onClose = props.onClose || (() => {});
 
   const [quantity, setQuantity] = useState(0);

@@ -22,7 +22,7 @@ const NavbarMobile = (props: any) => {
   }
 
   useEffect(() => {
-    const token = getCookie("token");
+    const token = getCookie("token") as string | undefined;
     setLogStatus(!!token);
   }, [pathname]);
 

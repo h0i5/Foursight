@@ -7,7 +7,7 @@ import { getCookie } from "cookies-next";
 import { sileo } from "sileo";
 
 export default function WatchlistScrip({ scrip, onRemove }: { scrip: any; onRemove: (symbol: string) => void }) {
-  const token = getCookie("token");
+  const token = getCookie("token") as string | undefined;
   const symbol = scrip.symbol;
   const ltp = scrip.ltp;
   const dayChange = scrip.dayChange;

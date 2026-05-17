@@ -9,7 +9,7 @@ import { sileo } from "sileo";
 export default function SellPopup(props: any) {
   const [quantity, setQuantity] = useState(0);
   let symbol = props.symbol || "";
-  let token = getCookie("token");
+  let token = getCookie("token") as string | undefined;
   const onClose = props.onClose || (() => {});
   function updateQuantity(e: any) {
     const value = parseFloat(e.target.value) || 0;
