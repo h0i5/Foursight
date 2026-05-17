@@ -97,10 +97,7 @@ export default function SellPopup(props: any) {
             className="w-full px-4 py-3 bg-negative text-white text-sm font-mono border border-negative hover:bg-negative/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
           >
             {loading ? (
-              <>
-                <Loading />
-                <span className="ml-2">Selling...</span>
-              </>
+              <Loading />
             ) : (
               "SELL"
             )}

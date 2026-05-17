@@ -86,7 +86,7 @@ export default function Hamburger() {
             }}
           >
             <div
-              className="py-1 transition-all duration-300 ease-in-out"
+              className="flex flex-col gap-y-1 transition-all duration-300 ease-in-out"
               role="none"
             >
               {options.map((option) => (

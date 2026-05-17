@@ -92,10 +92,7 @@ export default function BuyPopup(props: any) {
             className="w-full px-4 py-3 bg-brand text-brand-foreground text-sm font-mono border border-brand hover:bg-brand/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
           >
             {loading ? (
-              <>
-                <Loading />
-                <span className="ml-2">Buying...</span>
-              </>
+              <Loading />
             ) : (
               "BUY"
             )}

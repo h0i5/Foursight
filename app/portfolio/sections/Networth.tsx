@@ -212,7 +212,7 @@ export default function Networth(props: any) {
                   <ChartLegend
                     content={
                       <ChartLegendContent
-                        className="font-mono text-xs"
+                        className="font-mono text-xs flex-wrap"
                         nameKey="name"
                       />
                     }
