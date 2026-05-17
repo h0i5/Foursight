@@ -46,7 +46,7 @@ export default function WatchlistPage() {
         <div
           className="mt-8 mb-8"
         >
-          <span className="text-xs font-mono text-muted-foreground tracking-wider">01 / WATCHLIST</span>
+          <span className="text-xs font-mono text-muted-foreground tracking-wider">WATCHLIST</span>
         </div>
 
         {loading ? (

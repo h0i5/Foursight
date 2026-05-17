@@ -29,7 +29,7 @@ export default function IndicesSection(props: any) {
   return (
     <div className="w-full">
       <div className="border-t border-dashed border-border pt-4 mb-4">
-        <span className="text-xs font-mono text-muted-foreground tracking-wider">01 / INDICES</span>
+        <span className="text-xs font-mono text-muted-foreground tracking-wider">INDICES</span>
       </div>
       <ScrollableContainer>
         <IndicesComponent data={indicesList.SENSEX} />

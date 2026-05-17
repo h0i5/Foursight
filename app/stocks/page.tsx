@@ -20,7 +20,7 @@ function StocksPage() {
         {searchQuery !== "" ? (
           <>
             <div className="mt-8 mb-6">
-              <span className="text-xs font-mono text-muted-foreground tracking-wider">01 / RESULTS</span>
+              <span className="text-xs font-mono text-muted-foreground tracking-wider">RESULTS</span>
             </div>
             <div className="mb-2">
               <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
@@ -65,14 +65,14 @@ function StocksPage() {
             </div>
 
             <div className="mb-6">
-              <span className="text-xs font-mono text-muted-foreground tracking-wider">02 / TOP MOVERS</span>
+              <span className="text-xs font-mono text-muted-foreground tracking-wider">TOP MOVERS</span>
             </div>
             <TopMovers />
           </>
         ) : (
           <>
             <div className="mt-8 mb-6">
-              <span className="text-xs font-mono text-muted-foreground tracking-wider">01 / EXPLORE</span>
+              <span className="text-xs font-mono text-muted-foreground tracking-wider">EXPLORE</span>
             </div>
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight mb-8">
               Explore stocks

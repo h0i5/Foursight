@@ -35,7 +35,7 @@ export default function PortfolioPage() {
         <div
           className="mt-8 mb-8"
         >
-          <span className="text-xs font-mono text-muted-foreground tracking-wider">01 / PORTFOLIO</span>
+          <span className="text-xs font-mono text-muted-foreground tracking-wider">PORTFOLIO</span>
         </div>
         <Networth data={details} profitDetails={profitDetails} loading={loading} />
       </div>

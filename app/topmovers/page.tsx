@@ -39,7 +39,7 @@ export default function TopMovers() {
         <div
           className="mt-8 mb-6"
         >
-          <span className="text-xs font-mono text-muted-foreground tracking-wider">01 / TOP MOVERS</span>
+          <span className="text-xs font-mono text-muted-foreground tracking-wider">TOP MOVERS</span>
         </div>
 
         <div className="flex flex-row gap-2 mb-8">

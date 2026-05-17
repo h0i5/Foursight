@@ -32,7 +32,7 @@ export default function OrderPage() {
     <div className="px-4 sm:px-6 lg:px-8 pt-8 mb-16">
       <div className="max-w-7xl mx-auto">
         <div className="mt-8 mb-8">
-          <span className="text-xs font-mono text-muted-foreground tracking-wider">01 / ORDER BOOK</span>
+          <span className="text-xs font-mono text-muted-foreground tracking-wider">ORDER BOOK</span>
         </div>
 
         {loading ? (

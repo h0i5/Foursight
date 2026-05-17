@@ -9,7 +9,7 @@ export default function TopMoversSection(props: any) {
     <div className="space-y-12">
       <div>
         <div className="border-t border-dashed border-border pt-4 mb-4 flex items-center justify-between">
-          <span className="text-xs font-mono text-muted-foreground tracking-wider">02 / GAINERS</span>
+          <span className="text-xs font-mono text-muted-foreground tracking-wider">GAINERS</span>
           <NavTransition href="/topmovers" className="text-xs font-mono text-positive hover:underline shrink-0">
             VIEW MORE →
           </NavTransition>
@@ -19,7 +19,7 @@ export default function TopMoversSection(props: any) {
 
       <div>
         <div className="border-t border-dashed border-border pt-4 mb-4 flex items-center justify-between">
-          <span className="text-xs font-mono text-muted-foreground tracking-wider">03 / LOSERS</span>
+          <span className="text-xs font-mono text-muted-foreground tracking-wider">LOSERS</span>
           <NavTransition href="/topmovers" className="text-xs font-mono text-negative hover:underline shrink-0">
             VIEW MORE →
           </NavTransition>

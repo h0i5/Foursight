@@ -38,33 +38,25 @@ function Chip({ label }: { label: string }) {
 export default function Home() {
   return (
     <>
-      {/* ── 01 / HERO ─────────────────────────────────────────────────────── */}
+      {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section className="px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-0">
         <div className="max-w-7xl mx-auto">
-          <div
-            className="border-t border-border pt-5 sm:pt-6 mb-8 sm:mb-10"
-          >
-            <span className="font-mono text-xs text-muted-foreground tracking-widest uppercase">
-              — 01 / OVERVIEW
-            </span>
-          </div>
-
           <h1
             className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.92] mb-6 sm:mb-8 max-w-4xl"
           >
-            Trade the<br />
-            Indian markets.{" "}
+            Practice trading<br />
+            Indian stocks.{" "}
             <span className="font-mono" style={{ color: "rgb(var(--positive))" }}>
-              Risk&nbsp;=&gt;&nbsp;0.
+              Zero&nbsp;rupees&nbsp;at&nbsp;risk.
             </span>
           </h1>
 
           <p
             className="text-base sm:text-lg text-foreground/60 max-w-xl mb-8 sm:mb-10 leading-relaxed"
           >
-            Foursight is an open-source paper-trading terminal for NSE.
-            Live data on 2000+ stocks — build watchlists, simulate trades,
-            track P&amp;L. Without spending a rupee.
+            Foursight is a free, open-source paper trading terminal for NSE.
+            Practice on live data from 2000+ stocks — build your strategy,
+            place trades, and track P&amp;L. No real money, ever.
           </p>
 
           <div
@@ -113,24 +105,24 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 02 / FEATURES — BENTO ─────────────────────────────────────────── */}
+      {/* ── FEATURES — BENTO ─────────────────────────────────────────── */}
       <section className="px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="max-w-7xl mx-auto">
           <div className="mb-10 sm:mb-12">
             <span className="font-mono text-xs text-muted-foreground tracking-widest uppercase">
-              — 02 / FEATURES
+              FEATURES
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mt-3 leading-tight">
-              Built like a terminal.<br />Behaves like one.
+              Real prices.<br />Simulated trades. Real learning.
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-px bg-border">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-px bg-border border border-border">
 
-            {/* 01 / DATA — col-span-2 */}
+            {/* DATA — col-span-2 */}
             <div className="sm:col-span-2 bg-card p-5 sm:p-8 hover:bg-muted transition-colors duration-200 flex flex-col justify-between gap-5 sm:gap-6">
               <div>
-                <Chip label="01 / DATA" />
+                <Chip label="DATA" />
                 <h3 className="font-mono text-sm uppercase tracking-wider text-foreground mb-2">
                   Live data · 2000+ scrips
                 </h3>
@@ -148,10 +140,10 @@ export default function Home() {
               </div>
             </div>
 
-            {/* 02 / CHARTS — row-span-2 on md+ */}
+            {/* CHARTS — row-span-2 on md+ */}
             <div className="sm:col-span-2 md:col-span-1 md:row-span-2 bg-card p-5 sm:p-8 hover:bg-muted transition-colors duration-200 flex flex-col gap-5 sm:gap-6">
               <div>
-                <Chip label="02 / CHARTS" />
+                <Chip label="CHARTS" />
                 <h3 className="font-mono text-sm uppercase tracking-wider text-foreground mb-2">
                   Advanced charting
                 </h3>
@@ -180,10 +172,10 @@ export default function Home() {
               </p>
             </div>
 
-            {/* 03 / PORTFOLIO */}
+            {/* PORTFOLIO */}
             <div className="bg-card p-5 sm:p-8 hover:bg-muted transition-colors duration-200 flex flex-col gap-4">
               <div>
-                <Chip label="03 / PORTFOLIO" />
+                <Chip label="PORTFOLIO" />
                 <h3 className="font-mono text-sm uppercase tracking-wider text-foreground mb-1">
                   Paper portfolio
                 </h3>
@@ -208,10 +200,10 @@ export default function Home() {
               </div>
             </div>
 
-            {/* 04 / WATCHLIST */}
+            {/* WATCHLIST */}
             <div className="bg-card p-5 sm:p-8 hover:bg-muted transition-colors duration-200 flex flex-col gap-4">
               <div>
-                <Chip label="04 / WATCHLIST" />
+                <Chip label="WATCHLIST" />
                 <h3 className="font-mono text-sm uppercase tracking-wider text-foreground mb-1">
                   Customizable watchlists
                 </h3>
@@ -229,10 +221,10 @@ export default function Home() {
               </div>
             </div>
 
-            {/* 05 / MOVERS */}
+            {/* MOVERS */}
             <div className="bg-card p-5 sm:p-8 hover:bg-muted transition-colors duration-200 flex flex-col gap-4">
               <div>
-                <Chip label="05 / MOVERS" />
+                <Chip label="MOVERS" />
                 <h3 className="font-mono text-sm uppercase tracking-wider text-foreground mb-1">
                   Live top movers
                 </h3>
@@ -263,21 +255,21 @@ export default function Home() {
               </div>
             </div>
 
-            {/* 06 / OSS — col-span-2 */}
+            {/* OSS — col-span-2 */}
             <div className="sm:col-span-2 bg-card p-5 sm:p-8 hover:bg-muted transition-colors duration-200 flex flex-col justify-between gap-5 sm:gap-6">
               <div>
-                <Chip label="06 / OSS" />
+                <Chip label="OSS" />
                 <h3 className="font-mono text-sm uppercase tracking-wider text-foreground mb-2">
                   Open source · MIT license
                 </h3>
                 <p className="text-sm text-foreground/50">
-                  Built in public. Fork it, self-host it, contribute to it. No lock-in.
+                  Built in public. Read the code, open an issue, or send a PR.
                 </p>
               </div>
               <div className="bg-background border border-border p-4 font-mono text-xs sm:text-sm flex flex-col gap-2 overflow-hidden">
                 <div className="flex gap-1 min-w-0">
-                  <span className="text-muted-foreground shrink-0">$ </span>
-                  <span className="text-foreground truncate">git clone github.com/h0i5/foursight</span>
+                  <span className="text-muted-foreground shrink-0">&gt; </span>
+                  <span className="text-foreground truncate">github.com/h0i5/foursight</span>
                 </div>
                 <div>
                   <span className="text-muted-foreground">&gt; </span>
@@ -298,33 +290,33 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 03 / HOW IT WORKS ─────────────────────────────────────────────── */}
+      {/* ── HOW IT WORKS ─────────────────────────────────────────────── */}
       <section className="px-4 sm:px-6 lg:px-8 py-16 sm:py-24 border-t border-border">
         <div className="max-w-7xl mx-auto">
           <div className="mb-10 sm:mb-12">
             <span className="font-mono text-xs text-muted-foreground tracking-widest uppercase">
-              — 03 / FLOW
+              FLOW
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mt-3">
-              From signup to first trade<br className="hidden sm:block" /> in 60 seconds.
+              Up and running<br className="hidden sm:block" /> in under a minute.
             </h2>
           </div>
           <div className="flex flex-col divide-y divide-border border-t border-border">
             {[
               {
                 n: "01",
-                title: "Create an account",
-                sub: "Free. Open source. No card required. MIT license — self-host if you want.",
+                title: "Create a free account",
+                sub: "No card. No deposit. No real money, ever. Just sign up and start — it's fully open source.",
               },
               {
                 n: "02",
-                title: "Build a watchlist",
-                sub: "Search across 2000+ NSE-listed scrips. Add anything. Track what matters.",
+                title: "Build your watchlist",
+                sub: "Search across 2000+ NSE-listed scrips. Track the stocks you care about in real time.",
               },
               {
                 n: "03",
                 title: "Place your first paper trade",
-                sub: "Simulate buys and sells with ₹2.5L virtual capital. Real P&L. Zero risk.",
+                sub: "Buy and sell with ₹2.5L virtual capital. Watch your P&L move on real market data. Nothing real is on the line.",
               },
             ].map((step) => (
               <div

@@ -4,12 +4,13 @@ import { useEffect, useState, useRef } from "react";
 import { NavTransition } from "./NavTransition";
 import Hamburger from "./utils/Hamburger";
 import { getCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { CiSearch } from "react-icons/ci";
 import { ThemeToggle } from "@/app/components/theme/ThemeToggle";
 
 const NavbarMobile = (props: any) => {
   const router = useRouter();
+  const pathname = usePathname();
   const [logStatus, setLogStatus] = useState(false);
   const [query, setQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
@@ -22,12 +23,8 @@ const NavbarMobile = (props: any) => {
 
   useEffect(() => {
     const token = getCookie("token");
-    if (token) {
-      setLogStatus(true);
-    } else {
-      setLogStatus(false);
-    }
-  }, [logStatus]);
+    setLogStatus(!!token);
+  }, [pathname]);
 
   const [isVisible, setIsVisible] = useState(false);
 

@@ -46,7 +46,7 @@ export default function HighChart(props: any) {
   return (
     <div>
       <div className="border-t border-dashed border-border pt-4 mb-5 flex items-center justify-between">
-        <span className="text-xs font-mono text-muted-foreground tracking-wider">02 / CHART</span>
+        <span className="text-xs font-mono text-muted-foreground tracking-wider">CHART</span>
         <div className="flex gap-1">
           {TABS.map((tab) => (
             <button

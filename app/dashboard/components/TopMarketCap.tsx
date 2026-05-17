@@ -9,7 +9,7 @@ export default function TopMarketCap(props: any) {
   return (
     <div>
       <div className="border-t border-dashed border-border pt-4 mb-4">
-        <span className="text-xs font-mono text-muted-foreground tracking-wider">04 / MARKET CAP</span>
+        <span className="text-xs font-mono text-muted-foreground tracking-wider">MARKET CAP</span>
       </div>
       <div className="border border-border bg-card overflow-x-auto">
         <table className="w-full">

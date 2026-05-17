@@ -20,7 +20,7 @@ export default function Overview(props: any) {
       {/* Today's Range */}
       <div>
         <div className="border-t border-dashed border-border pt-4 mb-5">
-          <span className="text-xs font-mono text-muted-foreground tracking-wider">03 / TODAY&apos;S RANGE</span>
+          <span className="text-xs font-mono text-muted-foreground tracking-wider">TODAY&apos;S RANGE</span>
         </div>
         <div className="max-w-[500px]">
           <div className="relative h-1.5 bg-border mb-3">
@@ -49,7 +49,7 @@ export default function Overview(props: any) {
       {/* Key Metrics */}
       <div>
         <div className="border-t border-dashed border-border pt-4 mb-5">
-          <span className="text-xs font-mono text-muted-foreground tracking-wider">04 / KEY METRICS</span>
+          <span className="text-xs font-mono text-muted-foreground tracking-wider">KEY METRICS</span>
         </div>
         <ScripTable {...props} />
       </div>
@@ -57,7 +57,7 @@ export default function Overview(props: any) {
       {/* Order Book */}
       <div>
         <div className="border-t border-dashed border-border pt-4 mb-5">
-          <span className="text-xs font-mono text-muted-foreground tracking-wider">05 / ORDER BOOK</span>
+          <span className="text-xs font-mono text-muted-foreground tracking-wider">ORDER BOOK</span>
         </div>
         <Orderbook symbol={symbol} />
       </div>

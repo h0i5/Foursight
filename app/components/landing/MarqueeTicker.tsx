@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 
 const TICKERS = [
   { symbol: "RELIANCE", price: "2,941.55", change: "+1.24%" },
@@ -22,7 +23,10 @@ const TICKERS = [
 function Chip({ symbol, price, change }: { symbol: string; price: string; change: string }) {
   const positive = change.startsWith("+");
   return (
-    <span className="inline-flex items-center gap-3 px-4 py-2 border-r border-border shrink-0">
+    <Link
+      href={`/stocks/${symbol}`}
+      className="inline-flex items-center gap-3 px-4 py-2 border-r border-border shrink-0 hover:bg-muted transition-colors"
+    >
       <span className="font-mono text-xs font-semibold text-foreground tracking-wider">{symbol}</span>
       <span className="font-mono text-xs text-foreground/70">₹{price}</span>
       <span
@@ -31,7 +35,7 @@ function Chip({ symbol, price, change }: { symbol: string; price: string; change
       >
         {change}
       </span>
-    </span>
+    </Link>
   );
 }
 
@@ -40,7 +44,6 @@ export default function MarqueeTicker() {
   return (
     <div
       className="w-full overflow-hidden border-y border-border bg-card group"
-      aria-hidden="true"
     >
       <div
         className="flex"

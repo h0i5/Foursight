@@ -5,21 +5,19 @@ import { useRouter } from "next/navigation";
 import { CiSearch } from "react-icons/ci";
 import { NavTransition } from "./NavTransition";
 import { useEffect, useState, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Hamburger from "./utils/Hamburger";
 import { ThemeToggle } from "@/app/components/theme/ThemeToggle";
 
 export default function NavbarDesktop(props: any) {
   const [logStatus, setLogStatus] = useState(false);
+  const pathname = usePathname();
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const token = getCookie("token");
-    if (token) {
-      setLogStatus(true);
-    } else {
-      setLogStatus(false);
-    }
-  }, [logStatus]);
+    setLogStatus(!!token);
+  }, [pathname]);
 
   const router = useRouter();
   const [query, setQuery] = useState("");

@@ -135,7 +135,7 @@ export default function Networth(props: any) {
 
         <div className="border border-border p-6 bg-card sm:col-span-2 xl:col-span-2">
           <div className="mb-4">
-            <span className="text-xs font-mono text-muted-foreground tracking-wider">02 / HOLDINGS</span>
+            <span className="text-xs font-mono text-muted-foreground tracking-wider">HOLDINGS</span>
           </div>
           {loading ? (
             <div className="flex justify-center items-center py-12">
@@ -153,7 +153,7 @@ export default function Networth(props: any) {
 
         <div className="border border-border p-6 bg-card sm:col-span-2 xl:col-span-1">
           <div className="mb-4">
-            <span className="text-xs font-mono text-muted-foreground tracking-wider">03 / ALLOCATION</span>
+            <span className="text-xs font-mono text-muted-foreground tracking-wider">ALLOCATION</span>
           </div>
           {loading ? (
             <div className="flex justify-center items-center py-12">
@@ -225,7 +225,7 @@ export default function Networth(props: any) {
 
         <div className="border border-border p-6 bg-card sm:col-span-2 xl:col-span-3">
           <div className="mb-4">
-            <span className="text-xs font-mono text-muted-foreground tracking-wider">04 / RECENT ORDERS</span>
+            <span className="text-xs font-mono text-muted-foreground tracking-wider">RECENT ORDERS</span>
           </div>
           {loading ? (
             <div className="flex justify-center items-center py-12">
