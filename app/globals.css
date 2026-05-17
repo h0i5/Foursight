@@ -48,6 +48,10 @@
     border-radius: 0 !important;
 }
 
+[data-sileo-viewport] {
+    z-index: 99999 !important;
+}
+
 [data-sileo-badge] {
     border-radius: 9999px !important;
 }
@@ -123,18 +127,21 @@ form > label {
 .loader {
     width: 20px;
     aspect-ratio: 1;
-    background: linear-gradient(#0000 calc(1 * 100% / 6), currentColor 0 calc(3 * 100% / 6), #0000 0) left bottom,
-        linear-gradient(#0000 calc(2 * 100% / 6), currentColor 0 calc(4 * 100% / 6), #0000 0) center bottom,
-        linear-gradient(#0000 calc(3 * 100% / 6), currentColor 0 calc(5 * 100% / 6), #0000 0) right bottom;
-    background-size: 20% 600%;
-    background-repeat: no-repeat;
-    animation: l3 1s infinite linear;
+    --c: no-repeat linear-gradient(currentColor 0 0);
+    background:
+        var(--c) 0%   100%,
+        var(--c) 50%  100%,
+        var(--c) 100% 100%;
+    animation: l2 1s infinite linear;
 }
 
-@keyframes l3 {
-    to {
-        background-position: left top, center top, right top;
-    }
+@keyframes l2 {
+    0%  { background-size: 20% 100%, 20% 100%, 20% 100% }
+    20% { background-size: 20% 60%,  20% 100%, 20% 100% }
+    40% { background-size: 20% 80%,  20% 60%,  20% 100% }
+    60% { background-size: 20% 100%, 20% 80%,  20% 60%  }
+    80% { background-size: 20% 100%, 20% 100%, 20% 80%  }
+    100%{ background-size: 20% 100%, 20% 100%, 20% 100% }
 }
 
 /* Slower toast animations */

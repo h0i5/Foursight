@@ -50,10 +50,7 @@ export default function SellPopup(props: any) {
     if (results?.status === 200) {
       sileo.success({ title: `Successfully sold ${quantity} ${props.symbol}` });
       setQuantity(0);
-      setTimeout(() => {
-        onClose();
-        window.location.reload();
-      }, 500);
+      setTimeout(onClose, 500);
     } else if (results?.status === 401) {
       sileo.error({ title: "Insufficient stocks!" });
     } else {

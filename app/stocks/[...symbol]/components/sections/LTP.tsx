@@ -17,7 +17,7 @@ export default function LTP(props: any) {
             ₹{props.ltp}
           </p>
           <div className={`inline-flex items-center gap-2 px-3 py-1.5 ${changeBg}`}>
-            <div className={`w-1.5 h-1.5 flex-shrink-0 ${accentBar}`} />
+            <span className={`text-xs flex-shrink-0 ${changeColor}`}>{isPositive ? "▲" : "▼"}</span>
             <span className={`text-sm font-mono font-semibold ${changeColor} tabular-nums`}>
               {isPositive ? "+" : ""}{props.dayChange.toFixed(2)}
               {" "}({isPositive ? "+" : ""}{props.dayChangePerc.toFixed(2)}%)

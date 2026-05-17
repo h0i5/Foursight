@@ -55,6 +55,7 @@ export default function Orderbook(props: any) {
         }).map((_, i) => {
           const buy = (buyOrdersData as any)[i];
           const sell = (sellOrdersData as any)[i];
+          if (!buy && !sell) return null;
           return (
             <div key={i} className="grid grid-cols-2 border-b border-border last:border-b-0">
               <div className="flex items-center justify-between px-4 py-2.5 hover:bg-muted transition-colors">
@@ -65,9 +66,7 @@ export default function Orderbook(props: any) {
                       {buy.qty.toLocaleString("en-IN")}
                     </span>
                   </>
-                ) : (
-                  <span className="text-xs font-mono text-muted-foreground">—</span>
-                )}
+                ) : null}
               </div>
               <div className="flex items-center justify-between px-4 py-2.5 border-l border-border hover:bg-muted transition-colors">
                 {sell ? (
@@ -77,9 +76,7 @@ export default function Orderbook(props: any) {
                       {sell.qty.toLocaleString("en-IN")}
                     </span>
                   </>
-                ) : (
-                  <span className="text-xs font-mono text-muted-foreground">—</span>
-                )}
+                ) : null}
               </div>
             </div>
           );

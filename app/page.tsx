@@ -1,6 +1,7 @@
 import { NavTransition } from "./components/navbar/NavTransition";
 import MarqueeTicker from "./components/landing/MarqueeTicker";
 import { MiniSparkMain, MiniSparkTall } from "./components/landing/MiniSpark";
+import LandingSearch from "./components/landing/LandingSearch";
 
 const PORTFOLIO_HOLDINGS = [
   { symbol: "RELIANCE", qty: 12, change: "+2.41%", positive: true },
@@ -45,9 +46,9 @@ export default function Home() {
             className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.92] mb-6 sm:mb-8 max-w-4xl"
           >
             Practice trading<br />
-            Indian stocks.{" "}
+            Indian stocks.<br />
             <span className="font-mono" style={{ color: "rgb(var(--positive))" }}>
-              Zero&nbsp;rupees&nbsp;at&nbsp;risk.
+              Zero rupees at risk.
             </span>
           </h1>
 
@@ -105,6 +106,8 @@ export default function Home() {
         </div>
       </section>
 
+      <LandingSearch />
+
       {/* ── FEATURES — BENTO ─────────────────────────────────────────── */}
       <section className="px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="max-w-7xl mx-auto">
@@ -141,7 +144,7 @@ export default function Home() {
             </div>
 
             {/* CHARTS — row-span-2 on md+ */}
-            <div className="sm:col-span-2 md:col-span-1 md:row-span-2 bg-card p-5 sm:p-8 hover:bg-muted transition-colors duration-200 flex flex-col gap-5 sm:gap-6">
+            <div className="sm:col-span-2 md:col-span-1 md:row-span-2 bg-card p-5 sm:p-8 hover:bg-muted transition-colors duration-200 flex flex-col gap-5 sm:gap-6 border-b border-border">
               <div>
                 <Chip label="CHARTS" />
                 <h3 className="font-mono text-sm uppercase tracking-wider text-foreground mb-2">
@@ -156,7 +159,7 @@ export default function Home() {
                   +1.42%
                 </span>
                 <MiniSparkTall />
-                <div className="flex gap-2 mt-2">
+                <div className="flex flex-wrap gap-2 mt-2">
                   {["1D", "1W", "1M", "1Y"].map((t) => (
                     <span
                       key={t}
@@ -167,7 +170,7 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-              <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
+              <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider truncate">
                 TIMEFRAMES: 1D · 1W · 1M · 1Y
               </p>
             </div>
@@ -201,7 +204,7 @@ export default function Home() {
             </div>
 
             {/* WATCHLIST */}
-            <div className="bg-card p-5 sm:p-8 hover:bg-muted transition-colors duration-200 flex flex-col gap-4">
+            <div className="bg-card p-5 sm:p-8 hover:bg-muted transition-colors duration-200 flex flex-col gap-4 border-b border-border">
               <div>
                 <Chip label="WATCHLIST" />
                 <h3 className="font-mono text-sm uppercase tracking-wider text-foreground mb-1">
