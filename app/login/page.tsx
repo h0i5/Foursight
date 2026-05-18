@@ -70,10 +70,7 @@ function LoginContent() {
       setCookie("token", results.data.token, {
         expires: new Date(parseJwt(results.data.token).exp * 1000),
       });
-      console.log(parseJwt(results.data.token).exp);
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 1000);
+      router.push("/dashboard");
     } else if (results?.status === 401) {
       sileo.error({ title: "Incorrect Credentials" });
     } else {

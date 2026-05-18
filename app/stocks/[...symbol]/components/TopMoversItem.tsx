@@ -1,12 +1,13 @@
 import { NavTransition } from "@/app/components/navbar/NavTransition";
 
 export default function TopMoversItem({ data }: { data: any; accent?: string }) {
+  if (!data?.stats || !data?.company) return null;
   const nseScriptCode = data.company.nseScriptCode;
   const companyName = data.company.companyName;
   const logoUrl = data.company.logoUrl;
-  const ltp = data.stats.ltp.toFixed(2);
-  const dayChange = data.stats.dayChange.toFixed(2);
-  const dayChangePerc = data.stats.dayChangePerc.toFixed(2);
+  const ltp = (data.stats.ltp ?? 0).toFixed(2);
+  const dayChange = (data.stats.dayChange ?? 0).toFixed(2);
+  const dayChangePerc = (data.stats.dayChangePerc ?? 0).toFixed(2);
   const isPositive = Number(dayChange) >= 0;
   const changeColor = isPositive ? "text-positive" : "text-negative";
 

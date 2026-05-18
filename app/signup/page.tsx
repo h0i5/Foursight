@@ -7,12 +7,14 @@ var crypto = require("crypto");
 import { NavTransition } from "../components/navbar/NavTransition";
 import Loading from "../components/Loading";
 import { sileo } from "sileo";
+import { useRouter } from "next/navigation";
 
 export default function SignUpPage() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   function handleGoogleLogin() {
     // Redirect to backend OAuth endpoint
@@ -50,6 +52,7 @@ export default function SignUpPage() {
     }
     if (results?.status === 200) {
       sileo.success({ title: "Registration successful. Please login to continue" });
+      router.push("/login");
     } else if (results?.status === 409) {
       sileo.error({ title: "Username or email already exists" });
     } else {
