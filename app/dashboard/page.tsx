@@ -38,7 +38,7 @@ export default function DashboardPage() {
         ]);
         setMarketCapData(marketCapResult?.data);
         setIndicesData(indicesResult?.data);
-        setTopMovers(topMoversResult?.data);
+        setTopMovers(topMoversResult?.data ?? {});
       } catch (err) {
         console.error(err);
       } finally {

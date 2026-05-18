@@ -5,6 +5,8 @@ import { NavTransition } from "@/app/components/navbar/NavTransition";
 export default function TopMoversSection(props: any) {
   const { data } = props;
 
+  if (!data?.TOP_GAINERS && !data?.TOP_LOSERS) return null;
+
   return (
     <div className="space-y-12">
       <div>
