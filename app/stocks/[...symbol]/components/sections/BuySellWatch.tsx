@@ -37,21 +37,24 @@ export default function BuySellWatch(props: any) {
     return () => window.removeEventListener("keydown", onKey);
   }, [token]);
 
-  async function handleWatchlistAddition() {
+  function handleWatchlistAddition() {
     if (!token) { setShowLoginPrompt(true); return; }
-    let results;
-    try {
-      results = await axios({
+    sileo.promise(
+      axios({
         method: "post",
         url: apiURL + "/transaction/addWatchlist",
         headers: { Authorization: "Bearer " + token },
         data: { scrip: decodeURIComponent(symbol) },
-      });
-    } catch (err: any) {
-      results = err.response;
-    }
-    if (results?.status === 200) sileo.success({ title: "Added to watchlist" });
-    if (results?.status === 409) sileo.error({ title: "Already in watchlist!" });
+      }).catch((err: any) => {
+        if (err.response?.status === 409) throw new Error("Already in watchlist!");
+        throw err;
+      }),
+      {
+        loading: { title: "Adding to watchlist..." },
+        success: { title: "Added to watchlist" },
+        error: (err: any) => ({ title: err?.message || "Failed to add to watchlist" }),
+      }
+    );
   }
 
   const popupStyle = {
